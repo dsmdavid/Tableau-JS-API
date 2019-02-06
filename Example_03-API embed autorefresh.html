@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<title>API autorefresh</title>
+<!-- Importing Tableau API -->
+<script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.js"></script>
+
+    
+<body onload="initialize();">
+       
+    <div>API embed - Autorefresh every 5 seconds</div>
+    
+    <div id="myViz">
+        </div>
+    </div>
+
+
+</body>
+<script>
+
+var viz;
+
+function refreshView(){
+	viz.refreshDataAsync();
+}
+    
+    
+    function initialize() {
+
+        var placeholderDiv = document.getElementById("myViz");
+        var url = "http://public.tableau.com/views/TheTime/Dashboard1?";
+        var options = {
+            width: 900,
+            height: 600,
+            hideTabs: true,
+            hideToolbar: true
+            }
+        viz = new tableau.Viz(placeholderDiv, url, options);
+        }
+
+    setInterval(refreshView,5000);
+
+</script>
+
+
+</html>

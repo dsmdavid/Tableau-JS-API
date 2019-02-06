@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+ 
+<html>
+ 
+<title>I'm an HTML file!</title>
+    
+<!--http://tableaulove.tumblr.com/post/66878975716/automatically-refreshing-a-tableau-viz-on-tableau-->
+ 
+<!-- Replace the reference to the JS API on Tableau Public to your server -->
+<script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+ 
+ 
+ 
+ <body>
+  <div id="content">  </div>
+ 
+ <script>
+ var viz;
+ 
+function refreshThatSucker(){
+	viz.refreshDataAsync();
+	//or do something more obvious and evil
+	//viz.showShareDialog();
+}
+ 
+function initializeViz() {
+  var placeholderDiv = document.getElementById("content");
+  // Replace this URL with your viz
+    
+    
+  var url = "https://public.tableau.com/views/MyDSexperience/CaffeineIntake";
+  var options = {
+    width: content.offsetWidth,
+    height: content.offsetHeight,
+    hideTabs: true,
+    hideToolbar: true,
+    onFirstInteractive: function () {
+	  // Refresh the viz every 5000 milliseconds
+	  window.setInterval("refreshThatSucker()",5000);
+    }
+  };
+ 
+ 
+	try{
+		viz = new tableauSoftware.Viz(placeholderDiv, url, options);
+		}
+	catch	(e){
+		alert(e);
+		}
+ };
+  </script>
+ 
+  
+<script type="text/javascript">
+    // Initialize the app on document ready.
+    $(initializeViz);
+ </script>
+ 
+ 
+ 
+ 
+ 
+</body>
+</html>

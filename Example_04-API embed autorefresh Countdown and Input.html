@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<title>API autorefresh</title>
+<!-- Importing Tableau API -->
+<script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.js"></script>
+
+    
+<body onload="initialize();">
+       
+    <div>API embed - Autorefresh every 5 seconds</div>
+        <div class="circle" id="countdown"></div>
+      <div class="buttons">
+<button class="apply_Interval btn" style="background-color: #a8dba2;">5</button>
+<button class="apply_Interval btn" style="background-color: #f5a8a3;">10</button>
+<button class="apply_Interval btn" style="background-color: #afc8e3;">15</button>
+<button class="apply_Interval btn" style="background-color: #d0bde0;">30</button>
+<button class="apply_Interval btn" style="background-color: #ffc898;">60</button>
+</div>
+    <div id="myViz">
+        </div>
+    </div>
+
+
+</body>
+<script>
+
+var viz;
+var ourInterval = 10000;
+
+    function refreshView(){
+        viz.refreshDataAsync();
+    }
+
+    
+    function initialize() {
+
+        var placeholderDiv = document.getElementById("myViz");
+        var url = "http://public.tableau.com/views/TheTime/Dashboard1?";
+        var options = {
+            width: 900,
+            height: 600,
+            hideTabs: true,
+            hideToolbar: true
+            }
+        viz = new tableau.Viz(placeholderDiv, url, options);
+        }
+
+    setInterval(refreshView,ourInterval);
+    
+    
+var timeleft = ourInterval/1000;
+var downloadTimer = setInterval(function(){
+  document.getElementById("countdown").innerHTML = timeleft + " ";
+  timeleft -= 1;
+  if(timeleft <= 0){
+    timeleft = ourInterval/1000;
+    document.getElementById("countdown").innerHTML = timeleft + " ";
+  }
+}, 1000);
+
+</script>
+
+<style>
+    
+.countdown {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 50px;
+  color: #fff;
+  line-height: 500px;
+  text-align: center;
+  background: #ff00ff;
+}
+    
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  line-height: 100px;
+  text-align: center;
+  background: #ff00ff
+}
+    
+
+</style>
+</html>

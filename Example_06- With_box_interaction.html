@@ -34,23 +34,39 @@ var ourInterval = 10000;
             hideToolbar: true,
             onFirstInteractive: function(){
                 listenToMarksSelection();
+
             }
         }
         viz = new tableau.Viz(placeholderDiv, url, options);
         }
 
-    setInterval(refreshView,ourInterval);
     
+var refreshInterval =  setInterval(refreshView,ourInterval);
+    
+ 
+    function launchIntervalRefresh(){
+        clearInterval(refreshInterval);
+       // console.log("This is :")
+//        setInterval(refreshView,ourInterval);
+        refreshInterval =  setInterval(refreshView,ourInterval);
+        //console.log(setInterval)
+    }
     
 var timeleft = ourInterval/1000;
-var downloadTimer = setInterval(function(){
-  document.getElementById("countdown").innerHTML = timeleft + " ";
-  timeleft -= 1;
-  if(timeleft <= 0){
-    timeleft = ourInterval/1000;
-    document.getElementById("countdown").innerHTML = timeleft + " ";
-  }
-}, 1000);
+    
+    function countdownDownloadTimer() {
+          document.getElementById("countdown").innerHTML = timeleft + " ";
+          timeleft -= 1;
+          if(timeleft <= 0){
+            timeleft = ourInterval/1000;
+            document.getElementById("countdown").innerHTML = timeleft + " ";
+          }
+
+
+        
+    }
+    
+var downloadTimer = setInterval(countdownDownloadTimer, 1000);
     
     /*  Catching Interval Time    */
  function listenToMarksSelection() {
@@ -72,6 +88,11 @@ var html = "";
                     html += "<li><b>Field Name:</b> " + pair.fieldName;
                     html += "<br/><b>Value:</b> " + pair.formattedValue + "</li>";
                     ourInterval = pair.formattedValue*1000;
+                    
+                    //Change the refresh time for the viz
+                    clearInterval(refreshInterval);
+                    refreshInterval =  setInterval(refreshView,ourInterval);
+                    timeleft = 0;
                 }
                 html += "</ul>";
             }

@@ -7,11 +7,12 @@
     
 <body onload="initialize();">
        
-    <div>API embed - Autorefresh every 5 seconds</div>
+    <div>API embed - Autorefresh every N seconds</div>
         <div class="circle" id="countdown"></div>
     <div id="myViz"> </div>
+    <!-- Remove this to see info about the selected marks
     <div id="markDetails">Information about selected marks displays here.</div>
-
+    -->
 </body>
 <script>
 
@@ -26,31 +27,49 @@ var ourInterval = 10000;
     function initialize() {
 
         var placeholderDiv = document.getElementById("myViz");
-        var url = "https://public.tableau.com/views/TheTime_0/testboxes?";
+        var url = "https://public.tableau.com/views/TheTime_0/withboxes?";
         var options = {
-            width: 900,
+            width: 1200,
             height: 600,
             hideTabs: true,
             hideToolbar: true,
             onFirstInteractive: function(){
                 listenToMarksSelection();
+
             }
         }
         viz = new tableau.Viz(placeholderDiv, url, options);
         }
 
-    setInterval(refreshView,ourInterval);
     
+var refreshInterval =  setInterval(refreshView,ourInterval);
+    
+ 
+    function launchIntervalRefresh(){
+        clearInterval(refreshInterval);
+       // console.log("This is :")
+//        setInterval(refreshView,ourInterval);
+        refreshInterval =  setInterval(refreshView,ourInterval);
+        //console.log(setInterval)
+    }
     
 var timeleft = ourInterval/1000;
-var downloadTimer = setInterval(function(){
-  document.getElementById("countdown").innerHTML = timeleft + " ";
-  timeleft -= 1;
-  if(timeleft <= 0){
-    timeleft = ourInterval/1000;
-    document.getElementById("countdown").innerHTML = timeleft + " ";
-  }
-}, 1000);
+    
+    function countdownDownloadTimer() {
+          document.getElementById("countdown").innerHTML = timeleft + " ";
+          timeleft -= 1;
+          if(timeleft <= 0){
+            timeleft = ourInterval/1000;
+            document.getElementById("countdown").innerHTML = timeleft + " ";
+              var div = document.getElementById("countdown");
+                div.style.background = '#000000';
+          }
+              
+            
+        
+    }
+    
+var downloadTimer = setInterval(countdownDownloadTimer, 1000);
     
     /*  Catching Interval Time    */
  function listenToMarksSelection() {
@@ -71,12 +90,20 @@ var html = "";
                     var pair = pairs[pairIndex];
                     html += "<li><b>Field Name:</b> " + pair.fieldName;
                     html += "<br/><b>Value:</b> " + pair.formattedValue + "</li>";
+                    
+                    if (pair.fieldName ==="Value") {
                     ourInterval = pair.formattedValue*1000;
+                    
+                    //Change the refresh time for the viz
+                    timeleft = 0;
+                    clearInterval(refreshInterval);
+                    refreshInterval =  setInterval(refreshView,ourInterval);}
+                    
                 }
                 html += "</ul>";
             }
             var infoDiv = document.getElementById('markDetails');
-            infoDiv.innerHTML = html;
+            //infoDiv.innerHTML = html;
      
 }         
     
@@ -100,6 +127,9 @@ var html = "";
 }
     
 .circle {
+    position: relative;
+    top: 50%;
+    left: 50%;
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -107,7 +137,8 @@ var html = "";
   color: #fff;
   line-height: 100px;
   text-align: center;
-  background: #ff00ff
+  background: #ff00ff;
+    
 }
     
 

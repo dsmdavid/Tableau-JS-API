@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<title>API autorefresh</title>
+<!-- Importing Tableau API -->
+<script type="text/javascript" src="https://tableauserver.theinformationlab.co.uk/javascripts/api/tableau-2.js"></script>
+<!-- Tableau Public API
+    <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.js"></script>
+-->
+    
+<body onload="initialize();">
+       
+    <div>API embed - Autorefresh every N seconds</div>
+        <div class="circle" id="countdown"></div>
+    <div id="myViz"> </div>
+    <!-- Remove this to see info about the selected marks -->
+    <div id="markDetails">Information about selected marks displays here.</div>
+    <div>Formatted below.</div>
+    <div id="detailedView">Information about all marks displays here.</div>
+
+    <!--  -->
+    <audio data-key="3.0" src="sounds/kick.wav"></audio>
+</body>
+<script>
+
+var viz;
+var ourInterval = 10000;
+
+    function refreshView(){
+        viz.refreshDataAsync();
+        getUnderlyingData();
+    }
+
+    
+    function initialize() {
+
+        var placeholderDiv = document.getElementById("myViz");
+        var url = "https://tableauserver.theinformationlab.co.uk/t/DataSchool/views/SalesAtRisk/SalesAtRisk?";
+
+        var options = {
+            width: 800,
+            height: 700,
+            hideTabs: true,
+            hideToolbar: true,
+            onFirstInteractive: function(){
+                listenToMarksSelection();
+
+            }
+        }
+        viz = new tableau.Viz(placeholderDiv, url, options);
+        }
+
+    
+var refreshInterval =  setInterval(refreshView,ourInterval);
+    
+ 
+    function launchIntervalRefresh(){
+        clearInterval(refreshInterval);
+       // console.log("This is :")
+//        setInterval(refreshView,ourInterval);
+        refreshInterval =  setInterval(refreshView,ourInterval);
+        //console.log(setInterval)
+    }
+    
+var timeleft = ourInterval/1000;
+    
+    function countdownDownloadTimer() {
+          document.getElementById("countdown").innerHTML = timeleft + " ";
+          timeleft -= 1;
+          if(timeleft <= 0){
+            timeleft = ourInterval/1000;
+            document.getElementById("countdown").innerHTML = timeleft + " ";
+              var div = document.getElementById("countdown");
+                div.style.background = '#000000';
+          }
+              
+            
+        
+    }
+    
+var downloadTimer = setInterval(countdownDownloadTimer, 1000);
+    
+    /*  Catching Interval Time    */
+ function listenToMarksSelection() {
+  viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
+}
+
+function onMarksSelection(marksEvent) {
+  return marksEvent.getMarksAsync().then(reportSelectedMarks);
+}
+
+function reportSelectedMarks(marks) {
+var html = ""; 
+            
+            for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+                var pairs = marks[markIndex].getPairs();
+                html += "<b>Mark " + markIndex + ":</b><ul>";
+                for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+                    var pair = pairs[pairIndex];
+                    html += "<li><b>Field Name:</b> " + pair.fieldName;
+                    html += "<br/><b>Value:</b> " + pair.formattedValue + "</li>";
+                    
+                    if (pair.fieldName === "Status"){
+                    if (pair.formattedValue ==="3.0"){
+                        const audio = new Audio('kick.wav');
+                        audio.currentTime = 0;
+                        audio.play();
+                    }}
+                    
+                }
+                html += "</ul>";
+            }
+            var infoDiv = document.getElementById('markDetails');
+            infoDiv.innerHTML = html;
+     
+}         
+    
+function getUnderlyingData(){
+                sheet = viz.getWorkbook().getActiveSheet().getWorksheets().get("Sales at Risk");
+		 // If the active sheet is not a dashboard, then you can just enter:
+		 // viz.getWorkbook().getActiveSheet();
+                options = {
+                    maxRows: 0, // Max rows to return. Use 0 to return all rows
+                    ignoreAliases: false,
+                    ignoreSelection: true,
+                    //includeAllColumns: false
+                };
+
+                sheet.getSummaryDataAsync(options).then(function(t){
+                    table = t;
+                    var html = "";
+                    console.log("This is happening: ")
+                    console.log(table.getData().length);
+                    for (var markIndex = 0; markIndex < table.getData().length; markIndex++) {
+                        
+                        var pairs = table.getData()[markIndex];//.getPairs();
+                        console.log(pairs)
+                        html += "<b>Mark " + markIndex + ":</b><ul>";
+                        for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+                            var pair = pairs[pairIndex];
+                            html += "<li><b>Field Name:</b> " + pair.fieldName;
+                            html += "<br/><b>Value:</b> " + pair.formattedValue + "</li>";
+                        }
+                        html += "</ul>";
+                    }
+                    var infoDiv = document.getElementById('detailedView');
+                    infoDiv.innerHTML = html;
+                    /*
+                        if (pair.fieldName === "Status"){
+                        if (pair.formattedValue ==="3.0"){
+                            const audio = new Audio('kick.wav');
+                            audio.currentTime = 0;
+                            audio.play();
+                        }}*/
+                    /*var tgt = document.getElementById("markDetails");
+                    tgt.innerHTML = "<h4>Underlying Data:</h4><p>" + JSON.stringify(table.getData()) + "</p>";
+                    */
+                });
+}
+    
+</script>
+
+<style>
+    
+.countdown {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 50px;
+  color: #fff;
+  line-height: 500px;
+  text-align: center;
+  background: #ff00ff;
+}
+    
+.circle {
+    position: relative;
+    top: 50%;
+    left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  line-height: 100px;
+  text-align: center;
+  background: #ff00ff;
+    
+}
+    
+
+</style>
+</html>

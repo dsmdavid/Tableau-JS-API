@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<title>API autorefresh</title>
+<!-- Importing Tableau API -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet">
+
+<script type="text/javascript" src="https://tableauserver.theinformationlab.co.uk/javascripts/api/tableau-2.js"></script>
+<!-- Tableau Public API
+    <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.js"></script>
+-->
+    
+<body onload="initialize();">
+    <div class="row">
+        <div class="backgroundTitle" id="bckgTitle">
+            <div class="column1">
+                <div class="circle" id="countdown"></div>
+            </div>
+            <div class="column2">    
+                <div class="titleClass" id="titleD"></div>
+                <div class="detailedView" id="detailedView"></div> 
+                <div class="buttons">
+            <button class="apply_RegionFilter btn" style="background-color: #6EC1E4;">North</button>
+            <button class="apply_RegionFilter btn" style="background-color: #355C80;">Central</button>
+            <button class="apply_RegionFilter btn" style="background-color: #6BCF70;">Oceania</button>
+            <button class="selectAll_RegionFilter btn btn-outline" id="resetRegionFilter">All</button>
+        </div>
+            </div>
+            <div class="vizContainer" id="myViz"></div>
+            <br/>
+            <p></p>
+        </div>
+        
+    </div>
+    
+
+    <!-- Remove this to see info about the selected marks -->
+    <div id="markDetails">Information about selected marks displays here.</div>
+    <!--  -->
+
+</body>
+<script>
+    var viz;
+    var workbook;
+    var activeSheet;
+    var ourInterval = 10000;
+    var timeleft = ourInterval/1000;
+    var refreshInterval =  setInterval(refreshView,ourInterval);
+    var downloadTimer = setInterval(countdownDownloadTimer, 1000);
+    var textInterval = setInterval(function(){},3000);
+
+//const audio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/clap.wav');
+//const audio = new Audio('submarine-diving-alarm-daniel_simon.mp3');
+    const audio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/submarine-diving-alarm-daniel_simon.mp3');
+    //  const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted.mp3');
+    const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted-happy-birthday.mp3');
+
+//    const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted.mp3');
+    
+    
+    
+    function refreshView(){
+        viz.refreshDataAsync();
+        getUnderlyingSummary();
+    }
+
+    function initialize() {
+
+        var placeholderDiv = document.getElementById("myViz");
+        var url = "https://tableauserver.theinformationlab.co.uk/t/DataSchool/views/SalesAtRisk/SalesAtRisk?";
+
+        var options = {
+            width: 800,
+            height: 600,
+            hideTabs: true,
+            hideToolbar: true,
+            onFirstInteractive: function(){
+                listenToMarksSelection();
+                workbook = viz.getWorkbook();
+                activeSheet = workbook.getActiveSheet();
+
+            }
+        }
+        viz = new tableau.Viz(placeholderDiv, url, options);
+        }
+    
+    function launchIntervalRefresh(){
+        clearInterval(refreshInterval);
+       // console.log("This is :")
+//        setInterval(refreshView,ourInterval);
+        refreshInterval =  setInterval(refreshView,ourInterval);
+        //console.log(setInterval)
+    }
+       
+    function countdownDownloadTimer() {
+          document.getElementById("countdown").innerHTML = timeleft + " ";
+          timeleft -= 1;
+          if(timeleft <= 0){
+            timeleft = ourInterval/1000;
+            document.getElementById("countdown").innerHTML = timeleft + " ";
+              var div = document.getElementById("countdown");
+                div.style.background = '#6EC1E4';
+          }
+        
+    }
+    
+    function listenToMarksSelection() {
+        viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
+    }
+
+    function onMarksSelection(marksEvent) {
+        return marksEvent.getMarksAsync().then(reportSelectedMarks);
+    }
+    
+    function alterClass(e){
+        console.log('Inside AlterCass');
+        console.log(e);
+        if (e.classList.contains('playing')){
+            e.classList.remove('playing');
+        } else {e.classList.add('playing');
+                console.log('added');
+                console.log(e);}
+    }
+    
+    
+    
+
+            
+    
+function reportSelectedMarks(marks) {
+    var html = ""; 
+            
+            for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+                var pairs = marks[markIndex].getPairs();
+                html += "<b>Mark " + markIndex + ":</b><ul>";
+                for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+                    var pair = pairs[pairIndex];
+                    html += "<li><b>Field Name:</b> " + pair.fieldName;
+                    html += "<br/><b>Value:</b> " + pair.formattedValue + "</li>";
+                    
+                    if (pair.fieldName === "Status"){
+                    if (pair.formattedValue ==="3.0"){
+//                        const audio = new Audio('kick.wav');
+                        audio.currentTime = 0;
+                        audio.play();
+                        /*
+                        var titleDiv = document.getElementById('titleD');
+                        titleDiv.innerHTML = "Sales at Risk $" + row[4].formattedValue;
+                        textInterval = setInterval(alterClass(titleDiv),3000);
+                        console.log('This is the interval');
+                        console.log(textInterval);
+//                titleDiv.classList.add('playing');
+            */
+                    
+                    
+                    
+                    
+                    
+                    }}
+                    
+                }
+                html += "</ul>";
+            }
+            var infoDiv = document.getElementById('markDetails');
+            infoDiv.innerHTML = html;
+     
+}         
+    
+function getUnderlyingSummary(){
+    sheet = viz.getWorkbook().getActiveSheet().getWorksheets().get("Sales at Risk");
+    // If the active sheet is not a dashboard, then you can just enter:
+    // viz.getWorkbook().getActiveSheet();
+    options = {
+        maxRows: 0, // Max rows to return. Use 0 to return all rows
+        ignoreAliases: false,
+        ignoreSelection: true,
+        //includeAllColumns: false
+    };
+    
+    sheet.getSummaryDataAsync(options).then(function(t){
+        table = t;
+        var html = "";
+        console.log("This is happening: ");
+        console.log(table.getData().length);
+        myCounter=0;
+        status = 0;
+        for (var markIndex = 0; markIndex < table.getData().length; markIndex++) {
+            
+            var row = table.getData()[markIndex];//.getPairs();
+                        //console.log(row[0].formattedValue+";"+row[1].formattedValue+";"+row[2].formattedValue+";"+row[4].formattedValue)
+            if (row[2].formattedValue === "3.0") {
+                console.log("Critical found!");
+                //html += "<b>Mark " + markIndex + ":</b>";
+                html += "<br/><b>Segment:</b> " + row[0].formattedValue;
+                html += "<br/><b>Ship Mode:</b> " + row[1].formattedValue;
+                html += "<br/><b>Sales at Risk:</b> $" + row[4].formattedValue;
+                
+                audio.currentTime = 0;
+                audio.play();
+                var titleDiv = document.getElementById('titleD');
+                titleDiv.innerHTML = "<b>Sales at Risk $" + row[4].formattedValue+"<b>";
+                var backgTitle = document.getElementById('bckgTitle');
+                backgTitle.classList.add('playing');
+                console.log('This is the interval');
+                console.log(textInterval);
+                myCounter =myCounter + 1;            
+            } else {}
+            console.log('My counter now:')
+            console.log(myCounter);
+            if (myCounter===0){
+                console.log("my counter was zero");
+                backgTitle = document.getElementById('bckgTitle');
+                
+
+                if (backgTitle.classList.contains('playing')){
+                    console.log('ready to remove playing');
+                    backgTitle.classList.remove('playing');
+                    console.log('removed playing');
+                    console.log('status');
+                    console.log(status);
+                    status = status + 1;
+                    console.log(status);
+                    var titleDiv = document.getElementById('titleD');
+                    titleDiv.innerHTML = "";
+                    var infoDiv = document.getElementById('detailedView');
+                    infoDiv.innerHTML = "";
+                    audio.pause();
+                    console.log("paused");
+
+                    crisisAudio.play();
+                    console.log("crisis played");
+/*                    if (status==="01"){
+                        console.log("inside status");
+                        console.log(status);
+                        status = 0;
+                        const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted.mp3');
+                        crisisAudio.play();
+                        console.log(status);
+                    } else {} */
+                } else {};
+                console.log("outside check");
+                console.log(status);
+
+            } else {}
+        }
+            var infoDiv = document.getElementById('detailedView');
+            infoDiv.innerHTML = html;
+            /*
+                        if (pair.fieldName === "Status"){
+                        if (pair.formattedValue ==="3.0"){
+                            const audio = new Audio('kick.wav');
+                            audio.currentTime = 0;
+                            audio.play();
+                        }}*/
+                    /*var tgt = document.getElementById("markDetails");
+                    tgt.innerHTML = "<h4>Underlying Data:</h4><p>" + JSON.stringify(table.getData()) + "</p>";
+                    */
+    });
+}
+    
+
+    
+    
+    function filterSingleValue(myRegion) {
+        var workbook = viz.getWorkbook();
+        workbook.activateSheetAsync("Sales at Risk");
+        
+        var sheet = workbook.getActiveSheet();
+
+        sheet.applyFilterAsync(
+            "Region",
+            myRegion,
+            tableau.FilterUpdateType.REPLACE);
+    }
+    
+    function clearFilter(filter) {
+         var workbook = viz.getWorkbook();
+        workbook.activateSheetAsync("Sales at Risk");
+        var sheet = workbook.getActiveSheet();
+        sheet.clearFilterAsync(filter);
+}
+
+    var anchors = document.getElementsByClassName("apply_RegionFilter"); //document.getElementsByTagName("a");
+    for (var i = 0; i < anchors.length; i++) {
+      var current = anchors[i];
+      current.addEventListener('click', filterSingleValue(current.innerHTML), false);
+    }
+    var resetFilterRegion = document.getElementById("resetRegionFilter");
+    resetFilterRegion.addEventListener('click',clearFilter("Region"), false);
+ 
+
+</script>
+
+<style>
+/*    
+.countdown {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 15px;
+  color: #fff;
+  line-height: 500px;
+  text-align: center;
+  background: #ff00ff;
+}*/
+    
+.circle {
+    position: relative;
+    top: 0%;
+    left: 0%;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  line-height: 50px;
+  text-align: center;
+    vertical-align: middle;
+  background: #61CE70;
+    
+}
+    
+    .vizContainer{
+        width: 95%;
+        vertical-align: middle;
+        align-content: center;
+        margin: 0 auto;
+    }
+    
+    .backgroundTitle{
+        transition: 0.5s all;
+        transition-timing-function: ease-in-out;
+
+    }
+    
+    .titleClass{
+        transition: 0.5s all;
+        align-content: center;
+        text-align: center;
+        text-emphasis-color: cornsilk;
+        font-family: 'Montserrat';
+        color: cornsilk;
+        font-weight: 500;
+    }
+    
+    .detailedView{
+        transition: 0.5s all;
+        align-content: center;
+        text-align: center;
+        text-emphasis-color: cornsilk;
+        font-family: 'Montserrat';
+        color: cornsilk;
+        font-weight: 100;
+        
+    }
+    
+    .playing {
+        /*transform: scale(1.1);*/
+        background-color: darkred;
+        animation: pulse 5s infinite;
+        box-shadow: 0 0 2rem #FF00FF;
+    }
+    
+    @keyframes pulse {
+        0% {
+            background-color: #001F3F;
+        }
+        100% {
+            background-color: #FF4136;
+        }
+    }    
+    
+    .column1 {
+      float: left;
+      width: 15%;
+/*      padding: 10px; */
+    }
+    .column2 {
+      float: left;
+      width: 70%;
+/*      padding: 10px; */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+        overflow: hidden;
+    }
+</style>
+</html>

@@ -12,19 +12,30 @@
     
 <body onload="initialize();">
     <div class="row">
-        <div class="column1 circle"
-             >
-            <div class="circle" id="countdown"></div>
+        <div class="backgroundTitle" id="bckgTitle">
+            <div class="column1">
+                <div class="circle" id="countdown"></div>
+            </div>
+            <div class="column2">    
+                <div class="titleClass" id="titleD"></div>
+                <div class="detailedView" id="detailedView"></div>
+                <!-- Under Constrution
+                <div class="buttons">
+            <button class="apply_RegionFilter btn" style="background-color: #6EC1E4;">North</button>
+            <button class="apply_RegionFilter btn" style="background-color: #355C80;">Central</button>
+            <button class="apply_RegionFilter btn" style="background-color: #6BCF70;">Oceania</button>
+            <button class="selectAll_RegionFilter btn btn-outline" id="resetRegionFilter">All</button>
         </div>
-        <div class="column2">
-             <p>Some text..</p>
-             <div class="backgroundTitle" id="bckgTitle">
-        <div class="titleClass" id="titleD"></div>
-        <div class="detailedView" id="detailedView"></div></div>
+            -->
+            </div>
+            <div class="vizContainer" id="myViz"></div>
+            <br/>
+            <p></p>
         </div>
+        
     </div>
     
-    <div id="myViz"> </div>
+
     <!-- Remove this to see info about the selected marks -->
     <div id="markDetails">Information about selected marks displays here.</div>
     <!--  -->
@@ -32,15 +43,19 @@
 </body>
 <script>
     var viz;
+    var workbook;
+    var activeSheet;
     var ourInterval = 10000;
     var timeleft = ourInterval/1000;
     var refreshInterval =  setInterval(refreshView,ourInterval);
     var downloadTimer = setInterval(countdownDownloadTimer, 1000);
     var textInterval = setInterval(function(){},3000);
+
 //const audio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/clap.wav');
 //const audio = new Audio('submarine-diving-alarm-daniel_simon.mp3');
     const audio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/submarine-diving-alarm-daniel_simon.mp3');
-    const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted.mp3');
+    //  const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted.mp3');
+    const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted-happy-birthday.mp3');
 
 //    const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted.mp3');
     
@@ -58,11 +73,13 @@
 
         var options = {
             width: 800,
-            height: 700,
+            height: 600,
             hideTabs: true,
             hideToolbar: true,
             onFirstInteractive: function(){
                 listenToMarksSelection();
+                workbook = viz.getWorkbook();
+                activeSheet = workbook.getActiveSheet();
 
             }
         }
@@ -84,7 +101,7 @@
             timeleft = ourInterval/1000;
             document.getElementById("countdown").innerHTML = timeleft + " ";
               var div = document.getElementById("countdown");
-                div.style.background = '#000000';
+                div.style.background = '#6EC1E4';
           }
         
     }
@@ -176,11 +193,9 @@ function getUnderlyingSummary(){
             if (row[2].formattedValue === "3.0") {
                 console.log("Critical found!");
                 //html += "<b>Mark " + markIndex + ":</b>";
-                html += "<ul>";
-                html += "<li><b>Segment:</b> " + row[0].formattedValue;
-                html += "<br/><b>Ship Mode:</b> " + row[1].formattedValue + "</li>";
-                html += "<b>Sales at Risk:</b> $" + row[4].formattedValue + "</li>";
-                html += "</ul>";
+                html += "<br/><b>Segment:</b> " + row[0].formattedValue;
+                html += "<br/><b>Ship Mode:</b> " + row[1].formattedValue;
+                html += "<br/><b>Sales at Risk:</b> $" + row[4].formattedValue;
                 
                 audio.currentTime = 0;
                 audio.play();
@@ -245,6 +260,39 @@ function getUnderlyingSummary(){
     });
 }
     
+
+/* UNDER DEVELOPMENT ------------------------    
+    
+    function filterSingleValue(myRegion) {
+        var workbook = viz.getWorkbook();
+        workbook.activateSheetAsync("Sales at Risk");
+        
+        var sheet = workbook.getActiveSheet();
+
+        sheet.applyFilterAsync(
+            "Region",
+            myRegion,
+            tableau.FilterUpdateType.REPLACE);
+    }
+    
+    function clearFilter(filter) {
+         var workbook = viz.getWorkbook();
+        workbook.activateSheetAsync("Sales at Risk");
+        var sheet = workbook.getActiveSheet();
+        sheet.clearFilterAsync(filter);
+}
+
+    var anchors = document.getElementsByClassName("apply_RegionFilter"); //document.getElementsByTagName("a");
+    for (var i = 0; i < anchors.length; i++) {
+      var current = anchors[i];
+      current.addEventListener('click', filterSingleValue(current.innerHTML), false);
+    }
+    var resetFilterRegion = document.getElementById("resetRegionFilter");
+    resetFilterRegion.addEventListener('click',clearFilter("Region"), false);
+ 
+ UNDER DEVELOPMENT --------------------------
+ */
+
 </script>
 
 <style>
@@ -262,19 +310,27 @@ function getUnderlyingSummary(){
     
 .circle {
     position: relative;
-    top: 50%;
+    top: 0%;
     left: 0%;
   width: 65px;
   height: 65px;
   border-radius: 50%;
   font-size: 20px;
   color: #fff;
-  line-height: 100px;
+  line-height: 50px;
   text-align: center;
     vertical-align: middle;
-  background: #ff00ff;
+  background: #61CE70;
     
 }
+    
+    .vizContainer{
+        width: 95%;
+        vertical-align: middle;
+        align-content: center;
+        margin: 0 auto;
+    }
+    
     .backgroundTitle{
         transition: 0.5s all;
         transition-timing-function: ease-in-out;
@@ -303,7 +359,7 @@ function getUnderlyingSummary(){
     }
     
     .playing {
-        transform: scale(1.1);
+        /*transform: scale(1.1);*/
         background-color: darkred;
         animation: pulse 5s infinite;
         box-shadow: 0 0 2rem #FF00FF;
@@ -320,13 +376,13 @@ function getUnderlyingSummary(){
     
     .column1 {
       float: left;
-      width: 20%;
-      padding: 10px;
+      width: 15%;
+/*      padding: 10px; */
     }
     .column2 {
-      float: right;
-      width: 80%;
-      padding: 10px;
+      float: left;
+      width: 70%;
+/*      padding: 10px; */
     }
 
     /* Clear floats after the columns */

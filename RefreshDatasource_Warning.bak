@@ -8,7 +8,7 @@
       <Properties>
         <Configuration>
           <Passwords />
-          <File OutputFileName="" RecordLimit="" SearchSubDirs="False" FileFormat="25">C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status2.xlsx|||`status$`</File>
+          <File OutputFileName="" RecordLimit="" SearchSubDirs="False" FileFormat="25">C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status_with_warnings.xlsx|||`status$`</File>
           <FormatSpecificOptions>
             <FirstRowData>False</FirstRowData>
             <ImportLine>1</ImportLine>
@@ -16,15 +16,18 @@
         </Configuration>
         <Annotation DisplayMode="0">
           <Name />
-          <DefaultAnnotationText>status2.xlsx
+          <DefaultAnnotationText>status_with_warnings.xlsx
 Table=`status$`</DefaultAnnotationText>
           <Left value="False" />
         </Annotation>
+        <Dependencies>
+          <Implicit />
+        </Dependencies>
         <MetaInfo connection="Output">
           <RecordInfo>
-            <Field name="Segment" size="255" source="File: C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status2.xlsx|||`status$`" type="V_String" />
-            <Field name="Ship Mode" size="255" source="File: C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status2.xlsx|||`status$`" type="V_String" />
-            <Field name="Status" source="File: C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status2.xlsx|||`status$`" type="Double" />
+            <Field name="Segment" size="255" source="File: C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status_with_warnings.xlsx|||`status$`" type="V_String" />
+            <Field name="Ship Mode" size="255" source="File: C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status_with_warnings.xlsx|||`status$`" type="V_String" />
+            <Field name="Status" source="File: C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status_with_warnings.xlsx|||`status$`" type="Double" />
           </RecordInfo>
         </MetaInfo>
       </Properties>

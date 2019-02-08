@@ -8,7 +8,7 @@
       <Properties>
         <Configuration>
           <Passwords />
-          <File OutputFileName="" RecordLimit="" SearchSubDirs="False" FileFormat="25">C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status_with_warnings.xlsx|||`status$`</File>
+          <File OutputFileName="" RecordLimit="" SearchSubDirs="False" FileFormat="25">.\Datasources\status_with_warnings.xlsx|||`status$`</File>
           <FormatSpecificOptions>
             <FirstRowData>False</FirstRowData>
             <ImportLine>1</ImportLine>
@@ -20,9 +20,6 @@
 Table=`status$`</DefaultAnnotationText>
           <Left value="False" />
         </Annotation>
-        <Dependencies>
-          <Implicit />
-        </Dependencies>
         <MetaInfo connection="Output">
           <RecordInfo>
             <Field name="Segment" size="255" source="File: C:\Users\DavidSM\Dropbox\DataSchool\Projects\Javascript API\Tableau-JS-API\Datasources\status_with_warnings.xlsx|||`status$`" type="V_String" />

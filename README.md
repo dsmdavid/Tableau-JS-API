@@ -12,7 +12,8 @@ Outcome of Back2School week at [The Dataschool](https://www.thedataschool.co.uk/
         1.	[Autoupdate](https://dsmdavid.github.io/Tableau-JS-API/Example_03-API%20embed%20autorefresh.html).    
         1.	Pass multiple filters.
         1.	Have a [two way communication](https://dsmdavid.github.io/Tableau-JS-API/Example_07-%20With_box_interaction%20in%20Dashboard.html) (interact with the Viz, take that data into the page, evaluate it and feed it back to the Viz).
-        1.	[Drive alarms in the webpage based on the data](https://dsmdaviz.com/criticalshipments/)  You'll need to log in to TIL tableauserver to see the dashboard (and run the workflows here to update the datasource from not warning to warning).  
+        1.	[Drive alarms in the webpage based on the data](https://dsmdaviz.com/criticalshipments/)  You'll need to log in to TIL tableauserver to see the dashboard (and run the workflows here to update the datasource from [not warning](https://github.com/dsmdavid/Tableau-JS-API/blob/master/RefreshDatasource_Warning.yxmd) to [warning](https://github.com/dsmdavid/Tableau-JS-API/blob/master/RefreshDatasource_Warning.yxmd)).
+            This is what [it should look like](https://www.youtube.com/watch?v=Sv14MNzBVhc).
 
 
 

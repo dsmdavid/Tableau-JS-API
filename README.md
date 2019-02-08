@@ -1,5 +1,5 @@
 # Tableau-JS-API
-Outcome of Back2School week at [The Dataschool](https://www.thedataschool.co.uk/) for *Eliott & David*.
+Outcome of Back2School week at [The Dataschool](https://www.thedataschool.co.uk/) for **Eliott & David**.
 
 ## What is it not for and what is it for:
 1.	Things you don’t need Tableau JS API for:  

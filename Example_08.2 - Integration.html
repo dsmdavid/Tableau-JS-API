@@ -12,19 +12,21 @@
     
 <body onload="initialize();">
     <div class="row">
-        <div class="column1">
-            <div class="circle" id="countdown"></div>
-   
-        </div>
-        <div class="column2">
-             <p>Some text..</p>
-             <div class="backgroundTitle" id="bckgTitle">
-        <div class="titleClass" id="titleD"></div>
-        <div class="detailedView" id="detailedView"></div></div>
+        <div class="backgroundTitle" id="bckgTitle">
+            <div class="column1">
+                <div class="circle" id="countdown"></div>
+            </div>
+            <div class="column2">               
+                <div class="titleClass" id="titleD"></div>
+                <div class="detailedView" id="detailedView"></div>          
+            </div>
+            <div class="vizContainer" id="myViz"></div>
+            <br/>
+            <p></p>
         </div>
     </div>
     
-    <div id="myViz"> </div>
+
     <!-- Remove this to see info about the selected marks -->
     <div id="markDetails">Information about selected marks displays here.</div>
     <!--  -->
@@ -58,7 +60,7 @@
 
         var options = {
             width: 800,
-            height: 700,
+            height: 600,
             hideTabs: true,
             hideToolbar: true,
             onFirstInteractive: function(){
@@ -84,7 +86,7 @@
             timeleft = ourInterval/1000;
             document.getElementById("countdown").innerHTML = timeleft + " ";
               var div = document.getElementById("countdown");
-                div.style.background = '#000000';
+                div.style.background = '#6EC1E4';
           }
         
     }
@@ -176,11 +178,9 @@ function getUnderlyingSummary(){
             if (row[2].formattedValue === "3.0") {
                 console.log("Critical found!");
                 //html += "<b>Mark " + markIndex + ":</b>";
-                html += "<ul>";
-                html += "<li><b>Segment:</b> " + row[0].formattedValue;
-                html += "<br/><b>Ship Mode:</b> " + row[1].formattedValue + "</li>";
-                html += "<b>Sales at Risk:</b> $" + row[4].formattedValue + "</li>";
-                html += "</ul>";
+                html += "<br/><b>Segment:</b> " + row[0].formattedValue;
+                html += "<br/><b>Ship Mode:</b> " + row[1].formattedValue;
+                html += "<br/><b>Sales at Risk:</b> $" + row[4].formattedValue;
                 
                 audio.currentTime = 0;
                 audio.play();
@@ -245,6 +245,22 @@ function getUnderlyingSummary(){
     });
 }
     
+
+    /*
+    
+    var myEl = document.getElementById('northFilter');
+    myEl.addEventListener('click', filterSingleValue("North"));
+    
+    function filterSingleValue(myRegion) {
+        workbook = viz.getWorkbook();
+        activeSheet = workbook.getActiveSheet();
+        activeSheet.applyFilterAsync(
+            "Region",
+            myRegion,
+            tableau.FilterUpdateType.REPLACE);
+    }     
+    */
+    
 </script>
 
 <style>
@@ -262,19 +278,27 @@ function getUnderlyingSummary(){
     
 .circle {
     position: relative;
-    top: 50%;
+    top: 0%;
     left: 0%;
   width: 65px;
   height: 65px;
   border-radius: 50%;
   font-size: 20px;
   color: #fff;
-  line-height: 100px;
+  line-height: 50px;
   text-align: center;
     vertical-align: middle;
-  background: #ff00ff;
+  background: #61CE70;
     
 }
+    
+    .vizContainer{
+        width: 95%;
+        vertical-align: middle;
+        align-content: center;
+        margin: 0 auto;
+    }
+    
     .backgroundTitle{
         transition: 0.5s all;
         transition-timing-function: ease-in-out;
@@ -303,7 +327,7 @@ function getUnderlyingSummary(){
     }
     
     .playing {
-        transform: scale(1.1);
+        /*transform: scale(1.1);*/
         background-color: darkred;
         animation: pulse 5s infinite;
         box-shadow: 0 0 2rem #FF00FF;
@@ -320,13 +344,13 @@ function getUnderlyingSummary(){
     
     .column1 {
       float: left;
-      width: 20%;
-      padding: 10px;
+      width: 15%;
+/*      padding: 10px; */
     }
     .column2 {
-      float: right;
-      width: 80%;
-      padding: 10px;
+      float: left;
+      width: 70%;
+/*      padding: 10px; */
     }
 
     /* Clear floats after the columns */

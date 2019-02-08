@@ -12,9 +12,9 @@
     
 <body onload="initialize();">
     <div class="row">
-        <div class="column1">
+        <div class="column1 circle"
+             >
             <div class="circle" id="countdown"></div>
-   
         </div>
         <div class="column2">
              <p>Some text..</p>

@@ -1,13 +1,14 @@
 # Tableau-JS-API
 Outcome of Back2School week at [The Dataschool](https://www.thedataschool.co.uk/) for Eliott & David.
 
-## 1.	Things you don’t need Tableau JS API for:  
+## What is it not for and what is it for:
+1.	Things you don’t need Tableau JS API for:  
   i.e. using [this Marginal Tax calculator](https://public.tableau.com/profile/davidsm#!/vizhome/MarginalTaxRateSimulator/MarginalRate) a couple of ways of embedding it:  
     1.	Embed in the Dataschool blog (just use iframe and the link found in the share button). [Example here, Page is only available for those signed in to the DS Blog](https://www.thedataschool.co.uk/david-sanchez/23394/).    
     1. Embed in your own page/blog (just use the embed code inside an HTML box). [Example in David's blog](https://dsmdaviz.com/2019/01/marginal-tax-rate-simulator/).  
     Or [this one](Example_01-direct%20embed.html) for a standalone page.  
     
-## 1.	Things you need Tableau JS API for:  
+1.	Things you need Tableau JS API for:  
     1.	Embed in your page and do anything with it (beyond the Viz itself):  
         1.	[Autoupdate](https://dsmdavid.github.io/Tableau-JS-API/Example_03-API%20embed%20autorefresh.html).    
         1.	Pass multiple filters.

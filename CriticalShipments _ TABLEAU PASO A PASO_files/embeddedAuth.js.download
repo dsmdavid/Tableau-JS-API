@@ -1,0 +1,225 @@
+var AuthHelper = (function(window, $, _, Cookies) {
+
+  // This used to be injected directly via file templating but now the script is loaded separately from the
+  // html it was hosted in. Instead read the injected values from dummy html input elements.
+  var BuildId = $('#AuthHelperBuildId')[0].value;
+
+  // These maximums are known by tabadmin.
+  var CustomLogoMaxSize = {
+    height: 3000,
+    width: 3000
+  };
+
+  function getDefaultLogoAttributes() {
+    return {
+      src: '/img/tableau_sign_in_logo.svg?' + BuildId,
+      width: 277,
+      height: 58,
+      role: "img",
+      dataTbTestId: 'tableau-server-logo'
+    };
+  }
+
+  function getCustomLogoAttributes(serverSettings) {
+    var customization = (serverSettings && serverSettings.customization) || {};
+    // TFSID:585945 - Customized Login logo is replaced with Tableau default logo when view is embedded
+    if(customization.customSignInLogo) {
+      return {
+        src: customization.customSignInLogo.path,
+        width: Math.min(CustomLogoMaxSize.width, customization.customSignInLogo.width),
+        height: Math.min(CustomLogoMaxSize.height, customization.customSignInLogo.height),
+        title: customization.serverName,
+        role: 'img',
+        dataTbTestId: 'custom-server-logo'
+      };
+    } else {
+      var defaultAttributes = getDefaultLogoAttributes();
+      defaultAttributes.title = customization.serverName;
+      return defaultAttributes;
+    }
+  }
+
+  function createLogoWithAttributes(logoAttributes) {
+    return $('<div class="tb-logo">')
+            .attr({
+              title: logoAttributes.title,
+              role: logoAttributes.role,
+              'data-tb-test-id': logoAttributes.dataTbTestId
+            })
+            .css({
+              height: logoAttributes.height + 'px',
+              width: logoAttributes.width + 'px',
+              backgroundImage: 'url(' + logoAttributes.src + ')'
+            });
+  }
+
+  function getPrimaryAuthButtonText(serverSettings) {
+    var serverName = serverSettings && serverSettings.customization && serverSettings.customization.serverName;
+
+    // These used to be injected directly via file templating but now the script is loaded separately from the
+    // html it was hosted in. Instead read the injected values from dummy html input elements.
+    var locSignInTo = $('#AuthHelperLocSignInTo')[0].value;
+    var locSignIn = $('#AuthHelperLocSignIn')[0].value;
+    return serverName
+         ? EmbeddedAuthHelper.formatText(locSignInTo, { SERVER_NAME: serverName })
+         : locSignIn;
+  }
+
+  // Trigger a callback function as soon as a cookie appears
+  function waitForCookie(cookieName, callback) {
+    var timerId = window.setInterval(function() {
+      var cookie = Cookies.get(cookieName);
+      if (cookie) {
+        callback(cookie);
+        window.clearInterval(timerId);
+      }
+    }, 100);
+  };
+
+  function getSignInUrlForTopWindow(embeddedAuthParams) {
+    var signInParams = {
+      externalRedirect: embeddedAuthParams.path
+    };
+    if (_.isString(embeddedAuthParams.siteUrlName)) {
+      signInParams.site = embeddedAuthParams.siteUrlName;
+    }
+    return '/#/signin?' + EmbeddedAuthHelper.param(signInParams);
+  }
+
+  function getSignInUrl(embeddedAuthParams, authSetting) {
+    var signInParams = {};
+
+    // TFSID: 455208 - the site name may contain only digits, which will have been parsed as a Number type.
+    var siteName = null;
+    if (_.isString(embeddedAuthParams.siteUrlName)) {
+      siteName = embeddedAuthParams.siteUrlName;
+    } else if (_.isNumber(embeddedAuthParams.siteUrlName)  && !_.isNaN(embeddedAuthParams.siteUrlName)) {
+      siteName = (embeddedAuthParams.siteUrlName).toString();
+    }
+    if (!_.isNull(siteName)) {
+      signInParams = {
+        closePopupWhenDone: true,
+        site: siteName,
+        authSetting: authSetting,
+        siteLuid: embeddedAuthParams.siteLuid,
+        embedded: true
+      };
+    }
+    return '/#/signin?' + EmbeddedAuthHelper.param(signInParams);
+  }
+
+  function isMicrosoftBrowser() {
+    var ua = navigator.userAgent;
+    // IE <=10, IE 11, Edge, respectively.
+    return ua.match(/MSIE /i) || ua.match(/Trident\/7.0/i) || ua.match(/Edge/i);
+  }
+
+  function authButtonPressed(params, button) {
+    var url = getSignInUrl(params, button);
+
+    // TFSID:444829
+    // Microsoft has a different implementation of cookies that our embedded auth runs into when the embedding page
+    // and Tableau Online are in different trust levels. Whenever we use a MS browser, we want to display this link
+    // after the auth window pops up. If auth fails, we won't be able to detect it, and the child window will close
+    // to reveal this link for affected users.
+    if (isMicrosoftBrowser()) {
+      $('#not-working-link').show();
+    }
+
+    EmbeddedAuthHelper.attemptAuth(url)
+      .then(
+        function() {
+          // Success! Redirect to viz
+          EmbeddedAuthHelper.setPathQueryFragment(params['path']);
+        },
+        function(reason) {
+          // Failure. Currently the popup stays open on failure, so nothing to do here
+        });
+  }
+
+  return {
+    getDefaultLogoAttributes: getDefaultLogoAttributes,
+    getCustomLogoAttributes: getCustomLogoAttributes,
+    createLogoWithAttributes: createLogoWithAttributes,
+    getPrimaryAuthButtonText: getPrimaryAuthButtonText,
+    waitForCookie: waitForCookie,
+    getSignInUrlForTopWindow: getSignInUrlForTopWindow,
+    getSignInUrl: getSignInUrl,
+    isMicrosoftBrowser: isMicrosoftBrowser,
+    authButtonPressed: authButtonPressed
+  }
+
+})(window, jQuery, _, Cookies);
+
+$(function() {
+  var params = EmbeddedAuthHelper.getQueryParams();
+
+  // Redirect to signin if we're the top window
+  if (window == window.top) {
+    window.location.href = AuthHelper.getSignInUrlForTopWindow(params);
+    return;
+  }
+
+  var primaryAuthButton = $('#primary-auth');
+  var secondaryAuthButton = $('#secondary-auth');
+  var logoContainer = $('.tb-logo-container');
+
+  var authSettings = ['DEFAULT'];
+  if (_.isString(params.authSettings)) {
+    authSettings = params.authSettings.split(',');
+  }
+
+  primaryAuthButton.data('authSetting', authSettings[0]);
+  if (authSettings.length > 1) {
+    secondaryAuthButton.data('authSetting', authSettings[1]);
+  } else {
+    secondaryAuthButton.hide();
+  }
+
+  VizPortalRequest.send('getServerSettingsUnauthenticated')
+    .then(function(serverSettings) {
+      logoContainer.html(AuthHelper.createLogoWithAttributes(AuthHelper.getCustomLogoAttributes(serverSettings)));
+      primaryAuthButton.text(AuthHelper.getPrimaryAuthButtonText(serverSettings));
+    })
+    .fail(function() {
+      logoContainer.html(AuthHelper.createLogoWithAttributes(AuthHelper.getDefaultLogoAttributes()));
+      primaryAuthButton.text(AuthHelper.getPrimaryAuthButtonText());
+    })
+    .always(function() {
+      $('.tb-container').show();
+    });
+
+  var authButtons = primaryAuthButton.add(secondaryAuthButton);
+
+  authButtons.keypress(function(e) {
+    if(e.which == 13 /*enter*/ || e.which == 32 /*space*/) {
+      e.preventDefault();
+      e.stopPropagation();
+      AuthHelper.authButtonPressed(params, $(this).data('authSetting'));
+    }
+  });
+
+  authButtons.click(function() {
+    AuthHelper.authButtonPressed(params, $(this).data('authSetting'));
+  });
+
+  // Tableau Online sites may be hosted on different domains (known as Multi-Instance pods).
+  // When the authentication process completes in the popup window, the embedded viz
+  // must be reloaded. To ensure that the embedded viz is being loaded from the right domain,
+  // the popup window must comminicate its own domain to the embedded viz.
+  //
+  // The technique of using cookies to pass information between browser windows is used here
+  // since IE doesn't fully support cross-domain postMessage(), contrary to documentation.
+  // It also multi-casts to several embedded vizes.
+  //
+  // The cookie name is site-specific since Multi-Instance pods are partitioned by sites.
+  //
+  var siteUrlName = params.siteUrlName || '';
+  var newPath = params.path || '';
+
+  AuthHelper.waitForCookie('redirectToPod' + siteUrlName, function(newHost) {
+    // We need to concat the new host with our existing path to create the right destination URL
+    var newUrl = newHost + newPath;
+    window.location.replace(newUrl);
+  });
+});

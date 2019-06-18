@@ -1,0 +1,341 @@
+// This is needed to hide any spinners the parent frame might be using
+try {
+  window.parent.postMessage('tableau.completed', '*');
+} catch (e) {
+}
+// See return value for documentation
+window.EmbeddedAuthHelper = (function(window, $, _) {
+
+  // This function corrects a bug caused by $.param, which replaces spaces with '+' characters
+  // TODO: Write a test that attempts to access the web authoring page of a view that has a space in its name
+  // (i.e. "Sheet 1") via a redirect after authentication
+  function param() {
+    return $.param.apply($, arguments).replace(/\+/g, '%20');
+  }
+
+  // Simple implementation for the inverse of $.param() for flat objects
+  var deparam = (function () { // Initialize the deparam() method
+    function toPrimitive(str) {
+      if (str === 'undefined') return undefined;
+      if (str === 'null') return null;
+      if (str === 'true') return true;
+      if (str === 'false') return false;
+      if (str === 'NaN') return NaN;
+      if (str === '') return '';
+      var num = Number(str);
+      if (!_.isNaN(num)) return num;
+      return str;
+    }
+
+    // Given a query fragment string, it returns an array of the key/value pair.
+    // Example: splitQueryFrag("key=value") => ["key","value"]
+    function splitQueryFrag(queryFrag) {
+      if (!queryFrag) return;
+      var fragMatch = queryFrag.match(/([^=]*)=?(.*)/);
+      if (!fragMatch) return;
+      return [decodeURIComponent(fragMatch[1]), toPrimitive(decodeURIComponent(fragMatch[2]))];
+    }
+
+    return function deparam(queryString) {
+      if (!queryString) return {};
+      return _.chain(queryString.split('&'))
+              .map(splitQueryFrag)
+              .compact()
+              .object()
+              .value();
+    }
+  })();
+
+  // NOTE: Keep these in sync with the code in AddOAuthCredentialAction.ts.
+  var attemptAuth = (function() {
+    var deferred = $.Deferred();
+    var openWindow;
+    // The connection's OAuth information.
+    var connectionOAuthInfo;
+    var instanceUrl;
+
+    function removeOpenWindow() {
+      try {
+        openWindow.close();
+      } catch (e) {
+      } // Closing the window is best effort so nothing else to do instead
+
+      openWindow = null;
+    }
+
+    // success callback
+    var notifySuccess = function(credentialId) {
+      deferred.resolve(credentialId);
+      removeOpenWindow();
+    };
+
+      // error callback
+    var notifyError = function(errorCode) {
+      deferred.reject(errorCode);
+      removeOpenWindow();
+    };
+
+    function handleResponse(response) {
+      if(!response) response = '';
+
+      if (!!connectionOAuthInfo && connectionOAuthInfo.supportsGenericAuth) {
+        handleGenericAuthResponse(response);
+      }
+      else {
+        handleCustomOAuthResponse(response);
+      }
+    };
+
+    function handleGenericAuthResponse(response) {
+      var responseObj = JSON.parse(response);
+      if (responseObj.msgName === 'loaded') {
+        sendInitAuthMessage();
+      }
+      else if (responseObj.msgName === 'submit') {
+        saveGenericAuthCredentials(responseObj);
+      }
+    };
+
+    function saveGenericAuthCredentials(responseObj) {
+      var formData = new FormData();
+      formData.append('data_class', connectionOAuthInfo.type);
+      formData.append('username', responseObj.props.username);
+      formData.append('password', responseObj.props.password);
+      if (responseObj.props.usernameAlias) {
+        formData.append('username_alias', responseObj.props.usernameAlias);
+      }
+      if(!!instanceUrl) {
+         formData.append('instance_url', instanceUrl);
+      }
+      var addCredentialPromise = $.ajax({
+        type: 'POST',
+        headers: VizPortalRequest.getXsrfHeader(),
+        processData: false,
+        contentType: false,
+        url: '/auth/add_generic_auth_credentials' + '?secure=' + (window.location.protocol.toLowerCase() === 'https:'),
+        data: formData
+      });
+      addCredentialPromise.then(function (result) {
+        handleCustomOAuthResponse(result);
+      });
+    };
+
+    function sendInitAuthMessage() {
+      if (!openWindow) {
+        return;
+      }
+      var emptyMessage = {
+        "msgRecipient": "webdataconnector",
+        "msgName": "init",
+        "msgData": { "phase": "auth" },
+        "props": {
+          "connectionName": "",
+          "connectionData": "",
+          "password": "",
+          "username": "",
+          "incrementalExtractColumn": "",
+          "versionNumber": "2.0"
+        }
+      };
+      openWindow.postMessage(JSON.stringify(emptyMessage), '*');
+    };
+
+    function handleCustomOAuthResponse(response) {
+      var errorCodeMatch = response.match(/errorCode=([^(&|")]*)/);
+      if (errorCodeMatch) {
+        var errorCode = parseInt(errorCodeMatch[1], 10) || 0;
+        notifyError(errorCode);
+        return;
+      }
+      var newCredentialIdMatch = response.match(/id=([^(&|")]*)/);
+      if (newCredentialIdMatch) {
+        notifySuccess(newCredentialIdMatch[1]);
+        return;
+      }
+      notifySuccess('');
+    };
+
+    window.tableauPopupComplete = handleResponse;
+
+    $(window).on('message', function(jqEvent) {
+      var originalEvent = jqEvent.originalEvent;
+      if (originalEvent.source != openWindow)
+          return;
+      var response = originalEvent.data;
+        if (!_.isString(response))
+          return;
+      handleResponse(response);
+    });
+
+    // The user is navigating away from this page so the popup is no longer needed, let's try to remove it for them.
+    $(window).on('unload', removeOpenWindow);
+
+    // Open the popup
+    function openPopup(uri) {
+      var popupOptions = {
+        width: 800,
+        height: 600,
+        toolbar: 1,
+        resizable: 1
+      };
+
+      // IE8 polyfills. Note that outer* ones are not quite right for IE8, but good enough. B147312
+      var screenLeft = window.screenLeft || window.screenX;
+      var outerWidth = window.outerWidth || window.innerWidth;
+      var screenTop = window.screenTop || window.screenY;
+      var outerHeight = window.outerHeight || window.innerHeight;
+
+      // Open horizontally centered on current window
+      popupOptions.left = screenLeft + (outerWidth - popupOptions.width) / 2;
+
+      // Open a small amount from the top
+      popupOptions.top = screenTop + (outerHeight - popupOptions.height) / 8;
+
+      var popupOptionsString = _.map(popupOptions, function(val, key) { return key + "=" + val }).join(',');
+      openWindow = window.open(uri, 'TableauAuth', popupOptionsString);
+    }
+
+    return function attemptAuth(uri, oauthCredentialsTypeInfo, instanceURL) {
+      // reject the previous request because a new request will be made in the same window
+      notifyError();
+      // Store the connection's OAuth information.
+      connectionOAuthInfo = oauthCredentialsTypeInfo;
+      instanceUrl = instanceURL;
+      deferred = new $.Deferred();
+      openPopup(uri);
+
+      try {
+        // This will move the new open window on top of the window that opened it.  This is needed because we may
+        // not be able to close the window if it's open to a third party for OAuth
+        openWindow.focus();
+      } catch (e) { }
+
+      return deferred.promise();
+    }
+
+  }());
+
+  // Taken from WindowLocationService.setPathQueryFragment
+  var setPathQueryFragment = function(pathQueryFragment) {
+    var origin = window.location.protocol + '//' + window.location.host;
+    // add leading slash if it's missing
+    if(/^[^\/]/.test(pathQueryFragment)) {
+      pathQueryFragment = '/' + pathQueryFragment;
+    }
+    window.location.href = origin + pathQueryFragment;
+  }
+
+  function formatText(str, params) {
+    return str.replace(/\{([^}]*)}/g, function(frag, key) {
+      var val = params && params[key];
+      if(!val) console.error('Missing key: ' + key);
+      return val || frag;
+    });
+  }
+
+  return {
+    // arguments: uri to open
+    // returns: a promise that is fulfilled if window reports success or rejected with an error code
+    //          if the window reports an error
+    attemptAuth: attemptAuth,
+
+    // arguments: query string
+    // returns: query parameters as a Dict
+    deparam: deparam,
+
+    // arguments: same as the JQuery param method, http://api.jquery.com/jquery.param/
+    // This method differs from the JQuery one in that it replaces '+' with '%20'
+    param: param,
+
+    // arguments: path + query + fragment. Leading '/' optional.
+    // returns: void. Navigates away from page.
+    setPathQueryFragment: setPathQueryFragment,
+
+    // arguments: none
+    // returns: window.location's query parameters as a Dict
+    getQueryParams: function() {
+      return deparam(window.location.search.slice(1));
+    },
+
+    // arguments:
+    //   text[string]: text string with variables in the messageformat syntax
+    //   params[object]: the params object used for variable replacement in the string in the messageformat syntax.
+    // returns: text with defined variables
+    // NOTE: this method only does simple variable replacement from the messageformat syntax.
+    // If more complex translations are needed then this needs to include messageformat.js
+    formatText: formatText
+  };
+
+}(window, jQuery, _));
+
+window.VizPortalRequest = (function(window, $, _) {
+
+  // correspond to the constants defined in CSRFUtils.java
+  var XSRF_TOKEN_COOKIE_KEY = 'XSRF-TOKEN';
+  var XSRF_TOKEN_HEADER_KEY = 'X-XSRF-TOKEN';
+
+  var VIZPORTAL_PATH_PREFIX = '/vizportal';
+
+  var ErrorTextStatus = 'Response has errors';
+
+  function rejectPromise() {
+    var deferred = new $.Deferred();
+    return deferred.reject.apply(deferred, _.toArray(arguments)).promise();
+  }
+
+  function getXsrfToken() {
+    // Adapted from http://stackoverflow.com/a/18652401
+    var keyValueMatch = window.document.cookie.match(new RegExp('(^|;) ?' + XSRF_TOKEN_COOKIE_KEY + '=([^;]*)(;|$)'));
+    return keyValueMatch && keyValueMatch[2];
+  }
+
+  function getResultError(result) {
+    return result.errors && result.errors[0];
+  }
+
+  function getXsrfHeader(){
+    var headers = {};
+    headers[XSRF_TOKEN_HEADER_KEY] = getXsrfToken();
+    return headers;
+  }
+
+  function send(method, params) {
+    var vizportalRequestOptions = {
+      type: 'POST',
+      contentType: 'application/json;charset=UTF-8',
+      dataType: 'json',
+      headers: getXsrfHeader(),
+      url: VIZPORTAL_PATH_PREFIX + '/api/web/v1/' + method,
+      data: JSON.stringify({
+        method: method,
+        params: params
+      })
+    };
+
+    // success( Anything data, String textStatus, jqXHR jqXHR )
+    // error(jqXHR jqXHR, String textStatus, String errorThrown)
+    return $.ajax(vizportalRequestOptions)
+            .then(function (data, textStatus, jqXHR) {
+              var result = data && data.result;
+
+              if (getResultError(result)) {
+                return rejectPromise(jqXHR, ErrorTextStatus);
+              }
+
+              return data.result;
+            });
+  }
+
+  return {
+    // arguments:
+    //   method[string]: the method string passed to the VizPortal API method
+    //   params[object]: the params object passed to the VizPortal API method
+    // returns JQuery promise, success contains the result and rejected returns a normal JQuery ajax failure
+    send: send,
+    getResultError: getResultError,
+    ErrorTextStatus: ErrorTextStatus,
+
+    // Method that constructs headers with XSRF value
+    getXsrfHeader: getXsrfHeader
+  }
+})(window, jQuery, _);

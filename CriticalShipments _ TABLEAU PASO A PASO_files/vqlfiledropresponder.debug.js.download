@@ -1,0 +1,347 @@
+/*! BEGIN FileDropResponder */
+
+// BEGIN compiled typescript
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("@tableau/browser-support"));
+	else if(typeof define === 'function' && define.amd)
+		define(["@tableau/browser-support"], factory);
+	else if(typeof exports === 'object')
+		exports["FileDropResponderModule"] = factory(require("@tableau/browser-support"));
+	else
+		root["FileDropResponderModule"] = factory(root["BrowserSupport"]);
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/dist/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var browser_support_1 = __webpack_require__(1);
+var FileDropResponder = /** @class */ (function () {
+    function FileDropResponder() {
+        this.Counter = 0;
+        this.AllowMulti = false;
+        this.DropAttached = false;
+        this.SpecialHandleDragLeaveOnFF = false;
+    }
+    FileDropResponder.prototype.isFF = function () {
+        return browser_support_1.BrowserSupport.IsFF();
+    };
+    FileDropResponder.prototype.setOnDropInvited = function (v) {
+        this.OnDropInvited = v;
+    };
+    FileDropResponder.prototype.setOnUploadFiles = function (v) {
+        this.OnUploadFiles = v;
+    };
+    FileDropResponder.prototype.setSpecialHandleDragLeaveOnFF = function (v) {
+        this.SpecialHandleDragLeaveOnFF = v;
+    };
+    FileDropResponder.prototype.setupDropZone = function (element) {
+        this.dropZoneObj = element;
+    };
+    FileDropResponder.prototype.handleDefaultBrowserDragDropEvents = function () {
+        window.addEventListener('dragover', this.DefaultDragDropHandler, true);
+        window.addEventListener('drop', this.DefaultDragDropHandler, true);
+        if (browser_support_1.BrowserSupport.IsEdge()) {
+            this.defaultErrorHandler = window.window.onerror;
+            window.window.onerror = this.CatchBrowserError;
+        }
+    };
+    FileDropResponder.prototype.detachDefaultBrowserDragDropEvents = function () {
+        window.removeEventListener('dragover', this.DefaultDragDropHandler);
+        window.removeEventListener('drop', this.DefaultDragDropHandler);
+        if (browser_support_1.BrowserSupport.IsEdge()) {
+            window.window.onerror = this.defaultErrorHandler;
+        }
+    };
+    FileDropResponder.prototype.enableFileDrop = function (on, multiFile) {
+        if (multiFile === void 0) { multiFile = true; }
+        this.Counter = 0;
+        var wasEnabled = this.DropAttached;
+        if (wasEnabled && !on) {
+            this.DetachFileDrop();
+        }
+        else if (!wasEnabled && on) {
+            this.AttachFileDrop();
+        }
+        this.AllowMulti = multiFile;
+    };
+    FileDropResponder.prototype.AttachFileDrop = function () {
+        var _this = this;
+        this.Counter = 0;
+        if (this.dropZoneObj) {
+            this.DropAttached = true;
+            this.dropZoneObj.ondragenter = function (e) {
+                _this.StopEvent(e);
+                _this.Counter++;
+                if (_this.Counter === 1) {
+                    _this.OnDragEnter(e);
+                }
+            };
+            this.dropZoneObj.ondragleave = function (e) {
+                _this.Counter--;
+                var shouldUninvite = _this.Counter === 0;
+                if (!shouldUninvite && _this.SpecialHandleDragLeaveOnFF && browser_support_1.BrowserSupport.IsFF()) {
+                    var dragEvnt = e;
+                    if (dragEvnt) {
+                        var target = e.currentTarget;
+                        var obj = target;
+                        if (obj) {
+                            var isTargetDropZone = (obj === _this.dropZoneObj);
+                            if (isTargetDropZone) {
+                                shouldUninvite = true;
+                            }
+                        }
+                    }
+                }
+                if (shouldUninvite) {
+                    _this.Counter = 0;
+                    _this.DropInvite(false);
+                }
+            };
+            this.dropZoneObj.ondrop = function (e) {
+                _this.StopEvent(e);
+                _this.OnFileDrop(e);
+                _this.Counter = 0;
+            };
+        }
+    };
+    FileDropResponder.prototype.DetachFileDrop = function () {
+        this.Counter = 0;
+        this.DropAttached = false;
+        if (this.dropZoneObj) {
+            this.dropZoneObj.ondragenter = this.dropZoneObj.ondragleave = this.dropZoneObj.ondrop = null;
+        }
+    };
+    FileDropResponder.prototype.IsFileDropInvited = function () {
+        if (this.dropZoneObj) {
+            return this.dropZoneObj.classList.contains(FileDropResponder.ClassFileDropInvited);
+        }
+        return false;
+    };
+    FileDropResponder.prototype.OnFileDrop = function (de) {
+        if (!this.IsFileDropInvited()) {
+            return;
+        }
+        var files = null;
+        try {
+            files = FileDropResponder.GetDragFileList(de);
+        }
+        catch (err) {
+            if (this.OnUploadFiles) {
+                var emptyFileList = void 0;
+                this.OnUploadFiles(emptyFileList);
+            }
+        }
+        if (files && files.length > 0) {
+            if (this.AllowMulti || files.length === 1) {
+                this.Upload(files);
+            }
+            else {
+                // Try to upload files, and let the file uploader handle this
+                // as multi file was not expected fatal error case.
+                // Although we try to prevent this case by disabling drop or preventing
+                // multi selection in the file browser, I am leaving this fallback
+                // option, just in case there is a non-standard browser behaviour.
+                // Such as Safari/WebKit/Edge TFSID:711396
+                this.Upload(files);
+            }
+        }
+        this.DropInvite(false);
+    };
+    FileDropResponder.prototype.OnDragEnter = function (de) {
+        var inviteDrop = true;
+        var dragItems = null;
+        try {
+            dragItems = FileDropResponder.GetDragItemList(de);
+        }
+        catch (err) {
+            this.DropInvite(true);
+            return;
+        }
+        if (dragItems) {
+            var onlyFiles = true;
+            for (var i = 0; i < dragItems.length; ++i) {
+                var item = dragItems[i];
+                if (!FileDropResponder.IsDataTransferItemFile(item)) {
+                    onlyFiles = false;
+                    break;
+                }
+            }
+            inviteDrop = (this.AllowMulti || dragItems.length === 1) && onlyFiles;
+        }
+        if (inviteDrop) {
+            this.DropInvite(true);
+        }
+        else {
+            if (de.dataTransfer) {
+                de.dataTransfer.dropEffect = 'move';
+            }
+            this.DropInvite(false);
+        }
+    };
+    FileDropResponder.prototype.DropInvite = function (on) {
+        if ((on && this.IsFileDropInvited()) || (!on && !this.IsFileDropInvited())) {
+            return;
+        }
+        if (on && !this.OnUploadFiles) {
+            return;
+        }
+        if (this.dropZoneObj) {
+            if (this.OnDropInvited) {
+                this.OnDropInvited(on);
+            }
+            if (on) {
+                this.dropZoneObj.classList.add(FileDropResponder.ClassFileDropInvited);
+            }
+            else {
+                this.dropZoneObj.classList.remove(FileDropResponder.ClassFileDropInvited);
+            }
+        }
+    };
+    FileDropResponder.prototype.Upload = function (files) {
+        if (this.OnUploadFiles || files.length > 0) {
+            this.OnUploadFiles(files);
+        }
+    };
+    FileDropResponder.prototype.CatchBrowserError = function (message, url, lineNo, column, error) {
+        var msg = message.toString();
+        var searchStr = 'Access is denied';
+        if (msg.substr(0, searchStr.length) === searchStr) {
+            if (this.OnUploadFiles) {
+                var fileList = void 0; // how to create empty filelist
+                this.OnUploadFiles(fileList);
+            }
+            return true;
+        }
+        if (this.defaultErrorHandler) {
+            this.defaultErrorHandler(msg, url, lineNo, column, error);
+            return true;
+        }
+        return false;
+    };
+    FileDropResponder.prototype.DefaultDragDropHandler = function (evnt) {
+        if (evnt) {
+            evnt.preventDefault();
+            var dragEvnt = evnt;
+            if (dragEvnt && dragEvnt.dataTransfer) {
+                var obj = evnt.target;
+                if (obj) {
+                    var anyParentInvitingFileDrop = (obj.closest('.' + FileDropResponder.ClassFileDropInvited) != null);
+                    dragEvnt.dataTransfer.dropEffect = anyParentInvitingFileDrop ? 'copy' : 'none';
+                }
+            }
+        }
+    };
+    FileDropResponder.GetDragItemList = function (de) {
+        if (!de || !de.dataTransfer || !de.dataTransfer.items || de.dataTransfer.items.length === 0) {
+            return null;
+        }
+        return de.dataTransfer.items;
+    };
+    FileDropResponder.IsDataTransferItemFile = function (item) {
+        return item.kind === 'file';
+    };
+    FileDropResponder.prototype.StopEvent = function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    };
+    FileDropResponder.GetDragFileList = function (de) {
+        if (!de || !de.dataTransfer || !de.dataTransfer.files || de.dataTransfer.files.length === 0) {
+            return null;
+        }
+        return de.dataTransfer.files;
+    };
+    FileDropResponder.ClassFileDropInvited = 'fileDropInvited';
+    return FileDropResponder;
+}());
+exports.FileDropResponder = FileDropResponder;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ })
+/******/ ]);
+});
+//# sourceMappingURL=file-drop-responder.js.map// END compiled typescript
+
+(function() {
+(function() {
+	'dont use strict';
+	var $asm = {};
+	ss.initAssembly($asm, 'vqlfiledropresponder');
+})();
+}());
+
+// END FileDropResponder

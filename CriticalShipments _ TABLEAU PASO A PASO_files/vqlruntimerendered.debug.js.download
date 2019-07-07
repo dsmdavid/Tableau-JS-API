@@ -1,0 +1,1090 @@
+/*! BEGIN RuntimeRendered */
+
+(function() {
+	'dont use strict';
+	var $asm = {};
+	global.tab = global.tab || {};
+	ss.initAssembly($asm, 'vqlruntimerendered');
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TickPlacement.TickPlacementType
+	var $tab_$TickPlacement$TickPlacementType = function() {
+	};
+	$tab_$TickPlacement$TickPlacementType.__typeName = 'tab.$TickPlacement$TickPlacementType';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.AxisComponent
+	var $tab_AxisComponent = function(props) {
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_AxisComponent.__typeName = 'tab.AxisComponent';
+	global.tab.AxisComponent = $tab_AxisComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.AxisHolderComponent
+	var $tab_AxisHolderComponent = function(props) {
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_AxisHolderComponent.__typeName = 'tab.AxisHolderComponent';
+	global.tab.AxisHolderComponent = $tab_AxisHolderComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.AxisHolderElement
+	var $tab_AxisHolderElement = function(domNode, axisHolderVm) {
+		this.$axisHolderVm = null;
+		$tab_BaseSceneMarginElement.call(this, domNode);
+		this.$axisHolderVm = axisHolderVm;
+		this.reactView = tab.ObjectRegistry.newView(ss.makeGenericType(spiff.ReactHostView$3, [$tab_AxisHolderViewModel, $tab_AxisHolderComponent, Object])).call(null, [axisHolderVm]);
+		this.reactView.addToDom(domNode);
+	};
+	$tab_AxisHolderElement.__typeName = 'tab.AxisHolderElement';
+	global.tab.AxisHolderElement = $tab_AxisHolderElement;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.AxisHolderViewModel
+	var $tab_AxisHolderViewModel = function(runtimeData, regionType) {
+		this.$axisTable = null;
+		this.$axisStyles = null;
+		this.$titleStyles = null;
+		this.$tickPlacement = null;
+		this.$regionType = null;
+		this.$paneExtents = null;
+		this.$axisDescriptor = null;
+		this.$visualLayout = null;
+		this.$elementLeafTable = null;
+		this.$width = 0;
+		this.$axisInformationIndex = 0;
+		this.$defaultRotation = 0;
+		this.$isXAxis = false;
+		this.$columnCount = 0;
+		ss.makeGenericType(spiff.BaseReactViewModel$1, [Object]).call(this);
+		var renderingInputStore = runtimeData.get_finalDataStore();
+		this.$axisStyles = renderingInputStore.AxisOutput.Style;
+		this.$titleStyles = renderingInputStore.AxisOutput.TitleStyle;
+		this.$tickPlacement = renderingInputStore.TickPlacement;
+		this.$regionType = regionType;
+		this.$visualLayout = renderingInputStore.VisualLayout;
+		this.$paneExtents = renderingInputStore.Viewpoint.PerPaneExtents;
+		this.$columnCount = runtimeData.get_finalDataStore().PaneCount.ColumnCount;
+		this.$axisInformationIndex = _.indexOf(this.$visualLayout.SceneMarginLayout.SceneMarginLocation, $tab_AxisHolderViewModel.getSceneMarginLocation(this.$regionType));
+		if (this.$regionType === 'bottomaxis' || this.$regionType === 'topaxis') {
+			this.$axisDescriptor = runtimeData.get_finalDataStore().XAxisDescriptor;
+			this.$axisTable = renderingInputStore.AxisOutput.XAxisTable;
+			this.$isXAxis = true;
+		}
+		else {
+			this.$axisTable = renderingInputStore.AxisOutput.YAxisTable;
+			this.$isXAxis = false;
+		}
+		if (this.$regionType === 'bottomaxis') {
+			this.$defaultRotation = 0;
+			this.$elementLeafTable = this.$visualLayout.SceneMarginLeafLayouts.BottomLeafElementLayout;
+		}
+		if (this.$regionType === 'topaxis') {
+			this.$defaultRotation = 1;
+			this.$elementLeafTable = this.$visualLayout.SceneMarginLeafLayouts.TopLeafElementLayout;
+		}
+		if (this.$regionType === 'leftaxis') {
+			this.$defaultRotation = 0;
+			this.$elementLeafTable = this.$visualLayout.SceneMarginLeafLayouts.LeftLeafElementLayout;
+		}
+		if (this.$regionType === 'rightaxis') {
+			this.$defaultRotation = 0;
+			this.$elementLeafTable = this.$visualLayout.SceneMarginLeafLayouts.RightLeafElementLayout;
+		}
+	};
+	$tab_AxisHolderViewModel.__typeName = 'tab.AxisHolderViewModel';
+	$tab_AxisHolderViewModel.getSceneMarginLocation = function AxisHolderViewModel$GetSceneMarginLocation(regionType) {
+		switch (regionType) {
+			case 'topaxis': {
+				return 0;
+			}
+			case 'bottomaxis':
+			case 'xheader': {
+				return 1;
+			}
+			case 'rightaxis': {
+				return 2;
+			}
+			case 'leftaxis':
+			case 'yheader':
+			default: {
+				return 3;
+			}
+		}
+	};
+	global.tab.AxisHolderViewModel = $tab_AxisHolderViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.AxisProps
+	var $tab_AxisProps = function() {
+		this.dataType = 0;
+		this.min = 0;
+		this.max = 0;
+		this.rangeType = 0;
+		this.scaleType = 0;
+		this.foldState = 0;
+		this.isReversed = false;
+		this.includeZero = false;
+		this.uniqueID = 0;
+		this.axisID = null;
+		this.alongAxisPixelSize = 0;
+		this.pixelSize = 0;
+		this.regionType = null;
+		this.tickLabels = null;
+		this.majorTicks = null;
+		this.axisTitle = null;
+	};
+	$tab_AxisProps.__typeName = 'tab.AxisProps';
+	global.tab.AxisProps = $tab_AxisProps;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.AxisTitleComponent
+	var $tab_AxisTitleComponent = function(props) {
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_AxisTitleComponent.__typeName = 'tab.AxisTitleComponent';
+	global.tab.AxisTitleComponent = $tab_AxisTitleComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.AxisTitleProps
+	var $tab_AxisTitleProps = function() {
+		this.alongAxisPixelSize = 0;
+		this.pixelSize = 0;
+		this.regionType = null;
+		this.title = null;
+		this.subtitle = null;
+		this.titleStyle = null;
+		this.titlePadding = 0;
+	};
+	$tab_AxisTitleProps.__typeName = 'tab.AxisTitleProps';
+	global.tab.AxisTitleProps = $tab_AxisTitleProps;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.BaseSceneMarginElement
+	var $tab_BaseSceneMarginElement = function(domNode) {
+		this.$scrollPos = { x: 0, y: 0 };
+		this.$docSize = { w: 0, h: 0 };
+		this.$actualViewSize = { w: 0, h: 0 };
+		this.reactView = null;
+		this.domNode = null;
+		this.$1$LoadCompleteField = null;
+		this.domNode = domNode;
+	};
+	$tab_BaseSceneMarginElement.__typeName = 'tab.BaseSceneMarginElement';
+	global.tab.BaseSceneMarginElement = $tab_BaseSceneMarginElement;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.BottomHeaderComponent
+	var $tab_BottomHeaderComponent = function(props) {
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_BottomHeaderComponent.__typeName = 'tab.BottomHeaderComponent';
+	global.tab.BottomHeaderComponent = $tab_BottomHeaderComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.BottomHeaderProps
+	var $tab_BottomHeaderProps = function() {
+		this.text = null;
+		this.width = 0;
+		this.height = 0;
+		this.top = 0;
+		this.left = 0;
+		this.rotation = 0;
+		this.key$1 = null;
+		this.style = null;
+		this.font = null;
+		this.strikethrough = false;
+		this.underline = false;
+		this.fontSize = 0;
+		this.color = 0;
+	};
+	$tab_BottomHeaderProps.__typeName = 'tab.BottomHeaderProps';
+	global.tab.BottomHeaderProps = $tab_BottomHeaderProps;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.DatastoreHeaderAdapter
+	var $tab_DatastoreHeaderAdapter = function() {
+	};
+	$tab_DatastoreHeaderAdapter.__typeName = 'tab.DatastoreHeaderAdapter';
+	$tab_DatastoreHeaderAdapter.buildFromDatastore = function DatastoreHeaderAdapter$BuildFromDatastore(style, index) {
+		return { totalFillColor: tab.ColorModel.fromArgbInt(style.TotalFillColor[index]), selectedTextColor: tab.ColorModel.fromArgbInt(style.SelectedTextColor[index]), selectedFillColor: tab.ColorModel.fromArgbInt(style.SelectedFillColor[index]), subtotalFillColor: tab.ColorModel.fromArgbInt(style.SubtotalFillColor[index]), brushedColor: tab.ColorModel.fromArgbInt(style.BrushedColor[index]), hoverColor: tab.ColorModel.fromArgbInt(style.HoverColor[index]), tickColor: tab.ColorModel.fromArgbInt(style.TickColor[index]), fillColor: tab.ColorModel.fromArgbInt(style.FillColor[index]), bandSize: style.BandSize[index], bandLevel: style.BandLevel[index], bandColor: tab.ColorModel.fromArgbInt(style.BandColor[index]), textColor: tab.ColorModel.fromArgbInt(style.TextColor[index]), isXAxis: style.IsXAxis[index], selectedTickColor: tab.ColorModel.fromArgbInt(style.SelectedTickColor[index]), fieldName: style.FieldName[index] };
+	};
+	$tab_DatastoreHeaderAdapter.buildHeadersFromAxisDescriptor = function DatastoreHeaderAdapter$BuildHeadersFromAxisDescriptor(descriptor) {
+		var headerGroupById = {};
+		var headerNodeById = {};
+		for (var index = 0; index < descriptor.Nodes.Id.length; index++) {
+			var nodeId = descriptor.Nodes.Id[index];
+			var node = { label: descriptor.Nodes.Label[index], isLeaf: descriptor.Nodes.IsLeaf[index], id: nodeId, headerId: descriptor.Nodes.HeaderId[index], children: [] };
+			headerNodeById[nodeId] = node;
+			var parentId = descriptor.Nodes.ParentId[index];
+			if (parentId !== -1) {
+				headerNodeById[parentId].children.push(node);
+			}
+		}
+		for (var index1 = 0; index1 < descriptor.Headers.Id.length; index1++) {
+			var groupId = descriptor.Headers.Id[index1];
+			headerGroupById[groupId] = { id: groupId, duplicateFieldIndex: descriptor.Headers.DuplicateFieldIndex[index1], header: headerNodeById[descriptor.Headers.NodeId[index1]] };
+		}
+		for (var index2 = 0; index2 < descriptor.PerHeaderFields.HeaderId.length; index2++) {
+			var headerGroup = headerGroupById[descriptor.PerHeaderFields.HeaderId[index2]];
+			headerGroup.dataType = descriptor.PerHeaderFields.DataType[index2];
+		}
+		return headerGroupById;
+	};
+	global.tab.DatastoreHeaderAdapter = $tab_DatastoreHeaderAdapter;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.DatastorePropsBuilder
+	var $tab_DatastorePropsBuilder = function() {
+	};
+	$tab_DatastorePropsBuilder.__typeName = 'tab.DatastorePropsBuilder';
+	$tab_DatastorePropsBuilder.titleStyleFromDatastore = function DatastorePropsBuilder$TitleStyleFromDatastore(style) {
+		return { textOrientation: tab.EnumConversions.textOrientFromInt(style.text_orientation), fontStyle: tab.EnumConversions.tableauFontStyleFromInt(style.font_style), textWrapMode: style.text_wrap_mode, hAlign: style.hAlign, vAlign: style.vAlign, fontWeight: tab.EnumConversions.fontWeightFromInt(style.font_weight), textDecoration: style.text_decoration, font: style.font, color: tab.ColorModel.fromArgbInt(style.text_style_color) };
+	};
+	global.tab.DatastorePropsBuilder = $tab_DatastorePropsBuilder;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.HeaderHolderComponent
+	var $tab_HeaderHolderComponent = function(props) {
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_HeaderHolderComponent.__typeName = 'tab.HeaderHolderComponent';
+	global.tab.HeaderHolderComponent = $tab_HeaderHolderComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.HeaderHolderElement
+	var $tab_HeaderHolderElement = function(domNode, headerHolderVm) {
+		this.$headerHolderVm = null;
+		$tab_BaseSceneMarginElement.call(this, domNode);
+		this.$headerHolderVm = headerHolderVm;
+		this.reactView = tab.ObjectRegistry.newView(ss.makeGenericType(spiff.ReactHostView$3, [$tab_HeaderHolderViewModel, $tab_HeaderHolderComponent, Object])).call(null, [headerHolderVm]);
+		this.reactView.addToDom(domNode);
+	};
+	$tab_HeaderHolderElement.__typeName = 'tab.HeaderHolderElement';
+	global.tab.HeaderHolderElement = $tab_HeaderHolderElement;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.HeaderHolderViewModel
+	var $tab_HeaderHolderViewModel = function(runtimeData, regionType) {
+		this.$runtimeData = null;
+		this.$regionType = null;
+		this.$size = { w: 0, h: 0 };
+		ss.makeGenericType(spiff.BaseReactViewModel$1, [Object]).call(this);
+		this.$runtimeData = runtimeData;
+		this.$regionType = regionType;
+	};
+	$tab_HeaderHolderViewModel.__typeName = 'tab.HeaderHolderViewModel';
+	global.tab.HeaderHolderViewModel = $tab_HeaderHolderViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TextStyleHelper
+	var $tab_TextStyleHelper = function() {
+	};
+	$tab_TextStyleHelper.__typeName = 'tab.TextStyleHelper';
+	$tab_TextStyleHelper.getCssFromTextStyle = function TextStyleHelper$GetCssFromTextStyle(style) {
+		return { fontFamily: style.font, fontSize: style.font_size + 'pt', fontStyle: ((tab.EnumConversions.tableauFontStyleFromInt(style.font_style) === 'font-style-italic') ? 'italic' : 'normal'), fontWeight: ((tab.EnumConversions.fontWeightFromInt(style.font_weight) === 'font-weight-bold') ? 'bold' : 'normal') };
+	};
+	global.tab.TextStyleHelper = $tab_TextStyleHelper;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TickLabelComponent
+	var $tab_TickLabelComponent = function(props) {
+		this.$boundLabelContent = null;
+		this.$labelContentDiv = null;
+		spiff.PureRenderComponent.call(this, props);
+		var $t1 = new $tab_TickLabelState();
+		$t1.halfDivHeight = 0;
+		this.state = $t1;
+		this.$boundLabelContent = ss.mkdel(this, function(d) {
+			this.$labelContentDiv = d.firstElementChild.firstElementChild;
+		});
+	};
+	$tab_TickLabelComponent.__typeName = 'tab.TickLabelComponent';
+	global.tab.TickLabelComponent = $tab_TickLabelComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TickLabelProps
+	var $tab_TickLabelProps = function() {
+		this.alongAxisPixelSize = 0;
+		this.pixelSize = 0;
+		this.majorTickSize = 0;
+		this.regionType = null;
+		this.majorTicks = null;
+		this.majorTickLabels = null;
+		this.tickLabelFont = null;
+		this.tickLabelColor = null;
+	};
+	$tab_TickLabelProps.__typeName = 'tab.TickLabelProps';
+	global.tab.TickLabelProps = $tab_TickLabelProps;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TickLabelState
+	var $tab_TickLabelState = function() {
+		this.halfDivHeight = 0;
+	};
+	$tab_TickLabelState.__typeName = 'tab.TickLabelState';
+	global.tab.TickLabelState = $tab_TickLabelState;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TickMarkComponent
+	var $tab_TickMarkComponent = function(props) {
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_TickMarkComponent.__typeName = 'tab.TickMarkComponent';
+	global.tab.TickMarkComponent = $tab_TickMarkComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TickPlacement
+	var $tab_TickPlacement = function() {
+	};
+	$tab_TickPlacement.__typeName = 'tab.TickPlacement';
+	$tab_TickPlacement.getFormatSpecifier = function TickPlacement$GetFormatSpecifier(formatIndicies, formats, index) {
+		var formatSpecifier = null;
+		if (ss.isValue(formatIndicies)) {
+			var formatIndex = formatIndicies[index];
+			if (formatIndex >= 0) {
+				var formatter = formats[formatIndex];
+				formatSpecifier = formatter[32];
+			}
+		}
+		return formatSpecifier;
+	};
+	$tab_TickPlacement.getTickLabels = function TickPlacement$GetTickLabels(tickPlacement, index, scaleType, min, max) {
+		var perHeaderMajorTickPlacement = tickPlacement.PerHeaderMajorTickPlacement;
+		var formatSpecifier = $tab_TickPlacement.getFormatSpecifier(perHeaderMajorTickPlacement.UpdatedColumnFormatIndex, tickPlacement.UpdatedColumnFormat, index);
+		if (ss.isNullOrUndefined(formatSpecifier)) {
+			formatSpecifier = $tab_TickPlacement.getFormatSpecifier(perHeaderMajorTickPlacement.ColumnFormatIndex, tickPlacement.ColumnFormat, index);
+		}
+		if (ss.isNullOrUndefined(formatSpecifier)) {
+			return [];
+		}
+		var formatterIndex = tab.RuntimeFormattingHooks.registerFormattingTuple(formatSpecifier);
+		if (scaleType === 1) {
+			return $tab_TickPlacement.$decodeLogTicks($tab_TickPlacement.$getEncodedTicks(tickPlacement, index), formatterIndex, min, max);
+		}
+		else if (scaleType === 2) {
+			return $tab_TickPlacement.$decodeSymLogTicks($tab_TickPlacement.$getEncodedTicks(tickPlacement, index), formatterIndex, min, max);
+		}
+		else if (scaleType === 0) {
+			var spacing = tickPlacement.PerHeaderMajorTickPlacement.Spacing[index];
+			var origin = tickPlacement.PerHeaderMajorTickPlacement.Origin[index];
+			return $tab_TickPlacement.$decodeLinearTicks($tab_TickPlacement.$linearTicks(spacing, origin), formatterIndex, min, max);
+		}
+		else {
+			return [];
+		}
+	};
+	$tab_TickPlacement.getTickLabelFont = function TickPlacement$GetTickLabelFont(tickPlacement, index) {
+		var perHeaderMajorTickPlacement = tickPlacement.PerHeaderMajorTickPlacement;
+		var labelFontIndex = perHeaderMajorTickPlacement.LabelFontIndex[index];
+		var labelFontTuple = tickPlacement.LabelFont[labelFontIndex];
+		return tab.TupleDatastoreConversions.textStyleFromTuple(labelFontTuple);
+	};
+	$tab_TickPlacement.getTickPlacement$1 = function TickPlacement$GetTickPlacement(tickPlacement, locOrigin, sizeOfDimension, index, config) {
+		if (ss.isNullOrUndefined(config)) {
+			config = new $tab_TickPlacementConfig(false, true, false);
+		}
+		var perHeaderTickPlacement = $tab_TickPlacement.$getOutputTableForTickStyle(tickPlacement, config.getMinorTicks);
+		if (ss.isNullOrUndefined(perHeaderTickPlacement)) {
+			return null;
+		}
+		var tickPlacementType = $tab_TickPlacement.$getTickPlacementType(tickPlacement, index, config.getMinorTicks);
+		var includeViewEdges = $tab_TickPlacement.$includeViewEdges(perHeaderTickPlacement, index);
+		var ticks = [];
+		switch (tickPlacementType) {
+			case 3: {
+				var encodingIndex = $tab_TickPlacement.$getEncodedTickPositionIndex(perHeaderTickPlacement, index);
+				var encodedTickPositions = $tab_TickPlacement.$getEncodedTickPositions(tickPlacement, encodingIndex);
+				ticks = $tab_TickPlacement.$manualTicks(locOrigin, sizeOfDimension, encodedTickPositions, config.reversed, includeViewEdges, config.xAxis);
+				break;
+			}
+			case 2: {
+				ticks = $tab_TickPlacement.$dateTimeTicks(locOrigin, sizeOfDimension, perHeaderTickPlacement, index, config.reversed, config.xAxis, includeViewEdges);
+				break;
+			}
+			case 1: {
+				var spacing = $tab_TickPlacement.$domainToPixel(sizeOfDimension, perHeaderTickPlacement.Spacing[index], false);
+				var origin = $tab_TickPlacement.$domainToPixel(sizeOfDimension, perHeaderTickPlacement.Origin[index], config.reversed);
+				ticks = $tab_TickPlacement.$linearTicks$1(locOrigin, sizeOfDimension, spacing, origin, includeViewEdges, config.reversed, config.xAxis);
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+		return ticks;
+	};
+	$tab_TickPlacement.getTickPlacement = function TickPlacement$GetTickPlacement(tickPlacement, paneRect, index, config) {
+		if (ss.isNullOrUndefined(config)) {
+			config = new $tab_TickPlacementConfig(false, true, false);
+		}
+		var locOrigin = (config.xAxis ? paneRect.x : paneRect.y);
+		var sizeOfDimension = (config.xAxis ? paneRect.w : paneRect.h);
+		return $tab_TickPlacement.getTickPlacement$1(tickPlacement, locOrigin, sizeOfDimension, index, config);
+	};
+	$tab_TickPlacement.$getOutputTableForTickStyle = function TickPlacement$GetOutputTableForTickStyle(tickPlacement, getMinorTicks) {
+		return (getMinorTicks ? tickPlacement.PerHeaderMinorTickPlacement : tickPlacement.PerHeaderMajorTickPlacement);
+	};
+	$tab_TickPlacement.$hasEncodedTickPositions = function TickPlacement$HasEncodedTickPositions(tickPlacement, getMinorTicks) {
+		return !ss.isNullOrUndefined(tickPlacement.EncodedTickPositions) && !ss.isNullOrUndefined($tab_TickPlacement.$getOutputTableForTickStyle(tickPlacement, getMinorTicks).EncodedTickPositionsIndex);
+	};
+	$tab_TickPlacement.$hasDateTime = function TickPlacement$HasDateTime(perHeaderTickPlacement) {
+		return !ss.isNullOrUndefined(perHeaderTickPlacement.DateTimeOrigin) && !ss.isNullOrUndefined(perHeaderTickPlacement.DateTimeSpacing) && !ss.isNullOrUndefined(perHeaderTickPlacement.DateTimeSpacingUnit) && !ss.isNullOrUndefined(perHeaderTickPlacement.EncodingMin) && !ss.isNullOrUndefined(perHeaderTickPlacement.EncodingMax);
+	};
+	$tab_TickPlacement.$hasSpacingOrigin = function TickPlacement$HasSpacingOrigin(perHeaderTickPlacement) {
+		return !ss.isNullOrUndefined(perHeaderTickPlacement.Spacing) && !ss.isNullOrUndefined(perHeaderTickPlacement.Origin);
+	};
+	$tab_TickPlacement.$isViewEdge = function TickPlacement$IsViewEdge(locOrigin, sizeOfDimension, pt, includeViewEdges) {
+		return !includeViewEdges && (Math.floor(pt) === locOrigin || Math.floor(pt) === locOrigin + sizeOfDimension);
+	};
+	$tab_TickPlacement.$includeViewEdges = function TickPlacement$IncludeViewEdges(perHeaderTickPlacement, index) {
+		return (!ss.isNullOrUndefined(perHeaderTickPlacement.IncludeViewEdges) ? perHeaderTickPlacement.IncludeViewEdges[index] : true);
+	};
+	$tab_TickPlacement.$getEncodedTickPositionIndex = function TickPlacement$GetEncodedTickPositionIndex(perHeaderTickPlacement, index) {
+		return perHeaderTickPlacement.EncodedTickPositionsIndex[index];
+	};
+	$tab_TickPlacement.$getEncodedTickPositions = function TickPlacement$GetEncodedTickPositions(tickPlacement, index) {
+		return ss.cast(tickPlacement.EncodedTickPositions, Array)[index];
+	};
+	$tab_TickPlacement.$domainToCoord = function TickPlacement$DomainToCoord(pt, reversed) {
+		return (reversed ? (1 - pt) : pt);
+	};
+	$tab_TickPlacement.$domainToPixel = function TickPlacement$DomainToPixel(sizeOfDimension, pt, reversed) {
+		return $tab_TickPlacement.$domainToCoord(pt, reversed) * sizeOfDimension;
+	};
+	$tab_TickPlacement.$calculatePointX = function TickPlacement$CalculatePointX(x, width, pt, reversed) {
+		return Math.floor(x + $tab_TickPlacement.$domainToPixel(width, pt, reversed));
+	};
+	$tab_TickPlacement.$calculatePointY = function TickPlacement$CalculatePointY(y, height, pt, reversed) {
+		return Math.floor(y + height - $tab_TickPlacement.$domainToPixel(height, pt, reversed));
+	};
+	$tab_TickPlacement.$formatDateTime = function TickPlacement$FormatDateTime(dateTime) {
+		if (!(dateTime.indexOf('T') !== -1)) {
+			dateTime += 'T00:00:00';
+		}
+		return new Date(dateTime + 'Z');
+	};
+	$tab_TickPlacement.$dateTimeToDomain = function TickPlacement$DateTimeToDomain(dateTime, dateTimeMin, dateTimeMax) {
+		var range = tab.DateUtil.dateTimeAsOleDate(dateTimeMax) - tab.DateUtil.dateTimeAsOleDate(dateTimeMin);
+		return (tab.DateUtil.dateTimeAsOleDate(dateTime) - tab.DateUtil.dateTimeAsOleDate(dateTimeMin)) / range;
+	};
+	$tab_TickPlacement.$getTickPlacementType = function TickPlacement$GetTickPlacementType(tickPlacement, index, getMinorTicks) {
+		var perHeaderTickPlacement = $tab_TickPlacement.$getOutputTableForTickStyle(tickPlacement, getMinorTicks);
+		if ($tab_TickPlacement.$hasEncodedTickPositions(tickPlacement, getMinorTicks)) {
+			var encodingIndex = $tab_TickPlacement.$getEncodedTickPositionIndex(perHeaderTickPlacement, index);
+			if (encodingIndex >= 0 && encodingIndex <= 2147483647) {
+				return 3;
+			}
+		}
+		if ($tab_TickPlacement.$hasDateTime(perHeaderTickPlacement)) {
+			var dateTimeIncrement = perHeaderTickPlacement.DateTimeSpacing[index];
+			if (dateTimeIncrement > 0) {
+				return 2;
+			}
+		}
+		if ($tab_TickPlacement.$hasSpacingOrigin(perHeaderTickPlacement)) {
+			var spacing = perHeaderTickPlacement.Spacing[index];
+			if (spacing > 1.40129846432482E-45) {
+				return 1;
+			}
+		}
+		return 0;
+	};
+	$tab_TickPlacement.$linearTicks$1 = function TickPlacement$LinearTicks(axisOrigin, length, spacing, origin, includeViewEdges, reversed, xAxis) {
+		spacing = ((spacing < 2) ? 2 : spacing);
+		if (reversed && xAxis || !reversed && !xAxis) {
+			return $tab_TickPlacement.$getTicksDecreasingPixels(axisOrigin, length, spacing, origin, includeViewEdges, xAxis);
+		}
+		else {
+			return $tab_TickPlacement.$getTicksIncreasingPixels(axisOrigin, length, spacing, origin, includeViewEdges, xAxis);
+		}
+	};
+	$tab_TickPlacement.$linearTicks = function TickPlacement$LinearTicks(spacing, origin) {
+		var delta = origin % spacing;
+		var x = delta;
+		var ticks = [];
+		do {
+			ticks.push(x);
+			x += spacing;
+		} while (x < 1);
+		return ticks;
+	};
+	$tab_TickPlacement.$getTicksIncreasingPixels = function TickPlacement$GetTicksIncreasingPixels(axisOrigin, length, spacing, origin, includeViewEdges, xAxis) {
+		var delta = (xAxis ? origin : (axisOrigin + length - origin)) % spacing;
+		var position = axisOrigin + delta;
+		var endPoint = axisOrigin + length;
+		var ticks = [];
+		do {
+			if (!$tab_TickPlacement.$isViewEdge(axisOrigin, length, position, includeViewEdges)) {
+				ticks.push(ss.round(position));
+			}
+			position += spacing;
+		} while (ss.round(position) < endPoint);
+		return ticks;
+	};
+	$tab_TickPlacement.$getTicksDecreasingPixels = function TickPlacement$GetTicksDecreasingPixels(axisOrigin, length, spacing, origin, includeViewEdges, xAxis) {
+		var delta = (xAxis ? (axisOrigin + length - origin) : origin) % spacing;
+		var position = axisOrigin + length - delta;
+		var ticks = [];
+		do {
+			if (!$tab_TickPlacement.$isViewEdge(axisOrigin, length, position, includeViewEdges)) {
+				ticks.push(ss.round(position));
+			}
+			position -= spacing;
+		} while (ss.round(position) >= axisOrigin);
+		return ticks;
+	};
+	$tab_TickPlacement.$manualTicks = function TickPlacement$ManualTicks(locOrigin, sizeOfDimension, encodedTickPositions, reversed, includeViewEdges, xAxis) {
+		var ticks = [];
+		for (var $t1 = 0; $t1 < encodedTickPositions.length; $t1++) {
+			var tickPosition = encodedTickPositions[$t1];
+			var locCalculated = (xAxis ? $tab_TickPlacement.$calculatePointX(locOrigin, sizeOfDimension, tickPosition, reversed) : $tab_TickPlacement.$calculatePointY(locOrigin, sizeOfDimension, tickPosition, reversed));
+			if (locOrigin <= locCalculated && locOrigin + sizeOfDimension >= locCalculated && !$tab_TickPlacement.$isViewEdge(locOrigin, sizeOfDimension, locCalculated, includeViewEdges)) {
+				ticks.push(locCalculated);
+			}
+		}
+		return ticks;
+	};
+	$tab_TickPlacement.$dateTimeTicks = function TickPlacement$DateTimeTicks(locOrigin, sizeOfDimension, perHeaderMajorTickPlacement, index, reversed, xAxis, includeViewEdges) {
+		var dateTimeOrigin = $tab_TickPlacement.$formatDateTime(perHeaderMajorTickPlacement.DateTimeOrigin[index]);
+		var dateTimeMin = $tab_TickPlacement.$formatDateTime(perHeaderMajorTickPlacement.EncodingMin[index]);
+		var dateTimeMax = $tab_TickPlacement.$formatDateTime(perHeaderMajorTickPlacement.EncodingMax[index]);
+		var dateTimeUnit = tab.EnumConversions.datePeriodTypeFromInt(perHeaderMajorTickPlacement.DateTimeSpacingUnit[index]);
+		var dateTimeIncrement = perHeaderMajorTickPlacement.DateTimeSpacing[index];
+		var dateTime = dateTimeOrigin;
+		var ticks = [];
+		do {
+			if (dateTimeMin <= dateTime && dateTimeMax > dateTime) {
+				var pt = $tab_TickPlacement.$dateTimeToDomain(dateTime, dateTimeMin, dateTimeMax);
+				var tick = (xAxis ? $tab_TickPlacement.$calculatePointX(locOrigin, sizeOfDimension, pt, reversed) : $tab_TickPlacement.$calculatePointY(locOrigin, sizeOfDimension, pt, reversed));
+				if (!$tab_TickPlacement.$isViewEdge(locOrigin, sizeOfDimension, tick, includeViewEdges)) {
+					ticks.push(tick);
+				}
+			}
+			dateTime = tab.DateUtil.adjustDateByPeriodInUTC(dateTime, dateTimeUnit, dateTimeIncrement);
+		} while (dateTime < dateTimeMax);
+		return ticks;
+	};
+	$tab_TickPlacement.$computeArcSinH = function TickPlacement$ComputeArcSinH(x) {
+		return Math.log(x + Math.sqrt(x * x + 1));
+	};
+	$tab_TickPlacement.$getEncodedTicks = function TickPlacement$GetEncodedTicks(tickPlacement, index) {
+		var encIndex = tickPlacement.PerHeaderMajorTickPlacement.EncodedTickPositionsIndex[index];
+		return tickPlacement.EncodedTickPositions[encIndex];
+	};
+	$tab_TickPlacement.$decodeLinearTicks = function TickPlacement$DecodeLinearTicks(encodedTicks, formatterIndex, min, max) {
+		var range = max - min;
+		return _.map(encodedTicks, function(x) {
+			return tab.RuntimeFormattingHooks.formatRealValue(min + x * range, formatterIndex);
+		});
+	};
+	$tab_TickPlacement.$decodeLogTicks = function TickPlacement$DecodeLogTicks(encodedTicks, formatterIndex, min, max) {
+		var boundedTicks = [];
+		var logMin = Math.log(min);
+		var logMax = Math.log(max);
+		var range = logMax - logMin;
+		for (var $t1 = 0; $t1 < encodedTicks.length; $t1++) {
+			var item = encodedTicks[$t1];
+			var value = Math.exp(logMin + item * range);
+			if (value <= max && value >= min) {
+				boundedTicks.push(tab.RuntimeFormattingHooks.formatRealValue(value, formatterIndex));
+			}
+		}
+		return boundedTicks;
+	};
+	$tab_TickPlacement.$decodeSymLogTicks = function TickPlacement$DecodeSymLogTicks(encodedTicks, formatterIndex, min, max) {
+		var boundedTicks = [];
+		boundedTicks = [];
+		var logMin = $tab_TickPlacement.$computeArcSinH(min);
+		var logMax = $tab_TickPlacement.$computeArcSinH(max);
+		var range = logMax - logMin;
+		for (var $t1 = 0; $t1 < encodedTicks.length; $t1++) {
+			var item = encodedTicks[$t1];
+			var $t2 = logMin + item * range;
+			var value = (Math.exp($t2) - Math.exp($t2 * -1)) / 2;
+			if (value <= max && value >= min) {
+				boundedTicks.push(tab.RuntimeFormattingHooks.formatRealValue(value, formatterIndex));
+			}
+		}
+		return boundedTicks;
+	};
+	global.tab.TickPlacement = $tab_TickPlacement;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.RuntimeRendered.TickPlacementConfig
+	var $tab_TickPlacementConfig = function(reversed, xAxis, getMinorTicks) {
+		this.reversed = false;
+		this.xAxis = false;
+		this.getMinorTicks = false;
+		this.reversed = reversed;
+		this.xAxis = xAxis;
+		this.getMinorTicks = getMinorTicks;
+	};
+	$tab_TickPlacementConfig.__typeName = 'tab.TickPlacementConfig';
+	global.tab.TickPlacementConfig = $tab_TickPlacementConfig;
+	ss.initEnum($tab_$TickPlacement$TickPlacementType, $asm, { $unknown: 0, $linear: 1, $dateTime: 2, $manual: 3 });
+	ss.initClass($tab_AxisComponent, $asm, {
+		render: function AxisComponent$Render() {
+			return spiff.DOMElements.div({ key: this.props.axisID, className: 'tab-vizAxisWrapper', style: this.$getAxisDimension() }, React.createElement($tab_AxisTitleComponent, this.props.axisTitle), React.createElement($tab_TickMarkComponent, this.props.majorTicks), React.createElement($tab_TickLabelComponent, this.props.tickLabels));
+		},
+		$getAxisDimension: function AxisComponent$GetAxisDimension() {
+			if (this.props.regionType === 'leftaxis' || this.props.regionType === 'rightaxis') {
+				return { width: this.props.pixelSize + 'px', height: this.props.alongAxisPixelSize + 'px' };
+			}
+			else {
+				return { width: this.props.alongAxisPixelSize + 'px', height: this.props.pixelSize + 'px' };
+			}
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_AxisHolderComponent, $asm, {
+		render: function AxisHolderComponent$Render() {
+			if (this.props.bottomHeaders.length > 0) {
+				return this.$renderBottomHeaders();
+			}
+			return this.$renderAxes();
+		},
+		$renderBottomHeaders: function AxisHolderComponent$RenderBottomHeaders() {
+			var bottomHeaderChildren = _.map(this.props.bottomHeaders, function(axisItem) {
+				var itemProps = { className: 'tab-vizAxisItem', key: axisItem.key$1 };
+				return spiff.DOMElements.div(itemProps, React.createElement($tab_BottomHeaderComponent, axisItem));
+			});
+			var ticksElement = null;
+			if (ss.isValue(this.props.tickPlacementDS)) {
+				var tpcMinor = new $tab_TickPlacementConfig(false, true, false);
+				tpcMinor.getMinorTicks = true;
+				var width = ((this.props.regionType === 'leftaxis' || this.props.regionType === 'rightaxis') ? this.props.pixelSize : this.props.alongAxisPixelSize);
+				var tickProps = { majorTicks: $tab_TickPlacement.getTickPlacement$1(this.props.tickPlacementDS, 0, width, 0, null), majorTickSize: this.props.tickPlacementDS.TickLengthMajorPixels, minorTicks: $tab_TickPlacement.getTickPlacement$1(this.props.tickPlacementDS, 0, width, 0, tpcMinor), minorTickSize: this.props.tickPlacementDS.TickLengthMinorPixels, alongAxisPixelSize: this.props.alongAxisPixelSize, pixelSize: this.props.pixelSize, regionType: this.props.regionType, tickMarkColor: this.props.style.tickColor };
+				ticksElement = React.createElement($tab_TickMarkComponent, tickProps);
+			}
+			return spiff.DOMElements.div({ className: 'tab-vizAxisHolderWrapper' }, ticksElement, spiff.DOMElements.div({ className: 'tab-vizAxisHolder', style: this.$getAxisDimension() }, bottomHeaderChildren));
+		},
+		$renderAxes: function AxisHolderComponent$RenderAxes() {
+			var axes = _.map(this.props.axes, function(axisItem) {
+				return React.createElement($tab_AxisComponent, axisItem);
+			});
+			return spiff.DOMElements.div({ className: 'tab-vizAxisHolderWrapper', style: this.$getAxisDimension() }, axes);
+		},
+		$getAxisDimension: function AxisHolderComponent$GetAxisDimension() {
+			if (this.props.regionType === 'leftaxis' || this.props.regionType === 'rightaxis') {
+				return { width: this.props.pixelSize + 'px', height: this.props.alongAxisPixelSize + 'px' };
+			}
+			else {
+				return { width: this.props.alongAxisPixelSize + 'px', height: this.props.pixelSize + 'px' };
+			}
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_BaseSceneMarginElement, $asm, {
+		add_loadComplete: function BaseSceneMarginElement$add_LoadComplete(value) {
+			this.$1$LoadCompleteField = ss.delegateCombine(this.$1$LoadCompleteField, value);
+		},
+		remove_loadComplete: function BaseSceneMarginElement$remove_LoadComplete(value) {
+			this.$1$LoadCompleteField = ss.delegateRemove(this.$1$LoadCompleteField, value);
+		},
+		get_canScrollX: function BaseSceneMarginElement$get_CanScrollX() {
+			return true;
+		},
+		get_canScrollY: function BaseSceneMarginElement$get_CanScrollY() {
+			return true;
+		},
+		get_docSize: function BaseSceneMarginElement$get_DocSize() {
+			return this.$docSize;
+		},
+		get_actualViewSize: function BaseSceneMarginElement$get_ActualViewSize() {
+			return this.$actualViewSize;
+		},
+		set_actualViewSize: function BaseSceneMarginElement$set_ActualViewSize(value) {
+			this.$actualViewSize = value;
+		},
+		get_effectiveViewSize: function BaseSceneMarginElement$get_EffectiveViewSize() {
+			return this.$actualViewSize;
+		},
+		get_hasContent: function BaseSceneMarginElement$get_HasContent() {
+			return true;
+		},
+		get_scrollPos: function BaseSceneMarginElement$get_ScrollPos() {
+			return this.$scrollPos;
+		},
+		set_scrollPos: function BaseSceneMarginElement$set_ScrollPos(value) {
+			this.$scrollPos = value;
+		},
+		setXPos: function BaseSceneMarginElement$SetXPos(xPos) {
+			var pos = this.get_scrollPos();
+			this.set_scrollPos({ x: xPos, y: pos.y });
+			this.reactView.get_rootElement().children().scrollLeft(xPos);
+		},
+		setYPos: function BaseSceneMarginElement$SetYPos(yPos) {
+			var pos = this.get_scrollPos();
+			this.set_scrollPos({ x: pos.x, y: yPos });
+			this.reactView.get_rootElement().children().scrollTop(yPos);
+		},
+		refreshImages: function BaseSceneMarginElement$RefreshImages(tileCacheUrl) {
+		},
+		destroy: function BaseSceneMarginElement$Destroy() {
+		},
+		resize: null,
+		reset: function BaseSceneMarginElement$Reset(newGeometry, newTileSize) {
+			this.$docSize = newTileSize;
+			this.resize({ w: newGeometry.w, h: newGeometry.h });
+		}
+	}, null, [spiff.IScrollable, tab.IRegionContentProvider]);
+	ss.initClass($tab_AxisHolderElement, $asm, {
+		resize: function AxisHolderElement$Resize(newSize) {
+			this.$axisHolderVm.set_width(newSize.w);
+		}
+	}, $tab_BaseSceneMarginElement, [spiff.IScrollable, tab.IRegionContentProvider]);
+	ss.initClass($tab_AxisHolderViewModel, $asm, {
+		get_width: function AxisHolderViewModel$get_Width() {
+			return this.$width;
+		},
+		set_width: function AxisHolderViewModel$set_Width(value) {
+			this.$width = value;
+			this.incrementProps();
+		},
+		createInitialProps: function AxisHolderViewModel$CreateInitialProps() {
+			return this.createUpdatedProps();
+		},
+		createUpdatedProps: function AxisHolderViewModel$CreateUpdatedProps() {
+			var axisStyle = $tab_DatastoreHeaderAdapter.buildFromDatastore(this.$axisStyles, this.$axisInformationIndex);
+			var alongAxisPixelSize = this.$elementLeafTable.AlongAxisPixelSize[0];
+			var pixelSize = this.$visualLayout.SceneMarginLayout.PixelSize[this.$axisInformationIndex];
+			var headers = this.$buildBottomHeaders(alongAxisPixelSize, pixelSize, axisStyle);
+			var axes = this.$buildAxes(pixelSize, alongAxisPixelSize);
+			return { axes: axes, bottomHeaders: headers, alongAxisPixelSize: alongAxisPixelSize, pixelSize: pixelSize, regionType: this.$regionType, style: axisStyle, tickPlacementDS: this.$tickPlacement };
+		},
+		$buildBottomHeaders: function AxisHolderViewModel$BuildBottomHeaders(alongAxisPixelSize, height, axisStyle) {
+			var leftOff = 0;
+			if (ss.isNullOrUndefined(this.$axisDescriptor) || ss.isNullOrUndefined(this.$axisDescriptor.Nodes)) {
+				return [];
+			}
+			return _.map(this.$axisDescriptor.Nodes.Label, ss.mkdel(this, function(label) {
+				var curLeft = leftOff;
+				leftOff += alongAxisPixelSize;
+				var tickLabelFont = $tab_TickPlacement.getTickLabelFont(this.$tickPlacement, 0);
+				var $t1 = new $tab_BottomHeaderProps();
+				$t1.width = alongAxisPixelSize;
+				$t1.height = height;
+				$t1.rotation = this.$defaultRotation;
+				$t1.left = curLeft;
+				$t1.top = 0;
+				$t1.key$1 = this.$regionType + curLeft;
+				$t1.text = label;
+				$t1.style = axisStyle;
+				$t1.font = tickLabelFont.font;
+				$t1.strikethrough = tickLabelFont.strikethrough;
+				$t1.underline = tickLabelFont.underline;
+				$t1.fontSize = tickLabelFont.font_size;
+				$t1.color = tickLabelFont.text_style_color;
+				return $t1;
+			}));
+		},
+		$buildAxes: function AxisHolderViewModel$BuildAxes(pixelSize, alongAxisPixelSize) {
+			var table = this.$axisTable;
+			var axesInView = _.filter(_.map(table.FoldState, function(foldState, index) {
+				return { key: index, value: foldState };
+			}), function(state) {
+				return state.value === 0;
+			});
+			return _.map(axesInView, ss.mkdel(this, function(state1) {
+				return this.$computeAxisProps(state1, pixelSize, alongAxisPixelSize);
+			}));
+		},
+		$computeAxisProps: function AxisHolderViewModel$ComputeAxisProps(state, pixelSize, alongAxisPixelSize) {
+			var index = state.key;
+			var table = this.$axisTable;
+			var regionRect = (this.$isXAxis ? { x: 0, y: 0, w: alongAxisPixelSize, h: pixelSize } : { x: 0, y: 0, w: pixelSize, h: alongAxisPixelSize });
+			var tickPlacementIndex = (this.$isXAxis ? index : (index + this.$columnCount));
+			var tpc = new $tab_TickPlacementConfig(table.IsReversed[index], this.$isXAxis, false);
+			var majorPlacements = $tab_TickPlacement.getTickPlacement(this.$tickPlacement, regionRect, tickPlacementIndex, tpc);
+			tpc.getMinorTicks = true;
+			var minorPlacements = $tab_TickPlacement.getTickPlacement(this.$tickPlacement, regionRect, tickPlacementIndex, tpc);
+			var min = (this.$isXAxis ? this.$paneExtents.XRangeMin[0] : this.$paneExtents.YRangeMin[0]);
+			var max = (this.$isXAxis ? this.$paneExtents.XRangeMax[0] : this.$paneExtents.YRangeMax[0]);
+			var tickLabels = $tab_TickPlacement.getTickLabels(this.$tickPlacement, tickPlacementIndex, table.ScaleType[index], min, max);
+			var tickLabelFont = $tab_TickPlacement.getTickLabelFont(this.$tickPlacement, tickPlacementIndex);
+			var $t1 = new $tab_AxisProps();
+			$t1.dataType = table.DataType[index];
+			$t1.min = table.Min[index];
+			$t1.max = table.Max[index];
+			$t1.rangeType = table.RangeType[index];
+			$t1.scaleType = table.ScaleType[index];
+			$t1.foldState = table.FoldState[index];
+			$t1.isReversed = table.IsReversed[index];
+			$t1.includeZero = table.IncludeZero[index];
+			$t1.uniqueID = table.UniqueID[index];
+			$t1.alongAxisPixelSize = alongAxisPixelSize;
+			$t1.pixelSize = pixelSize;
+			$t1.axisID = this.$regionType + index;
+			$t1.regionType = this.$regionType;
+			var $t2 = new $tab_TickLabelProps();
+			$t2.majorTicks = majorPlacements;
+			$t2.majorTickLabels = tickLabels;
+			$t2.alongAxisPixelSize = alongAxisPixelSize;
+			$t2.pixelSize = pixelSize;
+			$t2.regionType = this.$regionType;
+			$t2.majorTickSize = this.$tickPlacement.TickLengthMajorPixels;
+			$t2.tickLabelFont = tickLabelFont;
+			$t2.tickLabelColor = tab.ColorModel.fromArgbInt(this.$axisStyles.TextColor[this.$axisTable.PerFieldStyleIndex[index]]);
+			$t1.tickLabels = $t2;
+			$t1.majorTicks = { majorTicks: majorPlacements, minorTicks: minorPlacements, majorTickSize: this.$tickPlacement.TickLengthMajorPixels, minorTickSize: this.$tickPlacement.TickLengthMinorPixels, alongAxisPixelSize: alongAxisPixelSize, pixelSize: pixelSize, regionType: this.$regionType, tickMarkColor: tab.ColorModel.fromArgbInt(this.$axisStyles.TickColor[this.$axisTable.PerFieldStyleIndex[index]]) };
+			var $t3 = new $tab_AxisTitleProps();
+			$t3.title = (ss.isNullOrUndefined(table.AxisTitle) ? '' : table.AxisTitle[index]);
+			$t3.subtitle = (ss.isNullOrUndefined(table.AxisSubtitle) ? '' : table.AxisSubtitle[index]);
+			$t3.titleStyle = this.$getTitleStyle(index);
+			$t3.alongAxisPixelSize = alongAxisPixelSize;
+			$t3.pixelSize = pixelSize;
+			$t3.regionType = this.$regionType;
+			$t3.titlePadding = table.TitlePadding[index];
+			$t1.axisTitle = $t3;
+			return $t1;
+		},
+		$getTitleStyle: function AxisHolderViewModel$GetTitleStyle(index) {
+			var titleStyleTuple = this.$titleStyles[index];
+			return tab.TupleDatastoreConversions.textStyleFromTuple(titleStyleTuple);
+		}
+	}, ss.makeGenericType(spiff.BaseReactViewModel$1, [Object]), [ss.IDisposable, tab.IViewModel, ss.makeGenericType(spiff.IPropsProvider$1, [Object])]);
+	ss.initClass($tab_AxisProps, $asm, {});
+	ss.initClass($tab_AxisTitleComponent, $asm, {
+		render: function AxisTitleComponent$Render() {
+			return spiff.DOMElements.div({ className: 'tab-vizAxisTitle', style: this.$getTitleStyle(), key: 'axis-title' }, this.$getTitle());
+		},
+		$getTitle: function AxisTitleComponent$GetTitle() {
+			if (!ss.isNullOrEmptyString(this.props.subtitle)) {
+				return ss.formatString('{0}[{1}]', this.props.title, this.props.subtitle);
+			}
+			return this.props.title;
+		},
+		$getTitleStyle: function AxisTitleComponent$GetTitleStyle() {
+			var style = this.props.titleStyle;
+			var titleStyle = $tab_TextStyleHelper.getCssFromTextStyle(style);
+			titleStyle.color = tab.ColorModel.fromArgbInt(style.text_style_color).toRgbHex();
+			titleStyle.textDecorationLine = ((tab.EnumConversions.textDecorationFromInt(style.text_decoration) === 'text-decoration-underline') ? 'underline' : 'none');
+			titleStyle.width = this.props.alongAxisPixelSize + 'px';
+			titleStyle.height = this.props.pixelSize + 'px';
+			titleStyle.textAlign = 'center';
+			if (this.props.regionType === 'leftaxis' || this.props.regionType === 'rightaxis') {
+				titleStyle.transform = ss.formatString('rotate(-90deg) translate(-{0}px, {1}px)', this.props.alongAxisPixelSize, this.props.titlePadding);
+				titleStyle.transformOrigin = '0% 0%';
+			}
+			else {
+				titleStyle.transform = ss.formatString('translate(0px, -{0}px)', this.props.titlePadding);
+				titleStyle.display = 'table-cell';
+				titleStyle.verticalAlign = 'bottom';
+			}
+			return titleStyle;
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_AxisTitleProps, $asm, {});
+	ss.initClass($tab_BottomHeaderComponent, $asm, {
+		render: function BottomHeaderComponent$Render() {
+			var elementStyle = null;
+			if (this.props.rotation === 1) {
+				elementStyle = { top: this.props.top + this.props.height, left: this.props.left, width: this.props.height, height: this.props.width, transform: 'rotate(-90deg)', transformOrigin: '0% 0%' };
+			}
+			else {
+				elementStyle = { top: this.props.top, left: this.props.left, width: this.props.width, height: this.props.height };
+			}
+			elementStyle.fontFamily = tab.FontUtil.createFallbackCanvasFontName(this.props.font);
+			elementStyle.textDecorationLineThrough = this.props.strikethrough;
+			elementStyle.textDecorationUnderline = this.props.underline;
+			elementStyle.fontSize = this.props.fontSize + 'pt';
+			elementStyle.color = tab.ColorModel.fromArgbInt(this.props.color).toRgbHex();
+			if (ss.isValue(this.props.style) && ss.isValue(this.props.style.fillColor)) {
+				elementStyle.backgroundColor = this.props.style.fillColor.toRgbHex();
+			}
+			tab.FontNotificationUtil.notifyFontFromCSSProps(elementStyle);
+			var textStyle = { display: 'flex', alignItems: 'center', justifyContent: 'center', width: elementStyle.width, height: elementStyle.height };
+			return spiff.DOMElements.div({ className: 'tab-vizBottomHeaderWrapper', style: elementStyle, key: this.props.key }, spiff.DOMElements.div({ className: 'tab-vizBottomHeader', style: textStyle }, this.props.text));
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_BottomHeaderProps, $asm, {});
+	ss.initClass($tab_DatastoreHeaderAdapter, $asm, {});
+	ss.initClass($tab_DatastorePropsBuilder, $asm, {});
+	ss.initClass($tab_HeaderHolderComponent, $asm, {
+		render: function HeaderHolderComponent$Render() {
+			return spiff.DOMElements.div({ className: 'tab-vizHeaderHolder', style: { width: this.props.width + 'px', height: this.props.height + 'px', background: this.props.background } }, 'Header');
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_HeaderHolderElement, $asm, {
+		resize: function HeaderHolderElement$Resize(newSize) {
+			this.$headerHolderVm.set_size(newSize);
+		}
+	}, $tab_BaseSceneMarginElement, [spiff.IScrollable, tab.IRegionContentProvider]);
+	ss.initClass($tab_HeaderHolderViewModel, $asm, {
+		get_size: function HeaderHolderViewModel$get_Size() {
+			return this.$size;
+		},
+		set_size: function HeaderHolderViewModel$set_Size(value) {
+			this.$size = value;
+			this.incrementProps();
+		},
+		createInitialProps: function HeaderHolderViewModel$CreateInitialProps() {
+			return {};
+		},
+		createUpdatedProps: function HeaderHolderViewModel$CreateUpdatedProps() {
+			return { width: this.$size.w, height: this.$size.h, background: ((this.$regionType === 'xheader') ? 'Aquamarine' : 'Plum') };
+		}
+	}, ss.makeGenericType(spiff.BaseReactViewModel$1, [Object]), [ss.IDisposable, tab.IViewModel, ss.makeGenericType(spiff.IPropsProvider$1, [Object])]);
+	ss.initClass($tab_TextStyleHelper, $asm, {});
+	ss.initClass($tab_TickLabelComponent, $asm, {
+		componentDidUpdate: function TickLabelComponent$ComponentDidUpdate() {
+			if (ss.isValue(this.$labelContentDiv)) {
+				var $t1 = new $tab_TickLabelState();
+				$t1.halfDivHeight = ss.Int32.div(this.$labelContentDiv.offsetHeight, 2);
+				var newState = $t1;
+				if (newState.isNotEqual(this.state)) {
+					this.setState(newState);
+				}
+			}
+		},
+		render: function TickLabelComponent$Render() {
+			var drawLabelAlongAxis = this.props.regionType === 'bottomaxis' || this.props.regionType === 'topaxis';
+			if (this.props.tickLabelFont.text_orientation !== 0) {
+				drawLabelAlongAxis = !drawLabelAlongAxis;
+			}
+			var labelContentStyle = this.$getLabelContentStyle();
+			var tickLabelElements = _.map(_.range(0, this.props.majorTicks.length), ss.mkdel(this, function(index) {
+				labelContentStyle.width = this.$getLabelWidthConstraint(index, drawLabelAlongAxis) + 'px';
+				var labelContent = spiff.DOMElements.div({ className: $tab_TickLabelComponent.tickLabelContentClass, style: labelContentStyle }, this.props.majorTickLabels[index]);
+				return spiff.DOMElements.div({ className: $tab_TickLabelComponent.tickLabelAlignerClass, key: 'tick-label-' + index, style: this.$getAlignerStyle(index, drawLabelAlongAxis) }, labelContent);
+			}));
+			return spiff.DOMElements.div({ className: 'tab-vizAxisTickLabel', style: this.$getFontStyle(), ref: this.$boundLabelContent }, tickLabelElements);
+		},
+		$getLabelWidthConstraint: function TickLabelComponent$GetLabelWidthConstraint(index, drawLabelAlongAxis) {
+			var width = 0;
+			if (drawLabelAlongAxis) {
+				var start = Math.max(0, index - 1);
+				var end = Math.min(this.props.majorTicks.length - 1, index + 1);
+				width = ss.Int32.div(Math.abs(this.props.majorTicks[end] - this.props.majorTicks[start]), 2);
+				var ascending = this.props.majorTicks[end] > this.props.majorTicks[start];
+				var leftBoundary = index === 0 && ascending || index === this.props.majorTicks.length - 1 && !ascending;
+				var rightBoundary = index === 0 && !ascending || index === this.props.majorTicks.length - 1 && ascending;
+				if (leftBoundary) {
+					width += this.props.majorTicks[index];
+				}
+				if (rightBoundary) {
+					width += this.props.alongAxisPixelSize - this.props.majorTicks[index];
+				}
+			}
+			else {
+				width = this.props.pixelSize - this.props.majorTickSize - $tab_TickLabelComponent.$padding;
+			}
+			return width;
+		},
+		$getLabelContentStyle: function TickLabelComponent$GetLabelContentStyle() {
+			var labelContentStyle = { textDecorationLine: (this.props.tickLabelFont.underline ? 'underline' : 'none') };
+			if (this.props.regionType === 'bottomaxis' && this.props.tickLabelFont.text_orientation === 90 || this.props.regionType === 'leftaxis' && this.props.tickLabelFont.text_orientation === -90) {
+				labelContentStyle.transform = 'rotate(180deg)';
+			}
+			return labelContentStyle;
+		},
+		$getAlignerStyle: function TickLabelComponent$GetAlignerStyle(index, drawLabelAlongAxis) {
+			var labelWidthConstraint = this.$getLabelWidthConstraint(index, drawLabelAlongAxis);
+			var tickPos = this.props.majorTicks[index];
+			if (this.props.regionType === 'bottomaxis' || this.props.regionType === 'leftaxis') {
+				if (drawLabelAlongAxis) {
+					return this.$computeAlignerStyleForHorizontalAxis(labelWidthConstraint, tickPos);
+				}
+				else {
+					return this.$computeAlignerStyleForVerticalAxis(labelWidthConstraint, tickPos);
+				}
+			}
+			return null;
+		},
+		$getFontStyle: function TickLabelComponent$GetFontStyle() {
+			var fontStyle = $tab_TextStyleHelper.getCssFromTextStyle(this.props.tickLabelFont);
+			fontStyle.color = this.props.tickLabelColor.toRgbHex();
+			if (this.props.tickLabelFont.text_orientation !== 0) {
+				if (this.props.regionType === 'bottomaxis') {
+					fontStyle.transform = 'rotate(-90deg) translate(-' + this.props.pixelSize + 'px, 0px)';
+				}
+				else {
+					fontStyle.transform = 'rotate(90deg) translate(0px, -' + this.props.pixelSize + 'px)';
+				}
+				fontStyle.position = 'absolute';
+				fontStyle.transformOrigin = '0% 0%';
+				fontStyle.left = '0px';
+				fontStyle.top = '0px';
+			}
+			return fontStyle;
+		},
+		$computeAlignerStyleForVerticalAxis: function TickLabelComponent$ComputeAlignerStyleForVerticalAxis(labelWidthConstraint, tickPos) {
+			var halfDivHeight = this.state.halfDivHeight;
+			var topPos = tickPos;
+			if (halfDivHeight > 0) {
+				if (topPos - halfDivHeight < 0) {
+					topPos = halfDivHeight;
+				}
+				else if (topPos + halfDivHeight > this.props.alongAxisPixelSize) {
+					topPos = this.props.alongAxisPixelSize - halfDivHeight;
+				}
+			}
+			return { top: topPos + 'px', left: '0px', width: labelWidthConstraint + 'px', textAlign: ((this.props.tickLabelFont.text_orientation === 90 && this.props.regionType === 'bottomaxis') ? 'left' : 'right'), flexDirection: 'column' };
+		},
+		$computeAlignerStyleForHorizontalAxis: function TickLabelComponent$ComputeAlignerStyleForHorizontalAxis(labelWidthContraint, tickPos) {
+			var leftPos = tickPos - ss.Int32.div(labelWidthContraint, 2);
+			var textAlignment = 'center';
+			if (leftPos < 0) {
+				leftPos = 0;
+				textAlignment = 'left';
+			}
+			else if (leftPos + labelWidthContraint > this.props.alongAxisPixelSize) {
+				leftPos = this.props.alongAxisPixelSize - labelWidthContraint;
+				textAlignment = 'right';
+			}
+			return { top: this.props.majorTickSize + $tab_TickLabelComponent.$padding + 'px', left: leftPos + 'px', width: labelWidthContraint + 'px', textAlign: textAlignment, flexDirection: 'row' };
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_TickLabelProps, $asm, {});
+	ss.initClass($tab_TickLabelState, $asm, {
+		isNotEqual: function TickLabelState$IsNotEqual(state) {
+			return this.halfDivHeight !== state.halfDivHeight;
+		}
+	});
+	ss.initClass($tab_TickMarkComponent, $asm, {
+		render: function TickMarkComponent$Render() {
+			var majorTicks = (ss.isNullOrUndefined(this.props.majorTicks) ? null : _.map(_.range(0, this.props.majorTicks.length), ss.mkdel(this, function(index) {
+				return spiff.DOMElements.line(this.$getLineProps(index, false));
+			})));
+			var minorTicks = (ss.isNullOrUndefined(this.props.minorTicks) ? null : _.map(_.range(0, this.props.minorTicks.length), ss.mkdel(this, function(index1) {
+				return spiff.DOMElements.line(this.$getLineProps(index1, true));
+			})));
+			var isVertical = this.props.regionType === 'leftaxis' || this.props.regionType === 'rightaxis';
+			return spiff.DOMElements.svg({ className: 'tab-vizAxisTick', width: (isVertical ? this.props.majorTickSize : this.props.alongAxisPixelSize), height: (isVertical ? this.props.alongAxisPixelSize : this.props.majorTickSize), style: this.$getPosition() }, majorTicks, minorTicks);
+		},
+		$getLineProps: function TickMarkComponent$GetLineProps(index, isMinorTick) {
+			var lineProps = { key: 'tick-' + index, stroke: this.props.tickMarkColor.toRgbHex(), strokeWidth: '1px', opacity: this.props.tickMarkColor.get_a().toString() };
+			var location = (isMinorTick ? this.props.minorTicks[index] : this.props.majorTicks[index]);
+			location += 0.5;
+			var tickSize = (isMinorTick ? this.props.minorTickSize : this.props.majorTickSize);
+			switch (this.props.regionType) {
+				case 'leftaxis':
+				case 'rightaxis': {
+					lineProps.transform = ss.formatString('translate(0, {0})', location);
+					lineProps.x2 = tickSize;
+					lineProps.y2 = 0;
+					break;
+				}
+				case 'bottomaxis':
+				case 'topaxis': {
+					lineProps.transform = ss.formatString('translate({0}, 0)', location);
+					lineProps.x2 = 0;
+					lineProps.y2 = tickSize;
+					break;
+				}
+			}
+			return lineProps;
+		},
+		$getPosition: function TickMarkComponent$GetPosition() {
+			var style = { position: 'absolute' };
+			switch (this.props.regionType) {
+				case 'leftaxis': {
+					style.top = '0px';
+					style.left = this.props.pixelSize - this.props.majorTickSize + 'px';
+					break;
+				}
+				case 'bottomaxis': {
+					style.top = '0px';
+					style.left = '0px';
+					break;
+				}
+				case 'topaxis': {
+					style.top = this.props.pixelSize - this.props.majorTickSize + 'px';
+					style.left = '0px';
+					break;
+				}
+				case 'rightaxis': {
+					style.top = '0px';
+					style.left = '0px';
+					break;
+				}
+			}
+			return style;
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_TickPlacement, $asm, {});
+	ss.initClass($tab_TickPlacementConfig, $asm, {});
+	(function() {
+		$tab_TickLabelComponent.tickLabelAlignerClass = 'tab-vizAxisTickLabelAligner';
+		$tab_TickLabelComponent.tickLabelContentClass = 'tab-vizAxisTickLabelContent';
+		$tab_TickLabelComponent.$padding = 2;
+	})();
+})();
+// END RuntimeRendered

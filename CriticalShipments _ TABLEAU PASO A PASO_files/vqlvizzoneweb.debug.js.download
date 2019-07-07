@@ -1,0 +1,3938 @@
+/*! BEGIN VizZoneWeb */
+(function() {
+	'dont use strict';
+	var $asm = {};
+	global.tab = global.tab || {};
+	ss.initAssembly($asm, 'vqlvizzoneweb');
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.DrillState
+	var $tab_$DrillState = function() {
+	};
+	$tab_$DrillState.__typeName = 'tab.$DrillState';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.DrillWidgets
+	var $tab_$DrillWidgets = function() {
+		this.$area = null;
+		this.$levelnum = 0;
+	};
+	$tab_$DrillWidgets.__typeName = 'tab.$DrillWidgets';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.MousePaneState
+	var $tab_$MousePaneState = function() {
+		this.$inXHeader = false;
+		this.$inXNomAxis = false;
+		this.$inYHeader = false;
+		this.$inTopLeftSpacerAreaY = false;
+		this.$inTopLeftSpacerAreaX = false;
+		this.$inBottomLeftSpacerArea = false;
+		this.$inLeftAxisArea = false;
+		this.$needToExtendTopLeftY = true;
+		this.$topLeftSpacerAreaX = null;
+		this.$topLeftSpacerAreaY = null;
+	};
+	$tab_$MousePaneState.__typeName = 'tab.$MousePaneState';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.PxLevel
+	var $tab_$PxLevel = function(lowerPx, upperPx, levelNum) {
+		this.$lowerPx = 0;
+		this.$upperPx = 0;
+		this.$levelNum = 0;
+		this.$lowerPx = lowerPx;
+		this.$upperPx = upperPx;
+		this.$levelNum = levelNum;
+	};
+	$tab_$PxLevel.__typeName = 'tab.$PxLevel';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.Sorting.SortIndicatorState
+	var $tab_$Sorting$SortIndicatorState = function(region, item, itemIdx, direction, status, isActive) {
+		this.$siRegion = null;
+		this.$siItem = null;
+		this.$siItemIdx = 0;
+		this.$direction = null;
+		this.$status = null;
+		this.$isActive = false;
+		this.$siRegion = region;
+		this.$siItem = item;
+		this.$siItemIdx = itemIdx;
+		this.$direction = direction;
+		this.$status = status;
+		this.$isActive = isActive;
+	};
+	$tab_$Sorting$SortIndicatorState.__typeName = 'tab.$Sorting$SortIndicatorState';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.Views.AnnotationSelectionChromeComponent
+	var $tab_AnnotationSelectionChromeComponent = function(props) {
+		this.$invisibleHandleSize = 16;
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_AnnotationSelectionChromeComponent.__typeName = 'tab.AnnotationSelectionChromeComponent';
+	global.tab.AnnotationSelectionChromeComponent = $tab_AnnotationSelectionChromeComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.AxisContextMenu
+	var $tab_AxisContextMenu = function(tiledViewer, domNode) {
+		this.$axisContextMenuButton = null;
+		this.$domAxisContextMenuIcon = null;
+		this.$visGeo = null;
+		this.$vizImageRegion = null;
+		this.$localCoordinates = null;
+		this.$tvButtonRect = null;
+		this.$iconEventHandler = null;
+		$tab_SortDrillBase.call(this, $(document.createElement('div')), $(domNode), tiledViewer);
+		this.element.addClass($tab_AxisContextMenu.axisContextMenuElementClassName);
+		this.$axisContextMenuButton = spiff.LabelButton.newNativeButton();
+		this.$axisContextMenuButton.element.addClass('tab-tvAxisContextMenuButton');
+		this.$axisContextMenuButton.element.css('border', '0');
+		this.$axisContextMenuButton.element.css('position', 'absolute');
+		this.$axisContextMenuButton.element.css('padding', '0px');
+		this.element.append(this.$axisContextMenuButton.element);
+		this.$domAxisContextMenuIcon = this.$axisContextMenuButton.element;
+		this.$domAxisContextMenuIcon.addClass('axisContextMenuDropdownArrow');
+		this.$tvButtonRect = null;
+		this.$vizImageRegion = null;
+		domNode.appendChild(this.element.get(0));
+		this.$attachStaticEventHandlers();
+		this.set_enabled(true);
+		this.$domAxisContextMenuIcon.css('display', 'none');
+	};
+	$tab_AxisContextMenu.__typeName = 'tab.AxisContextMenu';
+	global.tab.AxisContextMenu = $tab_AxisContextMenu;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.ContinuousScrollZoom
+	var $tab_ContinuousScrollZoom = function(startingZoomLevel, isFromTouchpad) {
+		this.$isFromTouchpad = false;
+		this.$startingZoomLevel = 0;
+		this.$currentZoomFactor = 0;
+		this.$netZoomLevel = 0;
+		this.$isFromTouchpad = isFromTouchpad;
+		this.$startingZoomLevel = startingZoomLevel;
+		this.$currentZoomFactor = 1;
+		this.$netZoomLevel = 0;
+	};
+	$tab_ContinuousScrollZoom.__typeName = 'tab.ContinuousScrollZoom';
+	global.tab.ContinuousScrollZoom = $tab_ContinuousScrollZoom;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.CursorKey
+	var $tab_CursorKey = function() {
+	};
+	$tab_CursorKey.__typeName = 'tab.CursorKey';
+	global.tab.CursorKey = $tab_CursorKey;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.DiscreteScrollZoom
+	var $tab_DiscreteScrollZoom = function(startingZoomLevel, fromTouchPad) {
+		this.$netZoomLevel = 0;
+		this.$zoomFactor = 0;
+		this.$netScrollDelta = 0;
+		this.$startingZoomLevel = 0;
+		this.$fromTouchPad = false;
+		this.$numEventsReceived = 0;
+		this.$netScrollDelta = 0;
+		this.$netZoomLevel = 0;
+		this.$zoomFactor = 1;
+		this.$startingZoomLevel = startingZoomLevel;
+		this.$fromTouchPad = fromTouchPad;
+	};
+	$tab_DiscreteScrollZoom.__typeName = 'tab.DiscreteScrollZoom';
+	global.tab.DiscreteScrollZoom = $tab_DiscreteScrollZoom;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.Drilling
+	var $tab_Drilling = function(tiledViewer, domNode) {
+		this.$inputHandlers = null;
+		this.$domLevelDrillDown = null;
+		this.$domLevelDrillUp = null;
+		this.$drillInFlight = false;
+		this.$drillWidgets = null;
+		this.$domLevelDrillXYRect = null;
+		this.$geometry = null;
+		$tab_SortDrillBase.call(this, $(document.createElement('div')), $(domNode), tiledViewer);
+		this.$inputHandlers = this.get_parentViewer().get_inputHandlers();
+		this.element.addClass('tab-tiledViewerDrill');
+		this.$domLevelDrillDown = $("<span class='tab-tvLevelDrillDown tab-levelDrillingIcon tvDrillDown' />").appendTo(this.element);
+		var levelDrillDownButton = new spiff.Button(this.$domLevelDrillDown);
+		levelDrillDownButton.add_press(ss.mkdel(this, this.$onLevelDrillDown));
+		this.disposables.add$1(levelDrillDownButton);
+		this.$domLevelDrillUp = $("<span class='tab-tvLevelDrillUp tab-levelDrillingIcon tvDrillUp' />").appendTo(this.element);
+		var levelDrillUpButton = new spiff.Button(this.$domLevelDrillUp);
+		levelDrillUpButton.add_press(ss.mkdel(this, this.$onLevelDrillUp));
+		this.disposables.add$1(levelDrillUpButton);
+		domNode.appendChild(this.element.get(0));
+		this.$setupDrilling();
+		this.turnDrillWidgetsOff();
+	};
+	$tab_Drilling.__typeName = 'tab.Drilling';
+	global.tab.Drilling = $tab_Drilling;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.FloatingZoomToolbarOperationsWeb
+	var $tab_FloatingZoomToolbarOperationsWeb = function(tv) {
+		this.$tv = null;
+		this.$tv = tv;
+	};
+	$tab_FloatingZoomToolbarOperationsWeb.__typeName = 'tab.FloatingZoomToolbarOperationsWeb';
+	global.tab.FloatingZoomToolbarOperationsWeb = $tab_FloatingZoomToolbarOperationsWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.FloatingZoomToolbarWeb
+	var $tab_FloatingZoomToolbarWeb = function(containerDiv, zoomFuncs, type, topOffset, geoSearchEnabled) {
+		tab.FloatingZoomToolbar.call(this, containerDiv, zoomFuncs, type, topOffset, geoSearchEnabled);
+		this.init();
+	};
+	$tab_FloatingZoomToolbarWeb.__typeName = 'tab.FloatingZoomToolbarWeb';
+	global.tab.FloatingZoomToolbarWeb = $tab_FloatingZoomToolbarWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.HoverApi
+	var $tab_HoverApi = function(tv) {
+		this.$tv = null;
+		this.$tv = tv;
+	};
+	$tab_HoverApi.__typeName = 'tab.HoverApi';
+	global.tab.HoverApi = $tab_HoverApi;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.IScrollZoom
+	var $tab_IScrollZoom = function() {
+	};
+	$tab_IScrollZoom.__typeName = 'tab.IScrollZoom';
+	global.tab.IScrollZoom = $tab_IScrollZoom;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.LegacyTooltipBehavior
+	var $tab_LegacyTooltipBehavior = function(tooltip) {
+		this.$tooltip = null;
+		this.$timeoutHandles = null;
+		this.$uniqueMouseEventType = null;
+		this.$disposables = new tab.DisposableHolder();
+		this.$closeTimeoutHandle = null;
+		this.$mouseStopTimeoutHandle = null;
+		this.$movedSinceShow = false;
+		this.$timeTooltipShown = null;
+		this.$isFrozen = false;
+		this.$hasMouseEntered = false;
+		tab.Param.verifyValue(tooltip, 'tooltip');
+		this.$tooltip = tooltip;
+		this.$timeoutHandles = [];
+		this.$uniqueMouseEventType = $tab_LegacyTooltipBehavior.$getNewUniqueMouseMoveEventType();
+	};
+	$tab_LegacyTooltipBehavior.__typeName = 'tab.LegacyTooltipBehavior';
+	$tab_LegacyTooltipBehavior.$getNewUniqueMouseMoveEventType = function LegacyTooltipBehavior$GetNewUniqueMouseMoveEventType() {
+		$tab_LegacyTooltipBehavior.$uniqueEventTypeCounter++;
+		return 'mousemove.LegacyTooltipBehavior' + $tab_LegacyTooltipBehavior.$uniqueEventTypeCounter.toString();
+	};
+	global.tab.LegacyTooltipBehavior = $tab_LegacyTooltipBehavior;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.MapsSearchViewWeb
+	var $tab_MapsSearchViewWeb = function(vm) {
+		this.$spotlightedListItem = null;
+		tab.MapsSearchView.call(this, vm, tab.MapsSearchView.newMapsSearchViewTemplate());
+		this.get_compositeSearchWidget().get_textInputView().get_inputElement().mouseup(ss.mkdel(this, this.$handleSearchBoxMouseUp));
+		var compositeSearchWidgetWeb = ss.cast(this.get_compositeSearchWidget(), spiff.CompositeSearchWidgetWeb);
+		compositeSearchWidgetWeb.add_spotlightedListItemChanged(ss.mkdel(this, this.$arrowkeyedItemChanged));
+		compositeSearchWidgetWeb.add_tabKeyPressed(ss.mkdel(this, this.$handleTabKeyPress));
+		this.disposables.add$1(new tab.CallOnDispose(ss.mkdel(this, function() {
+			compositeSearchWidgetWeb.remove_spotlightedListItemChanged(ss.mkdel(this, this.$arrowkeyedItemChanged));
+			compositeSearchWidgetWeb.remove_tabKeyPressed(ss.mkdel(this, this.$handleTabKeyPress));
+		})));
+		compositeSearchWidgetWeb.set_spotlightedItemLogic(this);
+	};
+	$tab_MapsSearchViewWeb.__typeName = 'tab.MapsSearchViewWeb';
+	global.tab.MapsSearchViewWeb = $tab_MapsSearchViewWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UI.PaneTableMouseCapture
+	var $tab_PaneTableMouseCapture = function(element, handler) {
+		this.$eventHandler = null;
+		this.$setCapture(element, handler);
+	};
+	$tab_PaneTableMouseCapture.__typeName = 'tab.PaneTableMouseCapture';
+	$tab_PaneTableMouseCapture.get_$manuallyCaptureMouseEvents = function PaneTableMouseCapture$get_ManuallyCaptureMouseEvents() {
+		return !tsConfig.is_mobile && BrowserSupport.BrowserSupport.AddEventListener();
+	};
+	global.tab.PaneTableMouseCapture = $tab_PaneTableMouseCapture;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.PaneTableTemplateWeb
+	var $tab_PaneTableTemplateWeb = function() {
+		this.scrollX = null;
+		this.scrollY = null;
+		tab.PaneTableTemplate.call(this, $($tab_PaneTableTemplateWeb.htmlTemplate));
+		var g = ss.mkdel(this, this.getElementBySelector);
+		this.scrollX = g('.tab-tvScrollX');
+		this.scrollY = g('.tab-tvScrollY');
+	};
+	$tab_PaneTableTemplateWeb.__typeName = 'tab.PaneTableTemplateWeb';
+	global.tab.PaneTableTemplateWeb = $tab_PaneTableTemplateWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.PaneTableViewWeb
+	var $tab_PaneTableViewWeb = function(paneTableVM) {
+		this.$inputHandlers = {};
+		this.$domWeb = null;
+		this.$dragStarted = false;
+		this.$ignoreNextTap = false;
+		this.$vizHitTestUpdater = null;
+		this.$onUpdate = null;
+		this.drillWidget = null;
+		this.sortWidget = null;
+		this.axisContextMenuWidget = null;
+		this.$scrollXTiledWindow = null;
+		this.$scrollYTiledWindow = null;
+		this.$scrollAdjuster = null;
+		this.$hoverApi = null;
+		this.$isMouseInVizRegion = false;
+		this.$responsiveMouseHandler = null;
+		this.$dragIconHandler = null;
+		this.$zoomToAnchorTimer = null;
+		this.$currentAnchorPoint = null;
+		this.$scrollZoom = null;
+		this.$dragGlass = null;
+		this.$mostRecentCapturedMousePosition = null;
+		this.deferredHeaderResizerManager = null;
+		this.deferredCellResizerManager = null;
+		this.deferredAxisResizerManager = null;
+		tab.PaneTableView.call(this, paneTableVM, new $tab_PaneTableTemplateWeb());
+		this.$domWeb = ss.cast(this.dom, $tab_PaneTableTemplateWeb);
+		this.$setZoomVariableDefaults();
+		var $t1 = new EventUtils.EventHandleSpec();
+		$t1.tap = ss.mkdel(this, function(e) {
+			this.$mostRecentCapturedMousePosition = { x: e.pageX, y: e.pageY };
+			this.refreshScrollingAndAxisIcons();
+			if (ss.referenceEquals(e.currentTarget, e.target)) {
+				this.clearSelection();
+			}
+		});
+		var spec = $t1;
+		this.$initializeHeaderResizerManager();
+		this.$initializeCellResizerManager();
+		this.$initializeAxisResizerManager();
+		this.$initializeVizContextMenuComponent();
+		this.$initializeSelectionChromeComponent();
+		this.disposables.add$1(new $tab_PaneTableMouseCapture(document.body, this));
+		this.disposables.add$1(new EventUtils.TableauEventHandler(this.dom.enclosingDiv.get(0), spec));
+		this.init();
+	};
+	$tab_PaneTableViewWeb.__typeName = 'tab.PaneTableViewWeb';
+	$tab_PaneTableViewWeb.$isPointOutsideOfRegion = function PaneTableViewWeb$IsPointOutsideOfRegion(c, e) {
+		return c.x > e.pageX || c.x + c.w <= e.pageX || c.y > e.pageY || c.y + c.h <= e.pageY;
+	};
+	$tab_PaneTableViewWeb.$getCursorPosInLocalCoordinates = function PaneTableViewWeb$GetCursorPosInLocalCoordinates(vizRegion, originalEvent) {
+		var curPosX = ss.round(originalEvent['clientX']);
+		var curPosY = ss.round(originalEvent['clientY']);
+		var cursorPosGlobal = { x: curPosX, y: curPosY };
+		var cursorPosLocal = vizRegion.toLocalCoords(cursorPosGlobal, false);
+		return cursorPosLocal;
+	};
+	$tab_PaneTableViewWeb.$resolveSelectAction = function PaneTableViewWeb$ResolveSelectAction(region, pseudoEvent) {
+		if (region.get_regionPart() === 'viz') {
+			return tab.SelectActionResolver.fromNormalizedEvent(pseudoEvent, 1);
+		}
+		return tab.SelectActionResolver.fromNormalizedEvent(pseudoEvent, 2);
+	};
+	$tab_PaneTableViewWeb.$onPress = function PaneTableViewWeb$OnPress() {
+	};
+	global.tab.PaneTableViewWeb = $tab_PaneTableViewWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.SortDrillBase
+	var $tab_SortDrillBase = function(node, parent, parentViewer) {
+		this.$index = 0;
+		this.$parentNode = null;
+		this.$mouseHandler = null;
+		this.$2$ParentViewerField = null;
+		spiff.Widget.call(this, node);
+		this.$index = $tab_SortDrillBase.$instances.length;
+		$tab_SortDrillBase.$instances.push(this);
+		this.$parentNode = parent;
+		this.set_parentViewer(parentViewer);
+	};
+	$tab_SortDrillBase.__typeName = 'tab.SortDrillBase';
+	global.tab.SortDrillBase = $tab_SortDrillBase;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.Sorting
+	var $tab_Sorting = function(tiledViewer, domNode) {
+		this.$sortIndicatorButton = null;
+		this.$sortMenuDropDownButton = null;
+		this.$domSortIndicator = null;
+		this.$domSortMenuDropDown = null;
+		this.$sortIndicatorState = null;
+		this.$domSortIndicatorXYRect = null;
+		this.$sortIndicators = null;
+		this.$updateDelegate = null;
+		$tab_SortDrillBase.call(this, $(document.createElement('div')), $(domNode), tiledViewer);
+		this.element.addClass($tab_Sorting.sortingElementClassName);
+		this.$sortMenuDropDownButton = this.$createSortIndicatorMenuButton();
+		this.element.append(this.$sortMenuDropDownButton.element);
+		this.$domSortMenuDropDown = this.$sortMenuDropDownButton.element;
+		this.$sortIndicatorButton = this.$createSortIndicatorButton();
+		this.element.append(this.$sortIndicatorButton.element);
+		this.$domSortIndicator = this.$sortIndicatorButton.element;
+		$(domNode).find('.tab-tiledViewerSort').remove();
+		domNode.appendChild(this.element.get(0));
+		this.$attachStaticEventHandlers();
+		this.$setupSortIndicators();
+		this.$domSortIndicator.css('display', 'none');
+	};
+	$tab_Sorting.__typeName = 'tab.Sorting';
+	global.tab.Sorting = $tab_Sorting;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.TiledViewerRegionWeb
+	var $tab_TiledViewerRegionWeb = function(regionPart, domNode, hoverApi, scrollHNode, scrollVNode, allowPanZoomActions, sheetID, viewModel, toolModeViewModel) {
+		this.$allowRegionSelect = false;
+		this.$scrollTimer = null;
+		this.$hoverApi = null;
+		this.$delegateDragStart = null;
+		this.$onDragMouseMove = null;
+		this.$onDragMouseUp = null;
+		this.$delegateDragEnd = null;
+		this.$isDragTracking = false;
+		this.$mouseOverMarkOrVisualPart = false;
+		this.$panMouseUpFullyCompleteMetricsContext = null;
+		this.$panMouseUpLocalWorkCompleteMetricsContext = null;
+		tab.TiledViewerRegion.call(this, regionPart, domNode, allowPanZoomActions, sheetID, viewModel, toolModeViewModel);
+		this.$hoverApi = hoverApi;
+		if (this.get_regionPart() === 'viz') {
+			$tab_TiledViewerRegionWeb.$setUpCursorsDictionary();
+			tab.ModifierKeyState.add_modifierKeysChanged(ss.mkdel(this, this.$modifierKeysChanged));
+			this.disposables.add$1(new tab.CallOnDispose(ss.mkdel(this, function() {
+				tab.ModifierKeyState.remove_modifierKeysChanged(ss.mkdel(this, this.$modifierKeysChanged));
+			})));
+		}
+		this.$allowRegionSelect = true;
+		this.scroller = new tab.WebScroller(scrollHNode, scrollVNode);
+	};
+	$tab_TiledViewerRegionWeb.__typeName = 'tab.TiledViewerRegionWeb';
+	$tab_TiledViewerRegionWeb.$setUpCursorsDictionary = function TiledViewerRegionWeb$SetUpCursorsDictionary() {
+		if (ss.isValue($tab_TiledViewerRegionWeb.$cursors)) {
+			return;
+		}
+		var BackupCur = 'default';
+		$tab_TiledViewerRegionWeb.$cursors = {};
+		$tab_TiledViewerRegionWeb.$cursors['zoomIn'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/zoomin.png', true) + ') 8 7, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['zoomOut'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/zoomout.png', true) + ') 8 7, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['panDrag'] = (BrowserSupport.BrowserSupport.IsIE() ? 'move' : ('url(' + tableau.util.assetUrl('cursors/pandrag.png', true) + ') 9 9, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['rectSelect'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/rectdrag.png', true) + ') 2 2, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['lassoSelect'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/lassodrag.png', true) + ') 2 2, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['radialSelect'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/radialdrag.png', true) + ') 2 2, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['rectExtended'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/rectdragextended.png', true) + ') 2 2, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['lassoExtended'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/lassodragextended.png', true) + ') 2 2, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['radialExtended'] = (BrowserSupport.BrowserSupport.IsIE() ? 'crosshair' : ('url(' + tableau.util.assetUrl('cursors/radialdragextended.png', true) + ') 2 2, ' + BackupCur));
+		$tab_TiledViewerRegionWeb.$cursors['dragSelect'] = 'crosshair';
+		$tab_TiledViewerRegionWeb.$cursors['select'] = 'pointer';
+		$tab_TiledViewerRegionWeb.$cursors['defaultKey'] = 'default';
+	};
+	$tab_TiledViewerRegionWeb.$isPanModKeys = function TiledViewerRegionWeb$IsPanModKeys(pseudoEvent) {
+		return pseudoEvent.shiftKey && !spiff.EventUtil.isCtrlKey(pseudoEvent);
+	};
+	global.tab.TiledViewerRegionWeb = $tab_TiledViewerRegionWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.TooltipLegacyMode
+	var $tab_TooltipLegacyMode = function(contextProvider, visualId) {
+		tab.TooltipBaseLegacyMode.call(this, contextProvider, visualId);
+		this.get_tooltip().add_showed(ss.mkdel(this, this.showCommandAreaAndActions));
+	};
+	$tab_TooltipLegacyMode.__typeName = 'tab.TooltipLegacyMode';
+	global.tab.TooltipLegacyMode = $tab_TooltipLegacyMode;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.Views.VizContextMenuComponent
+	var $tab_VizContextMenuComponent = function(props) {
+		this.$menuAnchor = null;
+		spiff.PureRenderComponent.call(this, props);
+	};
+	$tab_VizContextMenuComponent.__typeName = 'tab.VizContextMenuComponent';
+	global.tab.VizContextMenuComponent = $tab_VizContextMenuComponent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.VizZoneWeb.VizZoneWebFactory
+	var $tab_VizZoneWebFactory = function() {
+		tab.VizZoneFactory.call(this);
+	};
+	$tab_VizZoneWebFactory.__typeName = 'tab.VizZoneWebFactory';
+	global.tab.VizZoneWebFactory = $tab_VizZoneWebFactory;
+	ss.initEnum($tab_$DrillState, $asm, { $none: 0, $drillDown: 1, $drillUp: 2, $both: 3 });
+	ss.initClass($tab_$DrillWidgets, $asm, {});
+	ss.initClass($tab_$MousePaneState, $asm, {
+		get_$isNotInDrillArea: function MousePaneState$get_IsNotInDrillArea() {
+			return !this.$inXHeader && !this.$inYHeader && !this.$inXNomAxis && !this.$inTopLeftSpacerAreaY && !this.$inTopLeftSpacerAreaX && !this.$inBottomLeftSpacerArea && !this.$inLeftAxisArea;
+		}
+	});
+	ss.initClass($tab_$PxLevel, $asm, {});
+	ss.initClass($tab_$Sorting$SortIndicatorState, $asm, {});
+	ss.initClass($tab_AnnotationSelectionChromeComponent, $asm, {
+		render: function AnnotationSelectionChromeComponent$Render() {
+			return (this.props.visible ? this.$renderChrome() : null);
+		},
+		$getChevron: function AnnotationSelectionChromeComponent$GetChevron(annotation) {
+			var idClass = $tab_AnnotationSelectionChromeComponent.chevronClass + annotation.annotationId;
+			var $t1 = new Object();
+			$t1.iconClassName = $tab_AnnotationSelectionChromeComponent.chevronIconClass;
+			$t1.customClassName = $tab_AnnotationSelectionChromeComponent.chevronClass + ' ' + idClass;
+			return React.createElement(spiff.IconButtonComponent, $t1);
+		},
+		$getResizeHandlers: function AnnotationSelectionChromeComponent$GetResizeHandlers(annotation) {
+			var handles = [];
+			if (this.props.annotations.length !== 1) {
+				return handles;
+			}
+			if (annotation.annotateEnum === 'area' && tab.FeatureFlags.isEnabled('AnnotationAreaResize')) {
+				handles = _.map(tab.AnnotationSelectionChromeViewModel.resizeHandlesArea, ss.mkdel(this, function(areaHandle) {
+					return this.$getHandle(annotation, areaHandle, null);
+				}));
+			}
+			if ((annotation.annotateEnum === 'point' || annotation.annotateEnum === 'mark') && tab.FeatureFlags.isEnabled('AnnotationMarkAndPointResize')) {
+				handles = _.map(tab.AnnotationSelectionChromeViewModel.resizeHandlesPointAndMark, ss.mkdel(this, function(pointMarkHandle) {
+					return this.$getHandle(annotation, pointMarkHandle, null);
+				}));
+			}
+			return handles;
+		},
+		$getHandle: function AnnotationSelectionChromeComponent$GetHandle(annotation, handleClassName, styles) {
+			var child = spiff.DOMElements.div({ className: tab.AnnotationSelectionChromeViewModel.handlerTargetIcon });
+			return spiff.DOMElements.div({ className: tab.AnnotationSelectionChromeViewModel.resizeHandlerPre + ' ' + handleClassName, style: styles, key: handleClassName, onMouseDown: ss.mkdel(this, function(e) {
+				if (e.button === 0) {
+					this.props.onHandlerMouseDown(handleClassName, annotation);
+				}
+			}), onMouseUp: ss.mkdel(this, function(e1) {
+				if (e1.button === 0) {
+					this.props.clearMouseUp();
+				}
+			}), onClick: ss.mkdel(this, function(e2) {
+				this.props.clearMouseUp();
+			}) }, child);
+		},
+		$getPointTargetHandle: function AnnotationSelectionChromeComponent$GetPointTargetHandle() {
+			if (this.props.annotations.length !== 1 || !tab.FeatureFlags.isEnabled('AnnotationMovePointTarget')) {
+				return null;
+			}
+			var annotation = this.props.annotations[0];
+			if (annotation.annotateEnum === 'point') {
+				return this.$getHandle(annotation, tab.AnnotationSelectionChromeViewModel.movePointTargetHandler, this.$getPointTargetStyle(annotation));
+			}
+			return null;
+		},
+		$getPointTargetShadow: function AnnotationSelectionChromeComponent$GetPointTargetShadow() {
+			return spiff.DOMElements.line({ className: 'tabAnnotationPointDraggingChrome', strokeWidth: 1, x1: this.props.shadow.point1.x, y1: this.props.shadow.point1.y, x2: this.props.shadow.point2.x, y2: this.props.shadow.point2.y });
+		},
+		$getPointTargetStyle: function AnnotationSelectionChromeComponent$GetPointTargetStyle(annotation) {
+			return { left: annotation.targetPoint.x - ss.Int32.div(this.$invisibleHandleSize, 2) - this.props.scrollOffset.x, top: annotation.targetPoint.y - ss.Int32.div(this.$invisibleHandleSize, 2) - this.props.scrollOffset.y };
+		},
+		$getChromeStyle: function AnnotationSelectionChromeComponent$GetChromeStyle(annotation) {
+			return { left: annotation.areaRect.x - this.props.scrollOffset.x, top: annotation.areaRect.y - this.props.scrollOffset.y, width: annotation.areaRect.w, height: annotation.areaRect.h };
+		},
+		$getDraggingChromeStyle: function AnnotationSelectionChromeComponent$GetDraggingChromeStyle() {
+			var draggingShadow = this.props.shadow.rectShadow;
+			return { left: draggingShadow.x, top: draggingShadow.y, width: draggingShadow.w, height: draggingShadow.h };
+		},
+		$chromeDivHelper: function AnnotationSelectionChromeComponent$ChromeDivHelper(pm, isHover) {
+			return { key: pm.annotationId, className: 'tabAnnotationChrome ' + (isHover ? 'tabAnnotationHoverChrome' : 'tabAnnotationSelectionChrome'), style: this.$getChromeStyle(pm) };
+		},
+		$renderChrome: function AnnotationSelectionChromeComponent$RenderChrome() {
+			var renderRegion = this.props.renderRegion;
+			var selections = { className: 'tabAnnotationSelectionChromeHolder', style: { left: renderRegion.x, top: renderRegion.y, width: renderRegion.w, height: renderRegion.h, position: 'absolute' } };
+			var annotationRects = _.map(this.props.annotations, ss.mkdel(this, function(annotation) {
+				return spiff.DOMElements.div(this.$chromeDivHelper(annotation, false), this.$getChevron(annotation), this.$getResizeHandlers(annotation));
+			}));
+			if (ss.isValue(this.props.hoveredAnnotation)) {
+				var hovered = this.props.hoveredAnnotation;
+				annotationRects.push(spiff.DOMElements.div(this.$chromeDivHelper(hovered, true), this.$getChevron(hovered)));
+			}
+			if (ss.isValue(this.props.shadow.rectShadow)) {
+				annotationRects.push(spiff.DOMElements.div({ key: 'draggingAnnotation', className: 'tabAnnotationDraggingChrome', style: this.$getDraggingChromeStyle() }));
+			}
+			var lineShadow = null;
+			if (ss.isValue(this.props.shadow.point1) && ss.isValue(this.props.shadow.point2)) {
+				var svgHolder = { className: 'tabAnnotationPointShadowDragHolder', width: this.props.renderRegion.w, height: this.props.renderRegion.h };
+				lineShadow = spiff.DOMElements.svg(svgHolder, this.$getPointTargetShadow());
+			}
+			return spiff.DOMElements.div(selections, annotationRects, this.$getPointTargetHandle(), lineShadow);
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_SortDrillBase, $asm, {
+		get_enabled: function SortDrillBase$get_Enabled() {
+			return ss.isValue(this.$mouseHandler);
+		},
+		set_enabled: function SortDrillBase$set_Enabled(value) {
+			if (this.get_widgetFeatureEnabled()) {
+				if (value) {
+					if (ss.isNullOrUndefined(this.$mouseHandler)) {
+						this.$mouseHandler = spiff.EventUtil.bindWithDispose(this.$parentNode, 'mousemove', ss.mkdel(this, function(e) {
+							this.onMouseMove(e);
+						}));
+					}
+				}
+				else {
+					this.$mouseHandler = tab.MiscUtil.dispose$1(this.$mouseHandler);
+				}
+			}
+		},
+		get_widgetFeatureEnabled: null,
+		get_parentViewer: function SortDrillBase$get_ParentViewer() {
+			return this.$2$ParentViewerField;
+		},
+		set_parentViewer: function SortDrillBase$set_ParentViewer(value) {
+			this.$2$ParentViewerField = value;
+		},
+		get_scrollAmountX: function SortDrillBase$get_ScrollAmountX() {
+			var domScrollX = this.get_parentViewer().get_domWeb().scrollX.get(0);
+			return (ss.isValue(domScrollX) ? domScrollX.scrollLeft : 0);
+		},
+		get_scrollAmountY: function SortDrillBase$get_ScrollAmountY() {
+			var domScrollY = this.get_parentViewer().get_domWeb().scrollY.get(0);
+			return (ss.isValue(domScrollY) ? domScrollY.scrollTop : 0);
+		},
+		get_scrollAmount: function SortDrillBase$get_ScrollAmount() {
+			return { x: this.get_scrollAmountX(), y: this.get_scrollAmountY() };
+		},
+		dispose: function SortDrillBase$Dispose() {
+			ss.remove($tab_SortDrillBase.$instances, this);
+			this.element.remove();
+			this.$mouseHandler = tab.MiscUtil.dispose$1(this.$mouseHandler);
+			spiff.Widget.prototype.dispose.call(this);
+		},
+		isOtherActiveInRect: function SortDrillBase$IsOtherActiveInRect(rect) {
+			for (var i = 0; i < $tab_SortDrillBase.$instances.length; i++) {
+				if (i !== this.$index) {
+					var inst = $tab_SortDrillBase.$instances[i];
+					if (inst.isActiveInRect(rect)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		},
+		isActiveInRect: function SortDrillBase$IsActiveInRect(rect) {
+			return false;
+		},
+		onMouseMove: null,
+		showNodeAt: function SortDrillBase$ShowNodeAt(domNode, top, left) {
+			$(domNode).css('top', top + 'px');
+			$(domNode).css('left', left + 'px');
+			$(domNode).css('display', '');
+		},
+		hideNode: function SortDrillBase$HideNode(domNode) {
+			$(domNode).css('display', 'none');
+		},
+		regionHitTest: function SortDrillBase$RegionHitTest(regions, point) {
+			var regionDict = regions;
+			if (ss.isNullOrUndefined(regionDict)) {
+				return null;
+			}
+			var $t1 = new ss.ObjectEnumerator(regionDict);
+			try {
+				while ($t1.moveNext()) {
+					var entry = $t1.current();
+					if (ss.isValue(entry.value) && tab.RectUtil.inRect(entry.value, point)) {
+						return entry.key;
+					}
+				}
+			}
+			finally {
+				$t1.dispose();
+			}
+			return null;
+		},
+		getPaneTableViewMousePositionFromCoordinates: function SortDrillBase$GetPaneTableViewMousePositionFromCoordinates(x, y, parentView) {
+			return { x: x - parentView.get_tableViewPosition().x, y: y - parentView.get_tableViewPosition().y };
+		},
+		getJQueryMousePositionFromPaneTableViewCoordinates: function SortDrillBase$GetJQueryMousePositionFromPaneTableViewCoordinates(x, y) {
+			return { left: x + this.get_parentViewer().get_tableViewPosition().x, top: y + this.get_parentViewer().get_tableViewPosition().y };
+		},
+		repositionAndShowElement: function SortDrillBase$RepositionAndShowElement(element, targetRectanglePosition) {
+			element.style.width = targetRectanglePosition.w + 'px';
+			element.style.height = targetRectanglePosition.h + 'px';
+			this.showNodeAt(element, targetRectanglePosition.y, targetRectanglePosition.x);
+		},
+		computeTvButtonRectFromUnrolledRegionCoordinates: function SortDrillBase$ComputeTvButtonRectFromUnrolledRegionCoordinates(tvButtonRect, tvRegionRect, tvMousePosition, pointInRegion) {
+			tvButtonRect.y -= pointInRegion.y - tvMousePosition.y;
+			tvButtonRect.x -= pointInRegion.x - tvMousePosition.x;
+			var tvbuttonTopLeft = { x: tvButtonRect.x + 2, y: tvButtonRect.y + 2 };
+			var tvbuttonBottomRight = { x: tvButtonRect.x + tvButtonRect.w - 2, y: tvButtonRect.y + tvButtonRect.h - 2 };
+			if (this.isPointInRect(tvRegionRect, tvbuttonTopLeft) && this.isPointInRect(tvRegionRect, tvbuttonBottomRight)) {
+				return tvButtonRect;
+			}
+			return null;
+		},
+		isPointInRect: function SortDrillBase$IsPointInRect(rect, point) {
+			return tab.RectUtil.inRect(rect, point);
+		},
+		isPointInRectXY: function SortDrillBase$IsPointInRectXY(rect, point) {
+			return tab.RectXYUtil.inRect(rect, point);
+		}
+	}, spiff.Widget, [tab.IWidget, tab.IAppendableView, ss.IDisposable]);
+	ss.initClass($tab_AxisContextMenu, $asm, {
+		get_widgetFeatureEnabled: function AxisContextMenu$get_WidgetFeatureEnabled() {
+			return tab.FeatureFlags.isEnabled('EditAxisWebAffordance') && tsConfig.is_authoring;
+		},
+		dispose: function AxisContextMenu$Dispose() {
+			this.set_parentViewer(null);
+			this.$axisContextMenuButton.element.remove();
+			this.$axisContextMenuButton.dispose();
+			this.$iconEventHandler.dispose();
+			this.$domAxisContextMenuIcon.off('mouseout');
+			$tab_SortDrillBase.prototype.dispose.call(this);
+		},
+		setLocalCoords: function AxisContextMenu$SetLocalCoords(point) {
+			this.$localCoordinates = point;
+		},
+		onUpdate: function AxisContextMenu$OnUpdate(visibleGeometry) {
+			this.$visGeo = visibleGeometry;
+			this.$indicateEditAxisMenuMouseEvent(this.get_parentViewer().get_capturedPaneTableViewMousePosition());
+		},
+		hideAxisContextMenuIcon: function AxisContextMenu$HideAxisContextMenuIcon() {
+			this.hideNode(this.$domAxisContextMenuIcon.get(0));
+		},
+		onMouseMove: function AxisContextMenu$OnMouseMove(e) {
+			this.$indicateEditAxisMenuMouseEvent$1(e);
+		},
+		isActiveInRect: function AxisContextMenu$IsActiveInRect(rect) {
+			return false;
+		},
+		$attachStaticEventHandlers: function AxisContextMenu$AttachStaticEventHandlers() {
+			var $t1 = new EventUtils.EventHandleSpec();
+			$t1.tap = ss.mkdel(this, function(e) {
+				this.$onAxisContextMenuButtonTap(e);
+			});
+			var spec = $t1;
+			this.$iconEventHandler = new EventUtils.TableauEventHandler(this.$domAxisContextMenuIcon.get(0), spec);
+			this.disposables.add$1(this.$iconEventHandler);
+			this.$domAxisContextMenuIcon.mouseout(ss.mkdel(this, this.$onAxisContextMenuButtonMouseOut));
+		},
+		$indicateEditAxisMenuMouseEvent$1: function AxisContextMenu$IndicateEditAxisMenuMouseEvent(e) {
+			if (e.button > 0) {
+				return;
+			}
+			var mouse = this.getPaneTableViewMousePositionFromCoordinates(e.pageX, e.pageY, this.get_parentViewer());
+			this.$indicateEditAxisMenuMouseEvent(mouse);
+		},
+		$setVizImageRegion: function AxisContextMenu$SetVizImageRegion(region) {
+			this.$vizImageRegion = null;
+			if (ss.isNullOrUndefined(region)) {
+				return;
+			}
+			else if (region.indexOf('leftaxis'.toString()) !== -1) {
+				this.$vizImageRegion = 'leftaxis';
+			}
+			else if (region.indexOf('rightaxis'.toString()) !== -1) {
+				this.$vizImageRegion = 'rightaxis';
+			}
+			else if (region.indexOf('topaxis'.toString()) !== -1) {
+				this.$vizImageRegion = 'topaxis';
+			}
+			else if (region.indexOf('bottomaxis'.toString()) !== -1) {
+				this.$vizImageRegion = 'bottomaxis';
+			}
+		},
+		$canScrollHorizontal: function AxisContextMenu$CanScrollHorizontal() {
+			return this.$vizImageRegion === 'bottomaxis' || this.$vizImageRegion === 'topaxis';
+		},
+		$canScrollVertical: function AxisContextMenu$CanScrollVertical() {
+			return this.$vizImageRegion === 'leftaxis' || this.$vizImageRegion === 'rightaxis';
+		},
+		$computeScrollOffsetsForPoint: function AxisContextMenu$ComputeScrollOffsetsForPoint(pointInRegion) {
+			if (this.$canScrollVertical()) {
+				pointInRegion.y += this.get_scrollAmount().y;
+			}
+			if (this.$canScrollHorizontal()) {
+				pointInRegion.x += this.get_scrollAmount().x;
+			}
+			return pointInRegion;
+		},
+		$indicateEditAxisMenuMouseEvent: function AxisContextMenu$IndicateEditAxisMenuMouseEvent(mousePosition) {
+			if (ss.isNullOrUndefined(mousePosition) || !this.get_widgetFeatureEnabled()) {
+				return;
+			}
+			var region = this.regionHitTest(this.$visGeo, mousePosition);
+			this.$setVizImageRegion(region);
+			if (ss.isNullOrUndefined(this.$vizImageRegion)) {
+				this.hideAxisContextMenuIcon();
+				return;
+			}
+			var regionsDict = this.$visGeo;
+			this.$possiblyShowAxisMenuIconInRegion(regionsDict[region]);
+		},
+		$onAxisContextMenuButtonTap: function AxisContextMenu$OnAxisContextMenuButtonTap(e) {
+			spiff.EventUtil.stopEvent$1(e);
+			tab.AxisAuthoringTelemetry.logAxisCaretClickEvent();
+			this.$updateAxisContextMenuButtonImageClass(true);
+			this.$calculateAndSetLocalCoords(e.pageX, e.pageY);
+			this.$getAndShowAxisContextMenu();
+		},
+		$onAxisContextMenuButtonMouseOut: function AxisContextMenu$OnAxisContextMenuButtonMouseOut(e) {
+			this.$updateAxisContextMenuButtonImageClass(false);
+			e.stopPropagation();
+		},
+		$updateAxisContextMenuButtonImageClass: function AxisContextMenu$UpdateAxisContextMenuButtonImageClass(isIconActive) {
+			this.$domAxisContextMenuIcon.toggleClass('active', isIconActive);
+		},
+		$calculateAndSetLocalCoords: function AxisContextMenu$CalculateAndSetLocalCoords(x, y) {
+			var mousePosition = this.getPaneTableViewMousePositionFromCoordinates(x, y, this.get_parentViewer());
+			var region = this.regionHitTest(this.$visGeo, mousePosition);
+			if (ss.isNullOrUndefined(region)) {
+				return;
+			}
+			var regionsDict = this.$visGeo;
+			mousePosition.x -= regionsDict[region].l;
+			mousePosition.y -= regionsDict[region].t;
+			mousePosition = this.$computeScrollOffsetsForPoint(mousePosition);
+			this.setLocalCoords(mousePosition);
+		},
+		$getAndShowAxisContextMenu: function AxisContextMenu$GetAndShowAxisContextMenu() {
+			var $t1 = new spiff.ShowMenuOptions(this.$domAxisContextMenuIcon, false);
+			$t1.cursorPosition = this.getJQueryMousePositionFromPaneTableViewCoordinates(this.$tvButtonRect.x, this.$tvButtonRect.y + this.$tvButtonRect.h);
+			var showMenuOptions = $t1;
+			var $t2 = new tab.BuildServerAxisContextMenuCmd();
+			$t2.cmdParams['visualIdPresModel'] = this.get_parentViewer().get_visualId();
+			$t2.cmdParams['regionPoint'] = tab.PointUtil.toPresModel(this.$localCoordinates);
+			$t2.cmdParams['r'] = ss.unbox(this.$vizImageRegion);
+			$t2.invoke().then(ss.mkdel(this, function(response) {
+				if (this.$domAxisContextMenuIcon.css('display') === 'none') {
+					this.$domAxisContextMenuIcon.css('display', '');
+				}
+				var commands = response.$$cmdParams['commands'];
+				var menuViewModel = tab.WidgetUtil.menuViewModelFromCommands(commands, tab.WidgetUtil.commandMenuItemClicked, null, null, null);
+				menuViewModel.show(showMenuOptions);
+				tab.AxisAuthoringTelemetry.logAxisContextMenuShownEvent();
+			}));
+		},
+		$possiblyShowAxisMenuIconInRegion: function AxisContextMenu$PossiblyShowAxisMenuIconInRegion(tvRegionRect) {
+			var i, len;
+			var axisRegions = this.get_parentViewer().get_axisRegions();
+			var tvMousePosition = this.get_parentViewer().get_capturedPaneTableViewMousePosition();
+			for (i = 0, len = axisRegions.length; i < len; i++) {
+				var axisRegionPresModel = axisRegions[i];
+				if (axisRegionPresModel.r !== this.$vizImageRegion) {
+					continue;
+				}
+				var itemRect = tab.RecordCast.rectPresModelAsRectXY(axisRegionPresModel.itemRect);
+				var axisRegionRect = tab.RecordCast.rectPresModelAsRectXY(axisRegionPresModel.regionRect);
+				if (ss.isNullOrUndefined(itemRect) || ss.isNullOrUndefined(axisRegionRect)) {
+					continue;
+				}
+				var pointInRegion = this.$convertTvCoordinatesToUnrolledRegionCoordinates(tvRegionRect, axisRegionRect);
+				if (tab.RectXYUtil.inRect(itemRect, pointInRegion)) {
+					var itemRectPresModel = axisRegionPresModel.itemRect;
+					var buttonRect = { x: itemRectPresModel.x + itemRectPresModel.w - 14 - 2, y: itemRectPresModel.y + 3, w: 14, h: 14 };
+					buttonRect = this.computeTvButtonRectFromUnrolledRegionCoordinates(buttonRect, tvRegionRect, tvMousePosition, pointInRegion);
+					if (ss.isValue(buttonRect)) {
+						this.$tvButtonRect = { x: buttonRect.x, y: buttonRect.y, w: buttonRect.w, h: buttonRect.h };
+						this.$updateAxisContextMenuButtonImageClass(false);
+						this.repositionAndShowElement(this.$domAxisContextMenuIcon.get(0), this.$tvButtonRect);
+						return;
+					}
+				}
+			}
+			this.hideAxisContextMenuIcon();
+		},
+		$convertTvCoordinatesToUnrolledRegionCoordinates: function AxisContextMenu$ConvertTvCoordinatesToUnrolledRegionCoordinates(tvRegionRect, axisRegionRect) {
+			var tvMousePosition = this.get_parentViewer().get_capturedPaneTableViewMousePosition();
+			var pointInRegion = { x: tvMousePosition.x, y: tvMousePosition.y };
+			pointInRegion.y += axisRegionRect.y - tvRegionRect.t;
+			pointInRegion.x += axisRegionRect.x - tvRegionRect.l;
+			return this.$computeScrollOffsetsForPoint(pointInRegion);
+		}
+	}, $tab_SortDrillBase, [tab.IWidget, tab.IAppendableView, ss.IDisposable]);
+	ss.initInterface($tab_IScrollZoom, $asm, { update: null, currentZoomFactor: null, currentZoomLevel: null });
+	ss.initClass($tab_ContinuousScrollZoom, $asm, {
+		update: function ContinuousScrollZoom$Update(scrollDelta) {
+			var factor = this.$computeFactor(scrollDelta);
+			this.$currentZoomFactor = this.$clampMapZoomFactorToValidRange(this.$startingZoomLevel, this.$currentZoomFactor * factor);
+			this.$netZoomLevel = tab.MapUtil.convertZoomFactorToZoomLevel(this.$currentZoomFactor);
+			this.$adjustZoomIfBelowLevelZero();
+			return true;
+		},
+		currentZoomFactor: function ContinuousScrollZoom$CurrentZoomFactor() {
+			return this.$currentZoomFactor;
+		},
+		currentZoomLevel: function ContinuousScrollZoom$CurrentZoomLevel() {
+			return this.$startingZoomLevel - this.$netZoomLevel;
+		},
+		$computeFactor: function ContinuousScrollZoom$ComputeFactor(scrollDelta) {
+			var zoomRate = (this.$isFromTouchpad ? $tab_ContinuousScrollZoom.$touchpadZoomRate : $tab_ContinuousScrollZoom.$wheelZoomRate);
+			var factor = $tab_ContinuousScrollZoom.$maxZoomFactor / (1 + Math.exp(-Math.abs(scrollDelta * zoomRate)));
+			if (scrollDelta > 0 && factor !== 0) {
+				factor = 1 / factor;
+			}
+			return factor;
+		},
+		$adjustZoomIfBelowLevelZero: function ContinuousScrollZoom$AdjustZoomIfBelowLevelZero() {
+			if (this.currentZoomLevel() <= 0) {
+				this.$currentZoomFactor = 1 / tab.MapUtil.getZoomFactorForDesiredZoomLevel(this.$startingZoomLevel, 0);
+				this.$netZoomLevel = this.$startingZoomLevel;
+			}
+		},
+		$clampMapZoomFactorToValidRange: function ContinuousScrollZoom$ClampMapZoomFactorToValidRange(startZoomLevel, zoomFactor) {
+			var isZoomIn = zoomFactor > 1;
+			var endZoomLevel = startZoomLevel + Math.log(zoomFactor) / Math.log(2);
+			if (isZoomIn && endZoomLevel > $tab_ContinuousScrollZoom.maxValidMapZoomLevel) {
+				return Math.pow(2, $tab_ContinuousScrollZoom.maxValidMapZoomLevel - startZoomLevel);
+			}
+			return zoomFactor;
+		}
+	}, null, [$tab_IScrollZoom]);
+	ss.initEnum($tab_CursorKey, $asm, { zoomIn: 'zoomIn', zoomOut: 'zoomOut', panDrag: 'panDrag', rectSelect: 'rectSelect', lassoSelect: 'lassoSelect', radialSelect: 'radialSelect', rectExtended: 'rectExtended', lassoExtended: 'lassoExtended', radialExtended: 'radialExtended', dragSelect: 'dragSelect', select: 'select', defaultKey: 'defaultKey' }, true);
+	ss.initClass($tab_DiscreteScrollZoom, $asm, {
+		update: function DiscreteScrollZoom$Update(scrollDelta) {
+			if (this.$fromTouchPad) {
+				this.$numEventsReceived++;
+				if (this.$numEventsReceived % tab.MapUtil.touchEventSamplingRate !== 0) {
+					return false;
+				}
+			}
+			this.$netScrollDelta += tab.ScrollAdjusterUtil.adjustVerticalScrollDeltaForMap(scrollDelta);
+			this.$netZoomLevel = ss.Int32.div(this.$netScrollDelta, tab.MapUtil.defaultWheelDeltaIncrement) * tab.MapUtil.minimumZoomLevelIncrement;
+			this.$zoomFactor = tab.MapUtil.calculateZoomFactor(this.$netScrollDelta);
+			this.$adjustZoomIfBelowLevelZero();
+			return true;
+		},
+		currentZoomFactor: function DiscreteScrollZoom$CurrentZoomFactor() {
+			return 1 / this.$zoomFactor;
+		},
+		currentZoomLevel: function DiscreteScrollZoom$CurrentZoomLevel() {
+			return this.$startingZoomLevel - this.$netZoomLevel;
+		},
+		$adjustZoomIfBelowLevelZero: function DiscreteScrollZoom$AdjustZoomIfBelowLevelZero() {
+			if (!tab.MapUtil.allowZoomAtCurrentLevelLeaflet(this.$startingZoomLevel, this.$netZoomLevel) || !tab.MapUtil.allowZoomAtCurrentLevel(this.$startingZoomLevel, this.$zoomFactor)) {
+				this.$netZoomLevel = this.$startingZoomLevel;
+				this.$zoomFactor = tab.MapUtil.getZoomFactorForDesiredZoomLevel(this.$startingZoomLevel, 0);
+				this.$netScrollDelta = tab.MapUtil.getScrollDeltaForZoomFactor(this.$zoomFactor);
+			}
+		}
+	}, null, [$tab_IScrollZoom]);
+	ss.initClass($tab_Drilling, $asm, {
+		get_widgetFeatureEnabled: function Drilling$get_WidgetFeatureEnabled() {
+			return tsConfig.allow_filter;
+		},
+		dispose: function Drilling$Dispose() {
+			$tab_SortDrillBase.prototype.dispose.call(this);
+			this.set_parentViewer(null);
+		},
+		onUpdate: function Drilling$OnUpdate() {
+			this.$drillInFlight = false;
+			this.$geometry = this.get_parentViewer().get_geometry();
+			this.$drillOnTableViewMouseMove(this.get_parentViewer().get_capturedPaneTableViewMousePosition());
+		},
+		onMouseMove: function Drilling$OnMouseMove(e) {
+			this.$drillOnTableViewMouseMove$1(e);
+		},
+		isActiveInRect: function Drilling$IsActiveInRect(rect) {
+			if ($(this.$domLevelDrillDown.get(0)).css('display') !== 'none' || $(this.$domLevelDrillUp.get(0)).css('display') !== 'none') {
+				if (ss.isValue(this.$domLevelDrillXYRect) && tab.RectXYUtil.intersectsWith(this.$domLevelDrillXYRect, rect)) {
+					return true;
+				}
+			}
+			return false;
+		},
+		turnDrillWidgetsOff: function Drilling$TurnDrillWidgetsOff() {
+			var handlersToModify = ['bottomaxis', 'xheader', 'yheader'];
+			for (var $t1 = 0; $t1 < handlersToModify.length; $t1++) {
+				var vir = handlersToModify[$t1];
+				if (ss.isValue(this.$inputHandlers[vir])) {
+					this.$inputHandlers[vir].unsuppressHover();
+				}
+			}
+			this.hideNode(this.$domLevelDrillDown.get(0));
+			this.hideNode(this.$domLevelDrillUp.get(0));
+			this.$drillWidgets = new $tab_$DrillWidgets();
+		},
+		$setupDrilling: function Drilling$SetupDrilling() {
+			this.set_enabled(true);
+		},
+		$drillOnTableViewMouseMove$1: function Drilling$DrillOnTableViewMouseMove(e) {
+			if (e.button > 0) {
+				return;
+			}
+			var mouse = this.getPaneTableViewMousePositionFromCoordinates(e.pageX, e.pageY, this.get_parentViewer());
+			this.$drillOnTableViewMouseMove(mouse);
+		},
+		$determineMousePaneState: function Drilling$DetermineMousePaneState(mousePosition) {
+			var mouseState = new $tab_$MousePaneState();
+			if (ss.isValue(this.$geometry.xheader)) {
+				mouseState.$inXHeader = this.get_parentViewer().isPointInRegion('xheader', mousePosition);
+			}
+			if (ss.isValue(this.$geometry.leftaxis)) {
+				mouseState.$inLeftAxisArea = this.get_parentViewer().isPointInRegion('leftaxis', mousePosition);
+			}
+			mouseState.$topLeftSpacerAreaX = this.get_parentViewer().tlspacerAreaX;
+			mouseState.$topLeftSpacerAreaY = this.get_parentViewer().tlspacerAreaY;
+			if (mouseState.$inXHeader && ss.isValue(mouseState.$topLeftSpacerAreaX) && ss.isValue(mouseState.$topLeftSpacerAreaY) && ss.isValue(this.$geometry.uleft)) {
+				mouseState.$topLeftSpacerAreaY.w = mouseState.$topLeftSpacerAreaX.l;
+				mouseState.$needToExtendTopLeftY = false;
+			}
+			if (ss.isValue(this.$geometry.bottomaxis) && !mouseState.$inXHeader) {
+				mouseState.$inXNomAxis = this.get_parentViewer().isPointInRegion('bottomaxis', mousePosition);
+			}
+			if (ss.isValue(this.$geometry.yheader) && !mouseState.$inXHeader && !mouseState.$inXNomAxis) {
+				mouseState.$inYHeader = this.get_parentViewer().isPointInRegion('yheader', mousePosition);
+			}
+			if (ss.isValue(mouseState.$topLeftSpacerAreaY) && !mouseState.$inXHeader && !mouseState.$inXNomAxis && ss.isValue(this.$geometry.yheader)) {
+				mouseState.$inTopLeftSpacerAreaY = tab.RectUtil.inRect(mouseState.$topLeftSpacerAreaY, mousePosition);
+			}
+			if (ss.isValue(mouseState.$topLeftSpacerAreaX) && !mouseState.$inTopLeftSpacerAreaY && !mouseState.$inYHeader && !mouseState.$inXNomAxis && ss.isValue(this.$geometry.xheader)) {
+				mouseState.$inTopLeftSpacerAreaX = tab.RectUtil.inRect(mouseState.$topLeftSpacerAreaX, mousePosition);
+			}
+			if (ss.isValue(this.$geometry.lleft) && !mouseState.$inTopLeftSpacerAreaY && !mouseState.$inTopLeftSpacerAreaX) {
+				mouseState.$inBottomLeftSpacerArea = this.get_parentViewer().isPointInRegion('lleft', mousePosition);
+			}
+			return mouseState;
+		},
+		$updateDrillWidgets: function Drilling$UpdateDrillWidgets(mouseState, mousePosition) {
+			if (mouseState.get_$isNotInDrillArea()) {
+				this.turnDrillWidgetsOff();
+			}
+			else if (mouseState.$inTopLeftSpacerAreaX) {
+				mouseState.$needToExtendTopLeftY = false;
+				this.$updateDrillWidgetsX(mousePosition);
+			}
+			else if (mouseState.$inXHeader) {
+				mouseState.$needToExtendTopLeftY = false;
+				this.$updateDrillWidgetsX(mousePosition);
+			}
+			else if (mouseState.$inYHeader) {
+				this.$updateDrillWidgetsY(mousePosition);
+			}
+			else if (mouseState.$inXNomAxis || mouseState.$inBottomLeftSpacerArea) {
+				this.$updateDrillWidgetsBottomAxis();
+			}
+			else if (mouseState.$inLeftAxisArea) {
+				this.$updateDrillWidgetAxisSwap();
+			}
+			else if (mouseState.$inTopLeftSpacerAreaY) {
+				this.$updateDrillWidgetsY(mousePosition);
+			}
+			if (mouseState.$needToExtendTopLeftY && ss.isValue(mouseState.$topLeftSpacerAreaY)) {
+				var uleftRect = this.get_parentViewer().getRegionRectForRegion('uleft');
+				if (ss.isValue(uleftRect)) {
+					mouseState.$topLeftSpacerAreaY.w = uleftRect.w;
+				}
+			}
+		},
+		$canUpdateWidgets: function Drilling$CanUpdateWidgets(mousePosition) {
+			if (ss.isNullOrUndefined(mousePosition)) {
+				return false;
+			}
+			if (this.$drillInFlight) {
+				return false;
+			}
+			var emptyObj = new Object();
+			if (ss.isNullOrUndefined(this.$geometry) || ss.isNullOrUndefined(this.$geometry.di) || ss.referenceEquals(this.$geometry.di, emptyObj) || !tsConfig.allow_filter) {
+				return false;
+			}
+			return true;
+		},
+		$drillOnTableViewMouseMove: function Drilling$DrillOnTableViewMouseMove(mousePosition) {
+			if (this.$canUpdateWidgets(mousePosition)) {
+				var mouseState = this.$determineMousePaneState(mousePosition);
+				this.$updateDrillWidgets(mouseState, mousePosition);
+			}
+		},
+		$onLevelDrillDown: function Drilling$OnLevelDrillDown() {
+			this.$onDrill('down');
+		},
+		$onLevelDrillUp: function Drilling$OnLevelDrillUp() {
+			this.$onDrill('up');
+		},
+		$onDrill: function Drilling$OnDrill(direction) {
+			this.$drillInFlight = true;
+			if (tsConfig.allow_filter && !ss.isNullOrUndefined(this.$drillWidgets.$area)) {
+				var shelfType = ((this.$drillWidgets.$area.toString() === 'yheader') ? 'rows-shelf' : 'columns-shelf');
+				var isDrillUp = false;
+				if (direction === 'up') {
+					isDrillUp = true;
+				}
+				tab.FilterClientCommands.levelDrill(this.get_parentViewer().get_visualId(), this.$drillWidgets.$levelnum, shelfType, isDrillUp);
+			}
+			this.turnDrillWidgetsOff();
+		},
+		$updateDrillWidgetsX: function Drilling$UpdateDrillWidgetsX(tvpt) {
+			var xs = this.$geometry.di.xs + this.get_parentViewer().titleHeight;
+			var px = this.$calcTargetLevelInIntList(tvpt.y, xs, this.$geometry.di.xy);
+			if (px.$levelNum >= 0 && px.$levelNum < this.$geometry.di.xy.length) {
+				this.$updateLevelDrillWidgets('x', px, this.$geometry.di.xy);
+			}
+			else {
+				this.turnDrillWidgetsOff();
+			}
+		},
+		$updateDrillWidgetAxisSwap: function Drilling$UpdateDrillWidgetAxisSwap() {
+			var laxisRect = this.get_parentViewer().getRegionRectForRegion('leftaxis');
+			if (ss.isNullOrUndefined(laxisRect)) {
+				return;
+			}
+			var levelNum = this.$geometry.di.yx.length - 1;
+			if (levelNum < 0) {
+				return;
+			}
+			var margin = Math.min(laxisRect.l, $tab_Drilling.$drillUpMargin);
+			var rect = { l: laxisRect.l - margin, t: laxisRect.t, w: laxisRect.w + margin, h: laxisRect.h };
+			this.$setDrillLevel(rect, this.$geometry.di.yx[levelNum][1], 'y');
+			this.$drillWidgets.$levelnum = levelNum;
+			this.$drillWidgets.$area = 'yheader';
+		},
+		$updateDrillWidgetsY: function Drilling$UpdateDrillWidgetsY(tvpt) {
+			var mouseX = tvpt.x;
+			if (tab.FeatureFlags.isEnabled('ScrollingTables')) {
+				mouseX += this.get_scrollAmountX();
+			}
+			var px = this.$calcTargetLevelInIntList(mouseX, this.$geometry.di.ys, this.$geometry.di.yx);
+			if (tab.FeatureFlags.isEnabled('ScrollingTables')) {
+				var scrollAmount = this.get_scrollAmountX();
+				px.$lowerPx -= scrollAmount;
+				px.$upperPx -= scrollAmount;
+			}
+			var levelNum = px.$levelNum;
+			if (levelNum >= 0 && levelNum < this.$geometry.di.yx.length) {
+				this.$updateLevelDrillWidgets('y', px, this.$geometry.di.yx);
+			}
+			else {
+				this.turnDrillWidgetsOff();
+			}
+		},
+		$updateDrillWidgetsBottomAxis: function Drilling$UpdateDrillWidgetsBottomAxis() {
+			var baxisRect = this.get_parentViewer().getRegionRectForRegion('bottomaxis');
+			if (ss.isNullOrUndefined(baxisRect)) {
+				return;
+			}
+			var levelNum = this.$geometry.di.xy.length - 1;
+			var margin = Math.min(baxisRect.l, $tab_Drilling.$bottomAxisMargin);
+			var rect = null;
+			if (margin === 0) {
+				rect = { l: baxisRect.l + $tab_Drilling.$drillUpMargin - $tab_Drilling.$drillControlsIndent, t: baxisRect.t, w: baxisRect.w + $tab_Drilling.$drillUpMargin, h: baxisRect.h };
+			}
+			else {
+				rect = { l: baxisRect.l - margin - $tab_Drilling.$drillControlsIndent, t: baxisRect.t, w: baxisRect.w + margin, h: baxisRect.h };
+			}
+			this.$setDrillLevel(rect, this.$geometry.di.xy[levelNum][1], 'x');
+			this.$drillWidgets.$levelnum = levelNum;
+			this.$drillWidgets.$area = 'bottomaxis';
+		},
+		$updateLevelDrillWidgets: function Drilling$UpdateLevelDrillWidgets(axis, px, intLists) {
+			var rect;
+			var margin = 0;
+			if (axis === 'x') {
+				var xHeaderRect = this.get_parentViewer().getRegionRectForRegion('xheader');
+				if (ss.isValue(this.$geometry.uleft)) {
+					margin = Math.min(xHeaderRect.l, $tab_Drilling.$drillUpMargin);
+				}
+				rect = { l: xHeaderRect.l - margin - $tab_Drilling.$drillControlsIndent, t: px.$lowerPx, w: xHeaderRect.w + margin, h: px.$upperPx - px.$lowerPx };
+			}
+			else {
+				var yHeaderRect = this.get_parentViewer().getRegionRectForRegion('yheader');
+				if (ss.isValue(this.$geometry.uleft)) {
+					margin = Math.min(yHeaderRect.t, $tab_Drilling.$drillUpMargin);
+				}
+				rect = { l: px.$lowerPx, t: yHeaderRect.t - margin, w: px.$upperPx - px.$lowerPx, h: yHeaderRect.h + margin };
+			}
+			this.$setDrillLevel(rect, intLists[px.$levelNum][1], axis);
+			this.$drillWidgets.$levelnum = px.$levelNum;
+			this.$drillWidgets.$area = axis + 'header';
+		},
+		$showLevelNode: function Drilling$ShowLevelNode(domNode, rect, dimension) {
+			var tl = this.$getWidgetPos('level', rect, dimension);
+			var h = tab.DoubleUtil.roundToInt(this.$domLevelDrillDown.outerHeight());
+			var w = tab.DoubleUtil.roundToInt(this.$domLevelDrillDown.outerWidth());
+			this.$domLevelDrillXYRect = { x: tl.x, y: tl.y, w: w, h: h };
+			if (this.isOtherActiveInRect(this.$domLevelDrillXYRect)) {
+				return;
+			}
+			this.showNodeAt(domNode, tl.y, tl.x);
+		},
+		$setDrillLevel: function Drilling$SetDrillLevel(rect, state, dim) {
+			switch (state) {
+				case 0: {
+					this.hideNode(this.$domLevelDrillDown.get(0));
+					this.hideNode(this.$domLevelDrillUp.get(0));
+					break;
+				}
+				case 1: {
+					this.$showLevelNode(this.$domLevelDrillDown.get(0), rect, dim);
+					this.hideNode(this.$domLevelDrillUp.get(0));
+					break;
+				}
+				case 2: {
+					this.$showLevelNode(this.$domLevelDrillUp.get(0), rect, dim);
+					this.hideNode(this.$domLevelDrillDown.get(0));
+					break;
+				}
+				case 3: {
+					if (dim === 'x') {
+						this.$showLevelNode(this.$domLevelDrillUp.get(0), rect, dim);
+						var drillDownRec = { l: rect.l + $tab_Drilling.$drillUpMargin, t: rect.t, w: rect.w + $tab_Drilling.$drillUpMargin, h: rect.h };
+						this.$showLevelNode(this.$domLevelDrillDown.get(0), drillDownRec, dim);
+					}
+					else if (dim === 'y') {
+						this.$showLevelNode(this.$domLevelDrillUp.get(0), rect, dim);
+						var drillDownRec1 = { l: rect.l + $tab_Drilling.$yheaderMargin, t: rect.t, w: rect.w + $tab_Drilling.$drillUpMargin, h: rect.h };
+						this.$showLevelNode(this.$domLevelDrillDown.get(0), drillDownRec1, dim);
+					}
+					break;
+				}
+			}
+		},
+		$calcTargetLevelInIntList: function Drilling$CalcTargetLevelInIntList(target, spannerWidth, pairlist) {
+			var lowerPx = -1;
+			var upperPx = spannerWidth - 1;
+			var levelNum = -1;
+			if (ss.isNullOrUndefined(pairlist)) {
+				return new $tab_$PxLevel(-1, -1, -1);
+			}
+			while (upperPx < target && levelNum < pairlist.length - 1) {
+				levelNum += 1;
+				lowerPx = upperPx;
+				upperPx += pairlist[levelNum][0];
+			}
+			if (upperPx < target) {
+				return new $tab_$PxLevel(-1, -1, -1);
+			}
+			return new $tab_$PxLevel(lowerPx, upperPx, levelNum);
+		},
+		$getWidgetPos: function Drilling$GetWidgetPos(type, rect, dimension) {
+			if (type === 'level') {
+				if (dimension === 'y') {
+					return { x: rect.l + ss.Int32.div(rect.w, 2) - 4, y: rect.t + 2 };
+				}
+				else {
+					return { x: rect.l + 2, y: rect.t + ss.Int32.div(rect.h, 2) - 4 };
+				}
+			}
+			else {
+				return { x: rect['x'] + 2, y: rect['y'] + 2 };
+			}
+		}
+	}, $tab_SortDrillBase, [tab.IWidget, tab.IAppendableView, ss.IDisposable]);
+	ss.initClass($tab_FloatingZoomToolbarOperationsWeb, $asm, {
+		get_appendMode: function FloatingZoomToolbarOperationsWeb$get_AppendMode() {
+			return false;
+		},
+		set_appendMode: function FloatingZoomToolbarOperationsWeb$set_AppendMode(value) {
+		},
+		zoomHome: function FloatingZoomToolbarOperationsWeb$ZoomHome() {
+			this.$tv.zoomHome();
+		},
+		zoomIn: function FloatingZoomToolbarOperationsWeb$ZoomIn() {
+			this.$tv.$zoomOnCenter(2);
+		},
+		zoomOut: function FloatingZoomToolbarOperationsWeb$ZoomOut() {
+			this.$tv.$zoomOnCenter(0.5);
+		},
+		setPointerToolMode: function FloatingZoomToolbarOperationsWeb$SetPointerToolMode(pointerToolMode, isLocked) {
+			this.$tv.setPointerToolMode(pointerToolMode, isLocked);
+		},
+		anyButtonTouched: function FloatingZoomToolbarOperationsWeb$AnyButtonTouched() {
+		},
+		defaultPointerToolMode: function FloatingZoomToolbarOperationsWeb$DefaultPointerToolMode() {
+			return this.$tv.defaultPointerToolMode();
+		}
+	});
+	ss.initClass($tab_FloatingZoomToolbarWeb, $asm, {
+		clickZoomHome: function FloatingZoomToolbarWeb$ClickZoomHome() {
+			tab.FloatingZoomToolbar.prototype.clickZoomHome.call(this);
+			if (this.toolbarType === 'homeOnlyToolbar') {
+				this.setActiveState(false);
+			}
+		},
+		$createRadialSelectButton: function FloatingZoomToolbarWeb$CreateRadialSelectButton(container) {
+			var tooltip = tab.Strings.PanZoomSelectToolsRadialSelectionTooltip;
+			this.radialSelectButton = this.addToggleButton(container, 'buttonRadialSelect', tooltip);
+		},
+		$createRectangularSelectButton: function FloatingZoomToolbarWeb$CreateRectangularSelectButton(container) {
+			var tooltip = tab.Strings.PanZoomSelectToolsRectangularSelectionTooltip;
+			this.rectSelectButton = this.addToggleButton(container, 'buttonRectSelect', tooltip);
+		},
+		$createLassoSelectButton: function FloatingZoomToolbarWeb$CreateLassoSelectButton(container) {
+			var tooltip = tab.Strings.PanZoomSelectToolsLassoSelectionTooltip;
+			this.lassoSelectButton = this.addToggleButton(container, 'buttonLassoSelect', tooltip);
+		},
+		$createPanButton: function FloatingZoomToolbarWeb$CreatePanButton(container) {
+			var tooltip = tab.Strings.PanZoomSelectToolsPanTooltip;
+			this.panButton = this.addToggleButton(container, 'buttonPan', tooltip);
+		},
+		createButtons: function FloatingZoomToolbarWeb$CreateButtons() {
+			this.createButtonContainer();
+			if (this.toolbarType === 'fullToolbar') {
+				this.zoomInButton = this.addButton(this.buttonContainer, 'buttonZoomIn', tab.Strings.PanZoomSelectToolsZoomInTooltip);
+				this.zoomOutButton = this.addButton(this.buttonContainer, 'buttonZoomOut', tab.Strings.PanZoomSelectToolsZoomOutTooltip);
+				this.zoomHomeButton = this.addButton(this.buttonContainer, 'buttonZoomHome', tab.Strings.PanZoomSelectToolsZoomHomeTooltip);
+				this.addSpacer();
+				this.flyOutButton = this.addButton(this.buttonContainer, 'buttonFlyOut', '');
+				this.createButtonFlyOut();
+				this.$createFlyOutButtons();
+			}
+			else if (this.toolbarType === 'disablePanZoomToolbar') {
+				if (this.geoSearchEnabled) {
+					this.zoomHomeButton = this.addButton(this.buttonContainer, 'buttonZoomHome', tab.Strings.PanZoomSelectToolsZoomHomeTooltip);
+				}
+				this.$createRectangularSelectButton(this.buttonContainer);
+				this.$createRadialSelectButton(this.buttonContainer);
+				this.$createLassoSelectButton(this.buttonContainer);
+			}
+			else {
+				this.zoomHomeButton = this.addButton(this.buttonContainer, 'buttonZoomHome', tab.Strings.PanZoomSelectToolsZoomHomeTooltip);
+			}
+			this.setupEventHandling();
+		},
+		$createFlyOutButtons: function FloatingZoomToolbarWeb$CreateFlyOutButtons() {
+			if (this.toolbarType === 'fullToolbar') {
+				var tooltip = tab.Strings.PanZoomSelectToolsZoomAreaTooltip;
+				this.zoomAreaButton = this.addToggleButton(this.flyOutButtons, 'buttonZoomArea', tooltip);
+				this.$createPanButton(this.flyOutButtons);
+				this.$createRectangularSelectButton(this.flyOutButtons);
+				this.$createRadialSelectButton(this.flyOutButtons);
+				this.$createLassoSelectButton(this.flyOutButtons);
+			}
+		},
+		setupEventHandling: function FloatingZoomToolbarWeb$SetupEventHandling() {
+			tab.FloatingZoomToolbar.prototype.setupEventHandling.call(this);
+			if (this.toolbarType === 'fullToolbar') {
+				this.disposables.add$1(this.zoomInButton.onClick(ss.mkdel(this, function() {
+					this.api.zoomIn();
+				})));
+				this.disposables.add$1(this.zoomOutButton.onClick(ss.mkdel(this, function() {
+					this.api.zoomOut();
+				})));
+				this.disposables.add$1(this.zoomAreaButton.onClick(ss.mkdel(this, function() {
+					this.setToolMode('area-zoom', true);
+					if (tsConfig.is_authoring) {
+						tab.FloatingToolbarClientCommands.setDefaultMapToolSelectionCommand('area-zoom');
+					}
+				})));
+				this.disposables.add$1(this.zoomAreaButton.onShiftClick(ss.mkdel(this, function() {
+					this.setToolMode('area-zoom', true);
+				})));
+				this.flyOutContainer.mouseout(ss.mkdel(this, this.$flyOutMouseOut));
+				var flyOutBtnElement = this.flyOutButton.element;
+				flyOutBtnElement.mouseout(ss.mkdel(this, this.$flyOutButtonMouseOut));
+				flyOutBtnElement.mouseenter(ss.mkdel(this, this.toggleFlyout));
+			}
+			if (this.geoSearchEnabled || this.toolbarType !== 'disablePanZoomToolbar') {
+				this.zoomHomeButton.add_hover(ss.mkdel(this, this.$onZoomHomeButtonHover));
+				this.disposables.add$1(new tab.CallOnDispose(ss.mkdel(this, function() {
+					this.zoomHomeButton.remove_hover(ss.mkdel(this, this.$onZoomHomeButtonHover));
+				})));
+			}
+		},
+		$onZoomHomeButtonHover: function FloatingZoomToolbarWeb$OnZoomHomeButtonHover() {
+			if (!this.canZoomHome) {
+				this.zoomHomeButton.element.removeClass(this.zoomHomeButton.get_hoverClass());
+			}
+		},
+		$flyOutMouseOut: function FloatingZoomToolbarWeb$FlyOutMouseOut(e) {
+			var pos = this.flyOutContainer.offset();
+			if (pos.top >= e.pageY) {
+				this.updateFlyOutVisibility(false);
+				return;
+			}
+			var right = tab.DoubleUtil.roundToInt(pos.left) + tab.DoubleUtil.roundToInt(this.flyOutContainer.width());
+			var bottom = tab.DoubleUtil.roundToInt(pos.top) + tab.DoubleUtil.roundToInt(this.flyOutContainer.height());
+			if (e.pageX >= right || e.pageY >= bottom) {
+				this.updateFlyOutVisibility(false);
+			}
+		},
+		$flyOutButtonMouseOut: function FloatingZoomToolbarWeb$FlyOutButtonMouseOut(e) {
+			var pos = this.flyOutButton.element.offset();
+			if (pos.left >= e.pageX || pos.top >= e.pageY) {
+				this.updateFlyOutVisibility(false);
+				return;
+			}
+			var bottom = tab.DoubleUtil.roundToInt(pos.top) + tab.DoubleUtil.roundToInt(this.flyOutButton.element.height());
+			if (e.pageY >= bottom) {
+				this.updateFlyOutVisibility(false);
+			}
+		}
+	}, tab.FloatingZoomToolbar, [tab.IWidget, tab.IAppendableView, ss.IDisposable]);
+	ss.initClass($tab_HoverApi, $asm, {
+		dispose: function HoverApi$Dispose() {
+			this.$tv = null;
+		},
+		unsuppressHover: function HoverApi$UnsuppressHover(region) {
+			if (ss.isNullOrUndefined(this.$tv)) {
+				return;
+			}
+			var mouseHandler = this.$tv.get_inputHandlers()[region.get_regionPart()];
+			if (ss.isValue(mouseHandler)) {
+				mouseHandler.unsuppressHover();
+			}
+			var responsiveHandler = this.$tv.get_responsiveMouseHandler();
+			if (ss.isValue(responsiveHandler)) {
+				responsiveHandler.unsuppressHover();
+			}
+		},
+		suppressHover: function HoverApi$SuppressHover(region) {
+			if (ss.isNullOrUndefined(this.$tv)) {
+				return;
+			}
+			var mouseHandler = this.$tv.get_inputHandlers()[region.get_regionPart()];
+			if (ss.isValue(mouseHandler)) {
+				mouseHandler.suppressHover();
+			}
+			var responsiveHandler = this.$tv.get_responsiveMouseHandler();
+			if (ss.isValue(responsiveHandler)) {
+				responsiveHandler.suppressHover();
+			}
+		}
+	}, null, [ss.IDisposable]);
+	ss.initClass($tab_LegacyTooltipBehavior, $asm, {
+		attach: function LegacyTooltipBehavior$Attach() {
+			this.$tooltip.add_showed(ss.mkdel(this, this.$onShowed));
+			this.$tooltip.add_closed(ss.mkdel(this, this.$onClose));
+			this.$tooltip.add_disposed(ss.mkdel(this, this.$tooltipDisposed));
+			var config = new EventUtils.EventHandleSpec();
+			config.SetHandler('hover', ss.mkdel(this, this.$onTooltipHover));
+			this.$disposables.add$1(new EventUtils.TableauEventHandler(this.$tooltip.element[0], config));
+			$(window.document.documentElement).on(this.$uniqueMouseEventType, ss.mkdel(this, this.$onMouseMove));
+			tab.Log.get(this).debug('TooltipBehavior created for tooltip with instance id: %d / unique mouse event type: %s', [this.$tooltip.get_instanceId(), this.$uniqueMouseEventType]);
+		},
+		detach: function LegacyTooltipBehavior$Detach() {
+			this.$cancelTimeouts();
+			this.$disposables.dispose();
+			if (ss.isValue(this.$tooltip)) {
+				this.$tooltip.remove_showed(ss.mkdel(this, this.$onShowed));
+				this.$tooltip.remove_closed(ss.mkdel(this, this.$onClose));
+				this.$tooltip.remove_disposed(ss.mkdel(this, this.$tooltipDisposed));
+			}
+			this.$removeMoveHandler();
+		},
+		dispose: function LegacyTooltipBehavior$Dispose() {
+			this.detach();
+		},
+		disposeTooltip: function LegacyTooltipBehavior$DisposeTooltip() {
+			this.dispose();
+		},
+		shownTooltipIsSticky: function LegacyTooltipBehavior$ShownTooltipIsSticky() {
+			return true;
+		},
+		isHoverAllowed: function LegacyTooltipBehavior$IsHoverAllowed(pageCoords) {
+			return !(this.$tooltip.get_isShown() && this.$tooltip.isInSafeZone(pageCoords, !this.$hasMouseEntered));
+		},
+		shouldShowCommandButtons: function LegacyTooltipBehavior$ShouldShowCommandButtons() {
+			return true;
+		},
+		handleUbertipMenuToggle: function LegacyTooltipBehavior$HandleUbertipMenuToggle(areMenuItemsVisible) {
+			this.$isFrozen = areMenuItemsVisible;
+		},
+		handleUbertipMenuClose: function LegacyTooltipBehavior$HandleUbertipMenuClose() {
+			this.$tooltip.close();
+		},
+		hoverOverObject: function LegacyTooltipBehavior$HoverOverObject(pageCoords, isSelected, isEmpty, isSameObject) {
+			this.showTooltip(pageCoords);
+		},
+		hoverOverWhitespace: function LegacyTooltipBehavior$HoverOverWhitespace(pageCoords) {
+			if (this.$tooltip.get_isShown() && !this.$tooltip.isInSafeZone(pageCoords, false)) {
+				this.$tooltip.close();
+			}
+		},
+		multiSelectComplete: function LegacyTooltipBehavior$MultiSelectComplete(pageAnchorPoint) {
+			this.showTooltip(pageAnchorPoint);
+		},
+		singleSelectComplete: function LegacyTooltipBehavior$SingleSelectComplete(pageCoords) {
+			this.showTooltip(pageCoords);
+		},
+		selectionMoved: function LegacyTooltipBehavior$SelectionMoved(pageCoords) {
+		},
+		repositionWithinRegion: function LegacyTooltipBehavior$RepositionWithinRegion(pageRegion) {
+		},
+		onPanningOrDragging: function LegacyTooltipBehavior$OnPanningOrDragging() {
+			if (this.$tooltip.get_isShown()) {
+				this.$tooltip.close();
+			}
+		},
+		onScroll: function LegacyTooltipBehavior$OnScroll() {
+			if (this.$tooltip.get_isShown()) {
+				this.$tooltip.close();
+			}
+		},
+		mouseDown: function LegacyTooltipBehavior$MouseDown(pageCoords, objectUnderMouse) {
+			this.$tooltip.close();
+		},
+		showTooltip: function LegacyTooltipBehavior$ShowTooltip(pageCoords) {
+			tab.Log.get(this).debug('ShowTooltip: position=%o', [pageCoords]);
+			if (EventUtils.DragDropManager.get_isDragging()) {
+				return;
+			}
+			if (this.$tooltip.get_isShown() && tab.PointUtil.equals(this.$tooltip.get_location(), pageCoords)) {
+				return;
+			}
+			if (this.$tooltip.get_isShown() && this.$tooltip.isInSafeZone(pageCoords, false)) {
+				return;
+			}
+			this.$tooltip.show(this.$tooltip.get_body().children()[0], pageCoords);
+		},
+		$onShowed: function LegacyTooltipBehavior$OnShowed() {
+			tab.Log.get(this).debug('OnShowed', []);
+			this.$cancelTimeouts();
+			this.$movedSinceShow = false;
+			this.$hasMouseEntered = false;
+			this.$timeTooltipShown = new Date();
+			this.$tooltip.set_lastLocation({ x: this.$tooltip.get_calculatedShownArgs().origX, y: this.$tooltip.get_calculatedShownArgs().origY });
+			this.$closeWithTimeout($tab_LegacyTooltipBehavior.$timeoutInitialShown);
+		},
+		$onClose: function LegacyTooltipBehavior$OnClose() {
+			this.$tooltip.element.off($tab_LegacyTooltipBehavior.$bindingNamespace);
+			this.$tooltip.set_lastLocation(null);
+			this.$cancelTimeouts();
+			this.$timeTooltipShown = null;
+			this.$hasMouseEntered = false;
+			tab.Log.get(this).debug('OnClose', []);
+		},
+		$onMouseMove: function LegacyTooltipBehavior$OnMouseMove(e) {
+			var prevLocation = this.$tooltip.get_lastLocation();
+			this.$tooltip.set_lastLocation({ x: e.pageX, y: e.pageY });
+			if (ss.isNullOrUndefined(prevLocation) || !this.$tooltip.get_isShown()) {
+				return;
+			}
+			if (this.$isMouseOverTooltip(this.$tooltip.get_lastLocation())) {
+				this.$hasMouseEntered = true;
+				return;
+			}
+			if (!this.$isFrozen && !this.$tooltip.isInSafeZone(this.$tooltip.get_lastLocation(), !this.$hasMouseEntered)) {
+				tab.Log.get(this).debug('Prev location: %o | Current location: %o', [prevLocation, this.$tooltip.get_lastLocation()]);
+				this.$tooltip.close();
+				return;
+			}
+			var moveDistance = tab.PointUtil.distance(prevLocation, this.$tooltip.get_lastLocation());
+			var millisecondsSinceShown = new Date() - this.$timeTooltipShown;
+			tab.Log.get(this).debug('Milliseconds since shown: %d. Distance: %d.', [millisecondsSinceShown, moveDistance]);
+			if (moveDistance > 10 && millisecondsSinceShown > $tab_LegacyTooltipBehavior.$involuntaryMouseMoveTime) {
+				tab.Log.get(this).debug('Moving', [moveDistance]);
+				this.$movedSinceShow = true;
+				if (ss.isValue(this.$closeTimeoutHandle)) {
+					tab.Log.get(this).debug('Moving, clear timeout: %d distance', [moveDistance]);
+					ss.remove(this.$timeoutHandles, ss.unbox(this.$closeTimeoutHandle));
+					this.$closeTimeoutHandle = tab.MiscUtil.clearTimeout(this.$closeTimeoutHandle);
+				}
+				this.$detectMouseStop();
+			}
+			else if (this.$movedSinceShow) {
+				if (!ss.isValue(this.$closeTimeoutHandle)) {
+					tab.Log.get(this).debug('Stopped moving, schedule close: %d distance', [moveDistance]);
+					this.$closeTimeoutHandle = this.$closeWithTimeout($tab_LegacyTooltipBehavior.$timeoutMove);
+				}
+			}
+		},
+		$detectMouseStop: function LegacyTooltipBehavior$DetectMouseStop() {
+			this.$mouseStopTimeoutHandle = tab.MiscUtil.clearTimeout(this.$mouseStopTimeoutHandle);
+			this.$mouseStopTimeoutHandle = window.setTimeout(ss.mkdel(this, function() {
+				tab.Log.get(this).debug("Mouse hasn't moved for 250 ms. Preparing to close.", []);
+				if (ss.isNullOrUndefined(this.$closeTimeoutHandle)) {
+					this.$closeTimeoutHandle = this.$closeWithTimeout($tab_LegacyTooltipBehavior.$timeoutMove);
+				}
+			}), $tab_LegacyTooltipBehavior.$mouseStopDetectionTime);
+		},
+		$removeMoveHandler: function LegacyTooltipBehavior$RemoveMoveHandler() {
+			tab.Log.get(this).debug('Unique mouse event type unbound: ' + this.$uniqueMouseEventType, []);
+			$(window.document.documentElement).off(this.$uniqueMouseEventType);
+		},
+		$isMouseOverTooltip: function LegacyTooltipBehavior$IsMouseOverTooltip(mouse) {
+			if (ss.isNullOrUndefined(mouse)) {
+				return false;
+			}
+			var bounds = this.$getTooltipBounds();
+			return tab.RectUtil.inRect(bounds, mouse);
+		},
+		$getTooltipBounds: function LegacyTooltipBehavior$GetTooltipBounds() {
+			var pos = this.$tooltip.element.position();
+			var bounds = { l: tab.DoubleUtil.roundToInt(pos.left), t: tab.DoubleUtil.roundToInt(pos.top), w: tab.DoubleUtil.roundToInt(this.$tooltip.element.width()), h: tab.DoubleUtil.roundToInt(this.$tooltip.element.height()) };
+			return bounds;
+		},
+		$closeWithTimeout: function LegacyTooltipBehavior$CloseWithTimeout(timeout) {
+			var start = new Date();
+			var handle = window.setTimeout(ss.mkdel(this, function() {
+				if (this.$isMouseOverTooltip(this.$tooltip.get_lastLocation())) {
+					return;
+				}
+				tab.Log.get(this).debug('Close timeout after %dms, actual %dms', [timeout, new Date() - start]);
+				this.$tooltip.close();
+			}), timeout);
+			this.$timeoutHandles.push(handle);
+			return handle;
+		},
+		$onTooltipHover: function LegacyTooltipBehavior$OnTooltipHover(arg) {
+			if (this.$isMouseOverTooltip(this.$tooltip.get_lastLocation())) {
+				return;
+			}
+			tab.Log.get(this).debug('On hover', []);
+			this.$cancelTimeouts();
+		},
+		$tooltipDisposed: function LegacyTooltipBehavior$TooltipDisposed(sender, e) {
+			this.dispose();
+		},
+		$cancelTimeouts: function LegacyTooltipBehavior$CancelTimeouts() {
+			for (var $t1 = 0; $t1 < this.$timeoutHandles.length; $t1++) {
+				var timeoutHandle = this.$timeoutHandles[$t1];
+				window.clearTimeout(timeoutHandle);
+			}
+			ss.clear(this.$timeoutHandles);
+			this.$closeTimeoutHandle = tab.MiscUtil.clearTimeout(this.$closeTimeoutHandle);
+			this.$mouseStopTimeoutHandle = tab.MiscUtil.clearTimeout(this.$mouseStopTimeoutHandle);
+		}
+	}, null, [tab.ITooltipBehavior, ss.IDisposable]);
+	ss.initClass($tab_MapsSearchViewWeb, $asm, {
+		updateSearchTextValue: function MapsSearchViewWeb$UpdateSearchTextValue(candidate) {
+			this.$updateSearchTextValueWeb(candidate, true);
+		},
+		$updateSearchTextValueWeb: function MapsSearchViewWeb$UpdateSearchTextValueWeb(candidate, selectAllSearchText) {
+			tab.MapsSearchView.prototype.updateSearchTextValue.call(this, candidate);
+			if (selectAllSearchText === true) {
+				this.selectAllSearchText();
+			}
+		},
+		$handleSearchBoxMouseUp: function MapsSearchViewWeb$HandleSearchBoxMouseUp(e) {
+			if (this.get_compositeSearchWidget().get_textInputView().get_text().length === 0) {
+				return;
+			}
+			var selectionStart = this.get_compositeSearchWidget().get_textInputView().get_inputElement().prop('selectionStart');
+			var selectionEnd = this.get_compositeSearchWidget().get_textInputView().get_inputElement().prop('selectionEnd');
+			if (ss.isValue(selectionStart) && ss.isValue(selectionEnd) && !ss.referenceEquals(selectionStart, selectionEnd)) {
+				return;
+			}
+			this.selectAllSearchText();
+		},
+		$arrowkeyedItemChanged: function MapsSearchViewWeb$ArrowkeyedItemChanged(newSpotlightedListItem) {
+			this.$spotlightedListItem = newSpotlightedListItem;
+			if (ss.isValue(newSpotlightedListItem)) {
+				var spotlightedCandidate = newSpotlightedListItem.get_data();
+				this.$updateSearchTextValueWeb(spotlightedCandidate, false);
+			}
+		},
+		handleEnterKeyPress: function MapsSearchViewWeb$HandleEnterKeyPress() {
+			if (ss.isValue(this.$spotlightedListItem)) {
+				this.mapsSearchViewModel.moveMapToCandidateBounds(this.$spotlightedListItem.get_data());
+				this.get_compositeSearchWidget().removeList();
+				return;
+			}
+			tab.MapsSearchView.prototype.handleEnterKeyPress.call(this);
+		},
+		$handleTabKeyPress: function MapsSearchViewWeb$HandleTabKeyPress() {
+			if (ss.isNullOrUndefined(this.get_compositeSearchWidget().get_listViewModel()) || ss.isValue(this.queryDelayTimer) || ss.isValue(this.$spotlightedListItem)) {
+				return;
+			}
+			var compositeSearchWidgetWeb = ss.cast(this.get_compositeSearchWidget(), spiff.CompositeSearchWidgetWeb);
+			compositeSearchWidgetWeb.changeSpotlightedListItem(2, null);
+		},
+		handleSearchButtonClick: function MapsSearchViewWeb$HandleSearchButtonClick() {
+			tab.MapsSearchView.prototype.handleSearchButtonClick.call(this);
+			if (this.mapsSearchViewModel.get_gotoMyLocationButtonEnabled()) {
+				this.setGeoLocationButtonVisibility(!this.get_isCollapsed());
+			}
+		},
+		handleCollapseSearchWidget: function MapsSearchViewWeb$HandleCollapseSearchWidget() {
+			tab.MapsSearchView.prototype.handleCollapseSearchWidget.call(this);
+			if (this.mapsSearchViewModel.get_gotoMyLocationButtonEnabled()) {
+				this.setGeoLocationButtonVisibility(!this.get_isCollapsed());
+			}
+		},
+		calculateNewSpotlightedItemIndex: function MapsSearchViewWeb$CalculateNewSpotlightedItemIndex(oldSpotlightedItemIndex, mode, moveToListItemIndex) {
+			if (mode === 4) {
+				return moveToListItemIndex;
+			}
+			var lastItemIndex = this.get_compositeSearchWidget().get_listViewModel().get_collection().length - 1;
+			if (ss.isNullOrUndefined(oldSpotlightedItemIndex)) {
+				switch (mode) {
+					case 1:
+					case 2: {
+						return 0;
+					}
+					case 0:
+					case 3: {
+						return lastItemIndex;
+					}
+				}
+			}
+			var newSpotlightedItemIndex = oldSpotlightedItemIndex;
+			switch (mode) {
+				case 1: {
+					newSpotlightedItemIndex = ss.Nullable$1.add(newSpotlightedItemIndex, 1);
+					if (ss.Nullable$1.gt(newSpotlightedItemIndex, lastItemIndex)) {
+						newSpotlightedItemIndex = 0;
+					}
+					break;
+				}
+				case 0: {
+					newSpotlightedItemIndex = ss.Nullable$1.sub(newSpotlightedItemIndex, 1);
+					if (ss.Nullable$1.lt(newSpotlightedItemIndex, 0)) {
+						newSpotlightedItemIndex = lastItemIndex;
+					}
+					break;
+				}
+				case 2: {
+					newSpotlightedItemIndex = 0;
+					break;
+				}
+				case 3: {
+					newSpotlightedItemIndex = lastItemIndex;
+					break;
+				}
+			}
+			return newSpotlightedItemIndex;
+		}
+	}, tab.MapsSearchView, [tab.IWidget, tab.IAppendableView, ss.IDisposable, ss.makeGenericType(tab.IView$1, [tab.MapsSearchViewModel]), spiff.IListItemContentCreator, spiff.ICompositeSearchWidgetSpotlightedItemLogic]);
+	ss.initClass($tab_PaneTableMouseCapture, $asm, {
+		$setCapture: function PaneTableMouseCapture$SetCapture(element, handler) {
+			tab.Param.verifyValue(element, 'element');
+			tab.Param.verifyValue(handler, 'handler');
+			if ($tab_PaneTableMouseCapture.get_$manuallyCaptureMouseEvents()) {
+				this.$releaseCapture();
+				document.addEventListener('mousemove', ss.mkdel(this, this.$handleMouseMove), true);
+				this.$eventHandler = handler;
+			}
+		},
+		$releaseCapture: function PaneTableMouseCapture$ReleaseCapture() {
+			if ($tab_PaneTableMouseCapture.get_$manuallyCaptureMouseEvents()) {
+				document.removeEventListener('mousemove', ss.mkdel(this, this.$handleMouseMove), true);
+			}
+			this.$eventHandler = null;
+		},
+		$handleMouseMove: function PaneTableMouseCapture$HandleMouseMove(e) {
+			if (ss.isValue(this.$eventHandler)) {
+				this.$eventHandler.HandleCapturedMouseMove(e);
+			}
+		},
+		dispose: function PaneTableMouseCapture$Dispose() {
+			this.$releaseCapture();
+		}
+	}, null, [ss.IDisposable]);
+	ss.initClass($tab_PaneTableTemplateWeb, $asm, {
+		exportAsAxisResizerDomElements: function PaneTableTemplateWeb$ExportAsAxisResizerDomElements() {
+			var domElements = new tab.AxisResizerDomElements(this.topLeftSpacer, this.topRightSpacer, this.bottomLeftSpacer, this.view, this.topAxis, this.rightAxis, this.bottomAxis, this.leftAxis);
+			return domElements;
+		}
+	}, tab.PaneTableTemplate, [ss.IDisposable]);
+	ss.initClass($tab_PaneTableViewWeb, $asm, {
+		get_inputHandlers: function PaneTableViewWeb$get_InputHandlers() {
+			return this.$inputHandlers;
+		},
+		get_domWeb: function PaneTableViewWeb$get_DomWeb() {
+			return this.$domWeb;
+		},
+		get_responsiveMouseHandler: function PaneTableViewWeb$get_ResponsiveMouseHandler() {
+			return this.$responsiveMouseHandler;
+		},
+		get_$vizWebRegion: function PaneTableViewWeb$get_VizWebRegion() {
+			return this.getWebRegion('viz');
+		},
+		get_zoomToolbarOffset: function PaneTableViewWeb$get_ZoomToolbarOffset() {
+			var MapSearchButtonHeight = 41;
+			var topOffset = tab.PaneTableViewModel.zoomToolbarTopOffset;
+			if (this.get_paneTableVM().get_mapSearchEnabled()) {
+				topOffset += MapSearchButtonHeight;
+			}
+			return topOffset;
+		},
+		get_zoomToolbarOperations: function PaneTableViewWeb$get_ZoomToolbarOperations() {
+			return new $tab_FloatingZoomToolbarOperationsWeb(this);
+		},
+		get_capturedPaneTableViewMousePosition: function PaneTableViewWeb$get_CapturedPaneTableViewMousePosition() {
+			return this.$getCapturedPaneTableViewMousePosition();
+		},
+		$initializeHeaderResizerManager: function PaneTableViewWeb$InitializeHeaderResizerManager() {
+			if (tsConfig.is_authoring && ss.isValue(this.get_paneTableVM().deferredHeaderResizerManagerViewModel) && ss.isValue(this.get_paneTableVM().deferredResizerFactory)) {
+				var deferredManager = $.Deferred();
+				this.deferredHeaderResizerManager = deferredManager.promise();
+				this.get_paneTableVM().deferredHeaderResizerManagerViewModel.done(ss.mkdel(this, function(vm) {
+					this.get_paneTableVM().deferredResizerFactory.done(ss.mkdel(this, function(factory) {
+						deferredManager.resolve(factory.newHeaderResizerManager(vm, this.get_domWeb().yLabel, this.get_domWeb().xLabel));
+					}));
+				}));
+			}
+		},
+		$initializeCellResizerManager: function PaneTableViewWeb$InitializeCellResizerManager() {
+			if (tsConfig.is_authoring && ss.isValue(this.get_paneTableVM().deferredCellResizerManagerViewModel) && ss.isValue(this.get_paneTableVM().deferredResizerFactory)) {
+				var deferredManager = $.Deferred();
+				this.deferredCellResizerManager = deferredManager.promise();
+				this.get_paneTableVM().deferredCellResizerManagerViewModel.done(ss.mkdel(this, function(vm) {
+					this.get_paneTableVM().deferredResizerFactory.done(ss.mkdel(this, function(factory) {
+						deferredManager.resolve(factory.newCellResizerManager(vm, this.get_domWeb().yLabel, this.get_domWeb().xLabel));
+					}));
+				}));
+			}
+		},
+		$initializeAxisResizerManager: function PaneTableViewWeb$InitializeAxisResizerManager() {
+			if (tsConfig.is_authoring && ss.isValue(this.get_paneTableVM().deferredResizerFactory)) {
+				var deferredManager = $.Deferred();
+				this.deferredAxisResizerManager = deferredManager.promise();
+				this.get_paneTableVM().deferredResizerFactory.done(ss.mkdel(this, function(factory) {
+					deferredManager.resolve(factory.newAxisResizerManager(this.get_domWeb().exportAsAxisResizerDomElements(), this.get_paneTableVM().get_visualId()));
+				}));
+			}
+		},
+		$initializeVizContextMenuComponent: function PaneTableViewWeb$InitializeVizContextMenuComponent() {
+			if (tsConfig.is_authoring && ss.isValue(this.get_paneTableVM().get_vizContextMenuViewModel()) && (tab.FeatureFlags.isEnabled('RichTextCreateAnnotationAndOpenEditor') || tab.FeatureFlags.isEnabled('RichTextCreateBlankAreaAnnotation') || tab.FeatureFlags.isEnabled('RichTextCreateBlankPointAndMarkAnnotation'))) {
+				this.get_paneTableVM().get_vizContextMenuViewModel().setAnchorEl(this.get_vizRegionDomNode().get(0));
+				tab.ObjectRegistry.newView(ss.makeGenericType(spiff.ReactHostView$3, [tab.VizContextMenuViewModel, $tab_VizContextMenuComponent, Object])).call(null, [this.get_paneTableVM().get_vizContextMenuViewModel()]);
+			}
+		},
+		$initializeSelectionChromeComponent: function PaneTableViewWeb$InitializeSelectionChromeComponent() {
+			if (tsConfig.is_authoring && ss.isValue(this.get_paneTableVM().get_annotationSelectionChromeViewModel()) && tab.FeatureFlags.isEnabled('RichTextSelectAnnotation')) {
+				var vizRegion = this.get_vizRegionDomNode().get(0).getBoundingClientRect();
+				var domRegion = { x: 0, y: 0, w: ss.Int32.trunc(vizRegion.width), h: ss.Int32.trunc(vizRegion.height) };
+				this.get_paneTableVM().updateGeometry(domRegion);
+				var selectionChromeView = tab.ObjectRegistry.newView(ss.makeGenericType(spiff.ReactHostView$3, [tab.AnnotationSelectionChromeViewModel, $tab_AnnotationSelectionChromeComponent, Object])).call(null, [this.get_paneTableVM().get_annotationSelectionChromeViewModel()]);
+				selectionChromeView.addToDom(this.get_vizRegionDomNode());
+			}
+		},
+		$zoomOnCenter: function PaneTableViewWeb$ZoomOnCenter(scale) {
+			if (this.get_paneTableVM().get_isMapWithBaseLayer() && !this.get_$vizWebRegion().allowMapZoomAtCurrentLevel(scale)) {
+				return;
+			}
+			var pane = this.resolvePane({ x: 1, y: 1 });
+			this.disposeOfOverlays();
+			this.get_paneTableVM().hideAnnotations();
+			this.get_$vizWebRegion().$zoomOnCenter(pane, scale);
+		},
+		initEventHandlers: function PaneTableViewWeb$InitEventHandlers() {
+			var mouseEventUnbinder = null;
+			var touchEventUnbinder = null;
+			var firstInputHandler = ss.thisFix(ss.mkdel(this, function() {
+				mouseEventUnbinder = tab.MiscUtil.dispose$1(mouseEventUnbinder);
+				touchEventUnbinder = tab.MiscUtil.dispose$1(touchEventUnbinder);
+				tab.PaneTableView.prototype.initEventHandlers.call(this);
+			}));
+			var rootElement = this.dom.domRoot[0];
+			mouseEventUnbinder = spiff.EventUtil.addEventListenerWithDispose(rootElement, 'mouseenter', firstInputHandler, true);
+			touchEventUnbinder = spiff.EventUtil.addEventListenerWithDispose(rootElement, 'touchstart', firstInputHandler, true);
+			this.disposables.add$1(mouseEventUnbinder);
+			this.disposables.add$1(touchEventUnbinder);
+		},
+		getDomNodeForContentRegion: function PaneTableViewWeb$GetDomNodeForContentRegion(domNode) {
+			return domNode.get(0);
+		},
+		connectTooltipEventHandlers: function PaneTableViewWeb$ConnectTooltipEventHandlers() {
+			tab.PaneTableView.prototype.connectTooltipEventHandlers.call(this);
+			this.get_vizToolTip().add_mouseExitedTooltip(ss.mkdel(this, this.$onMouseLeaveTooltip));
+		},
+		makeConnections: function PaneTableViewWeb$MakeConnections() {
+			this.$domWeb.scrollX.scroll(ss.mkdel(this, function(e) {
+				this.$onScrollX();
+			}));
+			this.$domWeb.scrollY.scroll(ss.mkdel(this, function(e1) {
+				this.$onScrollY();
+			}));
+			this.dom.domRoot.on('wheel', ss.mkdel(this, this.$onMouseWheelScroll));
+			this.dom.domRoot.mouseout(ss.mkdel(this, this.onMouseOut));
+			this.dom.domRoot.mousemove(ss.mkdel(this, this.onMouseMove));
+			this.dom.view.mouseover(ss.mkdel(this, this.onViewMouseOver));
+			this.dom.view.mouseout(ss.mkdel(this, this.onViewMouseOut));
+			this.dom.view.mousemove(ss.mkdel(this, this.onViewMouseMove));
+			this.dom.domRoot.attr('tabindex', '-1');
+			this.disposables.add$1(spiff.EventUtil.bindWithDispose(this.dom.domRoot, 'keyup', ss.mkdel(this, this.$onKeyUp)));
+		},
+		makeMapsSearchViewConnections: function PaneTableViewWeb$MakeMapsSearchViewConnections() {
+			if (ss.isValue(this.mapsSearchView)) {
+				this.get_paneTableVM().get_mapsSearchViewModel().set_focusInHandler(ss.mkdel(this, function(e) {
+					this.checkForSuppressTooltipsAndOverlays(e.target);
+				}));
+				this.get_paneTableVM().get_mapsSearchViewModel().set_focusOutHandler(ss.mkdel(this, function(e1) {
+					this.checkForSuppressTooltipsAndOverlays(e1.relatedTarget);
+				}));
+				this.get_paneTableVM().get_mapsSearchViewModel().set_keypressHandler(ss.mkdel(this, function(e2) {
+					this.checkForSuppressTooltipsAndOverlays(e2.target);
+				}));
+			}
+		},
+		makeRegions: function PaneTableViewWeb$MakeRegions() {
+			tab.Log.get(this).debug('MakeRegions', []);
+			var regionCallbacks = this.makeHoverApi();
+			ss.clearKeys(this.regions);
+			var noPanZoom = function() {
+				return false;
+			};
+			for (var $t1 = 0; $t1 < tab.PaneTableViewRegionParts.nonVizContentRegions.length; $t1++) {
+				var regionPart = tab.PaneTableViewRegionParts.nonVizContentRegions[$t1];
+				var regionDomNode = this.regionParts.getSelectorForRegion(regionPart);
+				var nonVizRegionToolModeViewModel = new tab.ToolModeViewModel(regionPart, this.get_paneTableVM().get_visualModel().get_defaultMapTool());
+				this.regions[regionPart] = new $tab_TiledViewerRegionWeb(regionPart, regionDomNode.get(0), regionCallbacks, this.$domWeb.scrollX, this.$domWeb.scrollY, noPanZoom, this.get_sheetid(), this.get_paneTableVM(), nonVizRegionToolModeViewModel);
+			}
+			var allowPanZoomActionsCallback = ss.mkdel(this, this.allowPanZoomActions);
+			this.set_vizRegion(new $tab_TiledViewerRegionWeb('viz', this.get_vizRegionDomNode().get(0), regionCallbacks, this.$domWeb.scrollX, this.$domWeb.scrollY, allowPanZoomActionsCallback, this.get_sheetid(), this.get_paneTableVM(), this.get_paneTableVM().get_vizRegionToolModeViewModel()));
+			this.get_paneTableVM().get_vizRegionToolModeViewModel().initializeToolModesForVizRegion(allowPanZoomActionsCallback());
+		},
+		getWebRegion: function PaneTableViewWeb$GetWebRegion(regionPart) {
+			return ss.safeCast(this.regions[regionPart], $tab_TiledViewerRegionWeb);
+		},
+		makeTooltipLegacyMode: function PaneTableViewWeb$MakeTooltipLegacyMode(contextProvider) {
+			return new $tab_TooltipLegacyMode(contextProvider, this.get_visualId());
+		},
+		cancelHover: function PaneTableViewWeb$CancelHover() {
+		},
+		makeInputHandlers: function PaneTableViewWeb$MakeInputHandlers() {
+			var $t1 = ss.getEnumerator(Object.keys(this.$inputHandlers));
+			try {
+				while ($t1.moveNext()) {
+					var regionPart = $t1.current();
+					this.$inputHandlers[regionPart] = tab.MiscUtil.dispose$1(this.$inputHandlers[regionPart]);
+				}
+			}
+			finally {
+				$t1.dispose();
+			}
+			ss.clearKeys(this.$inputHandlers);
+			for (var $t2 = 0; $t2 < tab.PaneTableViewRegionParts.nonVizContentRegions.length; $t2++) {
+				var regionPart1 = tab.PaneTableViewRegionParts.nonVizContentRegions[$t2];
+				var regionDomNode = this.regionParts.getSelectorForRegion(regionPart1);
+				var spec = this.makeMouseSpec(this.getWebRegion(regionPart1));
+				this.$inputHandlers[regionPart1] = new EventUtils.TableauEventHandler(regionDomNode.get(0), spec);
+			}
+			this.$setupMouseSpecForVizRegion();
+			var vizRegionDomNode = this.get_vizRegionDomNode();
+			var $t3 = new EventUtils.EventHandleSpec();
+			$t3.hoverDelay = 20;
+			$t3.hover = ss.mkdel(this, function(e) {
+				this.get_vizHitTestDebouncer().update(e);
+			});
+			var hitTestConfig = $t3;
+			var updatedHandler = ss.mkdel(this, function(info) {
+				this.onHitTestUpdated(this.get_$vizWebRegion(), info);
+			});
+			this.get_vizHitTestDebouncer().add_updated(updatedHandler);
+			this.disposables.add$1(new tab.CallOnDispose(ss.mkdel(this, function() {
+				this.get_vizHitTestDebouncer().remove_updated(updatedHandler);
+			})));
+			this.$vizHitTestUpdater = new EventUtils.TableauEventHandler(vizRegionDomNode.get(0), hitTestConfig);
+			this.disposables.add$1(this.$vizHitTestUpdater);
+			if (tab.ApplicationModel.get_instance().get_isLocalRenderMode()) {
+				var $t4 = new EventUtils.EventHandleSpec();
+				$t4.hover = ss.mkdel(this, function(e1) {
+					this.onHoverOverlay(this.get_$vizWebRegion(), e1);
+				});
+				$t4.hoverDelay = 0;
+				var responsiveSpec = $t4;
+				this.$responsiveMouseHandler = new EventUtils.TableauEventHandler(vizRegionDomNode.get(0), responsiveSpec);
+				this.disposables.add$1(this.$responsiveMouseHandler);
+			}
+			this.$makeHeaderAndAxisEventHandlers();
+			vizRegionDomNode.addClass('tvmodeRectSelect');
+			this.$ensureTouchGestures();
+		},
+		$ensureTouchGestures: function PaneTableViewWeb$EnsureTouchGestures() {
+			if (tsConfig.is_mobile_device) {
+				return;
+			}
+			var starthandler = ss.mkdel(this, function(e) {
+				if (!this.$dragStarted) {
+					e.stopPropagation();
+				}
+				this.makeHoverApi().suppressHover(this.regions['viz']);
+			});
+			var endhandler = ss.mkdel(this, function(e1) {
+				if (!this.$dragStarted) {
+					e1.stopPropagation();
+				}
+				this.makeHoverApi().unsuppressHover(this.regions['viz']);
+			});
+			this.get_vizRegionDomNode().children().on(this.createNamespacedEventName('touchstart'), starthandler).on(this.createNamespacedEventName('touchend'), endhandler);
+		},
+		$setupMouseSpecForVizRegion: function PaneTableViewWeb$SetupMouseSpecForVizRegion() {
+			this.$inputHandlers['viz'] = tab.MiscUtil.dispose$1(this.$inputHandlers['viz']);
+			var spec = this.makeMouseSpec(this.get_$vizWebRegion());
+			this.$inputHandlers['viz'] = new EventUtils.TableauEventHandler(this.get_vizRegionDomNode().get(0), spec);
+		},
+		updateTooltipMode: function PaneTableViewWeb$UpdateTooltipMode(visualModel) {
+			tab.PaneTableView.prototype.updateTooltipMode.call(this, visualModel);
+			if (ss.isNullOrUndefined(this.vizTooltip)) {
+				this.$setupMouseSpecForVizRegion();
+			}
+		},
+		updateGeometry: function PaneTableViewWeb$UpdateGeometry() {
+			tab.PaneTableView.prototype.updateGeometry.call(this);
+			this.$scrollX();
+			this.$scrollY();
+			var domNode = this.get_vizRegionDomNode().get(0);
+			var domRect = domNode.getBoundingClientRect();
+			var domRegion = { x: 0, y: 0, w: ss.Int32.trunc(domRect.width), h: ss.Int32.trunc(domRect.height) };
+			this.get_paneTableVM().updateGeometry(domRegion);
+		},
+		$makeHeaderAndAxisEventHandlers: function PaneTableViewWeb$MakeHeaderAndAxisEventHandlers() {
+			var createHoverSpec = ss.mkdel(this, function(regionPart) {
+				var $t1 = new EventUtils.EventHandleSpec();
+				$t1.hover = ss.mkdel(this, function(e) {
+					this.$onHoverHeadersAndAxes(this.getWebRegion(regionPart), e);
+				});
+				$t1.hoverDelay = 0;
+				$t1.firstTouch = ss.mkdel(this, function(e1) {
+					this.$onFirstTouchHeadersAndAxes(this.getWebRegion(regionPart));
+				});
+				var spec = $t1;
+				var regionDomNode = this.regionParts.getSelectorForRegion(regionPart);
+				this.disposables.add$1(new EventUtils.TableauEventHandler(regionDomNode.get(0), spec));
+				regionDomNode.mouseout(ss.mkdel(this, function(e2) {
+					this.$onMouseOutHeadersAndAxes(regionPart);
+				}));
+			});
+			for (var $t2 = 0; $t2 < tab.PaneTableViewRegionParts.regionsThatMightContainCategoricalHeader.length; $t2++) {
+				var regionPart1 = tab.PaneTableViewRegionParts.regionsThatMightContainCategoricalHeader[$t2];
+				createHoverSpec(regionPart1);
+			}
+			if (tab.FeatureFlags.isEnabled('EditAxisWebAffordance') && tsConfig.is_authoring) {
+				var axesNotContainingCategoricalHeader = tab.ListExtensions.where(Object).call(null, tab.PaneTableViewRegionParts.axisRegions, function(r) {
+					return !ss.contains(tab.PaneTableViewRegionParts.regionsThatMightContainCategoricalHeader, r);
+				});
+				for (var $t3 = 0; $t3 < axesNotContainingCategoricalHeader.length; $t3++) {
+					var regionPart2 = axesNotContainingCategoricalHeader[$t3];
+					createHoverSpec(regionPart2);
+				}
+			}
+		},
+		makeHoverApi: function PaneTableViewWeb$MakeHoverApi() {
+			if (ss.isNullOrUndefined(this.$hoverApi)) {
+				this.$hoverApi = new $tab_HoverApi(this);
+				this.disposables.add$1(this.$hoverApi);
+			}
+			return this.$hoverApi;
+		},
+		doAnnotationDoubleTap: function PaneTableViewWeb$DoAnnotationDoubleTap(region, pseudoEvent) {
+			var current = this.get_paneTableVM().get_vizRegionToolModeViewModel().get_currentToolbarToolMode();
+			if (tab.AnnotationSelectionChromeViewModel.canAnnotationInCurrentSheetType() && tsConfig.is_authoring && current !== 'area-zoom') {
+				var htr = this.getHitTestResults(region, pseudoEvent);
+				if (htr.get_hitObjectType() === 2) {
+					this.get_paneTableVM().handleAnnotationDoubleClicked([htr.get_id()]);
+					return true;
+				}
+			}
+			return false;
+		},
+		makeMouseSpec: function PaneTableViewWeb$MakeMouseSpec(region) {
+			var $t1 = new EventUtils.EventHandleSpec();
+			$t1.hover = ss.mkdel(this, function(e) {
+				this.onHover(region, e);
+			});
+			$t1.hoverDelay = (tab.ApplicationModel.get_instance().get_isLocalRenderMode() ? EventUtils.Hover.FastHoverTime : EventUtils.Hover.HoverTime);
+			var spec = $t1;
+			var mode = this.get_paneTableVM().get_visualModel().get_tooltipMode();
+			if (mode !== 'sticky') {
+				if (tab.ApplicationModel.get_instance().get_isLocalRenderMode() && region.get_regionPart() === 'viz') {
+					spec.hoverDelay = 0;
+				}
+				else {
+					var hoverDelay = tab.FeatureParamsLookup.getInt(12);
+					var $t2 = hoverDelay;
+					if (ss.isNullOrUndefined($t2)) {
+						$t2 = EventUtils.Hover.FastHoverTime;
+					}
+					spec.hoverDelay = $t2;
+				}
+			}
+			spec.firstTouch = ss.mkdel(this, function(e1) {
+				this.$onFirstTouch(region, e1);
+			});
+			spec.tap = ss.mkdel(this, function(e2) {
+				this.$onTap(region, e2);
+			});
+			if (tsConfig.is_authoring && ss.contains(tab.PaneTableViewRegionParts.axisRegions, region.get_regionPart())) {
+				spec.doubleTap = ss.mkdel(region, region.onDoubleTapAxis);
+				spec.rightClick = ss.mkdel(region, region.onRightClickAxis);
+			}
+			if (region.get_regionPart() === 'viz') {
+				spec.dragStart = ss.mkdel(this, function(e3) {
+					this.dragOverride(e3, ss.mkdel(this, function(evt) {
+						this.$onDragStart(region, e3);
+					}));
+				});
+				spec.dragMove = ss.mkdel(this, this.$onDrag);
+				spec.dragEnd = ss.mkdel(this, this.$onDragEnd);
+				if (tsConfig.allow_filter) {
+					if (tab.FeatureFlags.isEnabled('RichTextCreateBlankAreaAnnotation') || tab.FeatureFlags.isEnabled('RichTextCreateBlankPointAndMarkAnnotation') || tab.FeatureFlags.isEnabled('RichTextDeleteAnnotation')) {
+						spec.rightClick = ss.mkdel(this, function(e4) {
+							this.onRightClickViz(region, region.toLocalCoordsEvent(e4, false));
+						});
+					}
+					spec.doubleTap = ss.mkdel(this, function(e5) {
+						this.$onDoubleTapViz(region, e5);
+					});
+					spec.press = function(evt1) {
+						$tab_PaneTableViewWeb.$onPress();
+					};
+					spec.cancelPotentialDoubleTap = ss.mkdel(this, function(e6) {
+						this.$onCancelPotentialDoubleTap();
+					});
+					spec.pressDragStart = ss.mkdel(this, function(e7) {
+						this.dragOverride(e7, ss.mkdel(this, function(evt2) {
+							this.$onPressDragStart(region, e7);
+						}));
+					});
+				}
+			}
+			return spec;
+		},
+		makeRegionContentProviders: function PaneTableViewWeb$MakeRegionContentProviders() {
+			var onQueueComplete = ss.mkdel(this, function(sender, e) {
+				this.get_vizRegion().reset();
+			});
+			this.makeRegionContentProvidersHelper(this.get_vizRegionDomNode(), onQueueComplete);
+			this.$scrollYTiledWindow = this.makeTiledWindow(this.$domWeb.scrollY, null, null, null, null);
+			this.$scrollXTiledWindow = this.makeTiledWindow(this.$domWeb.scrollX, null, null, null, null);
+		},
+		makeTiledWindow: function PaneTableViewWeb$MakeTiledWindow(domNode, sessionRef, controllerRef, getRequestIdFunc, optionalCallback) {
+			return this.makeTiledWindowHelper(domNode, sessionRef, controllerRef, getRequestIdFunc, optionalCallback, true);
+		},
+		shouldInformTooltipOfLocalTapOnViz: function PaneTableViewWeb$ShouldInformTooltipOfLocalTapOnViz(htr, isEndOfSmoothTooltipGesture) {
+			return !this.get_paneTableVM().vizContextMenuOpened() && htr.get_hitObjectType() !== 2;
+		},
+		refreshScrollingAndAxisIcons: function PaneTableViewWeb$RefreshScrollingAndAxisIcons() {
+			var currentOnUpdate = this.$onUpdate;
+			this.$onUpdate = null;
+			if (typeof(currentOnUpdate) === 'function') {
+				currentOnUpdate();
+			}
+			this.tryUpdateSortDrillAndContextMenuWidgets();
+		},
+		tryUpdateSortDrillAndContextMenuWidgets: function PaneTableViewWeb$TryUpdateSortDrillAndContextMenuWidgets() {
+			if (ss.isValue(this.drillWidget)) {
+				this.drillWidget.onUpdate();
+			}
+			if (ss.isValue(this.sortWidget)) {
+				this.sortWidget.onUpdate();
+			}
+			if (ss.isValue(this.axisContextMenuWidget)) {
+				this.axisContextMenuWidget.onUpdate(this.get_visibleGeometry());
+			}
+		},
+		getRegionForPoint: function PaneTableViewWeb$GetRegionForPoint(point) {
+			return this.regionParts.getRegionForPoint(point);
+		},
+		getRegionRectForRegion: function PaneTableViewWeb$GetRegionRectForRegion(region) {
+			var regionDom = this.regionParts.getSelectorForRegion(region);
+			return (ss.isValue(regionDom) ? tab.DomUtil.getMarginBoxJQ(regionDom) : null);
+		},
+		isPointInRegion: function PaneTableViewWeb$IsPointInRegion(region, point) {
+			var regionRect = this.getRegionRectForRegion(region);
+			return (ss.isValue(regionRect) ? tab.RectUtil.inRect(regionRect, point) : false);
+		},
+		destroyRegions: function PaneTableViewWeb$DestroyRegions() {
+			tab.PaneTableView.prototype.destroyRegions.call(this);
+			this.$scrollYTiledWindow.destroy();
+			this.$scrollXTiledWindow.destroy();
+		},
+		destroyInputHandlers: function PaneTableViewWeb$DestroyInputHandlers() {
+			tab.Log.get(this).debug('DestroyInputHandlers', []);
+			var $t1 = ss.getEnumerator(Object.keys(this.$inputHandlers));
+			try {
+				while ($t1.moveNext()) {
+					var regionPart = $t1.current();
+					this.$inputHandlers[regionPart] = tab.MiscUtil.dispose$1(this.$inputHandlers[regionPart]);
+				}
+			}
+			finally {
+				$t1.dispose();
+			}
+			ss.clearKeys(this.$inputHandlers);
+			if (ss.isValue(this.vizTooltip)) {
+				this.vizTooltip.remove_mouseExitedTooltip(ss.mkdel(this, this.$onMouseLeaveTooltip));
+			}
+			this.$removeDragHelperElementsFromDocument();
+		},
+		refreshImages: function PaneTableViewWeb$RefreshImages(tileCacheUrl) {
+			tab.PaneTableView.prototype.refreshImages.call(this, tileCacheUrl);
+			this.$scrollYTiledWindow.refreshImages(tileCacheUrl);
+			this.$scrollXTiledWindow.refreshImages(tileCacheUrl);
+		},
+		onTooltipClosed: function PaneTableViewWeb$OnTooltipClosed() {
+			tab.PaneTableView.prototype.onTooltipClosed.call(this);
+			this.disposeOfOverlayImages();
+			this.$checkForOverlay(false);
+		},
+		$onMouseLeaveTooltip: function PaneTableViewWeb$OnMouseLeaveTooltip(mousePoint) {
+			var c = tab.DomUtil.getRectXY(this.dom.view);
+			if (c.x > mousePoint.x || c.x + c.w <= mousePoint.x || c.y > mousePoint.y || c.y + c.h <= mousePoint.y) {
+				this.disposeOfOverlays();
+				if (this.get_vizToolTip().get_isTooltipShown()) {
+					this.get_vizToolTip().clearTooltipWithFakeHover();
+				}
+			}
+		},
+		onViewMouseOver: function PaneTableViewWeb$OnViewMouseOver(e) {
+			this.$isMouseInVizRegion = true;
+			this.floatingZoomToolbarView.showFloatingZoomToolbar(true);
+			if (ss.isValue(this.mapsSearchView) && this.get_paneTableVM().get_mapSearchEnabled()) {
+				this.get_paneTableVM().get_mapsSearchViewModel().setVisible(true);
+			}
+			this.checkForSuppressTooltipsAndOverlays(e.target);
+		},
+		$isPointOutsideOfEntirePaneTable: function PaneTableViewWeb$IsPointOutsideOfEntirePaneTable(e) {
+			var c = tab.DomUtil.getRectXY(this.dom.domRoot);
+			return $tab_PaneTableViewWeb.$isPointOutsideOfRegion(c, e);
+		},
+		$isPointOutsideOfVizRegion: function PaneTableViewWeb$IsPointOutsideOfVizRegion(e) {
+			var c = tab.DomUtil.getRectXY(this.dom.view);
+			return $tab_PaneTableViewWeb.$isPointOutsideOfRegion(c, e);
+		},
+		isPointOutsideOfRelevantVizRegions: function PaneTableViewWeb$IsPointOutsideOfRelevantVizRegions(e) {
+			if (!this.$isPointOutsideOfVizRegion(e)) {
+				return false;
+			}
+			if (!$tab_PaneTableViewWeb.$isPointOutsideOfRegion(tab.DomUtil.getRectXY(this.dom.yLabel), e)) {
+				return false;
+			}
+			if (!$tab_PaneTableViewWeb.$isPointOutsideOfRegion(tab.DomUtil.getRectXY(this.dom.xLabel), e)) {
+				return false;
+			}
+			if (!$tab_PaneTableViewWeb.$isPointOutsideOfRegion(tab.DomUtil.getRectXY(this.dom.caption), e)) {
+				return false;
+			}
+			if (!$tab_PaneTableViewWeb.$isPointOutsideOfRegion(tab.DomUtil.getRectXY(this.dom.leftAxis), e)) {
+				return false;
+			}
+			if (!$tab_PaneTableViewWeb.$isPointOutsideOfRegion(tab.DomUtil.getRectXY(this.dom.rightAxis), e)) {
+				return false;
+			}
+			if (!$tab_PaneTableViewWeb.$isPointOutsideOfRegion(tab.DomUtil.getRectXY(this.dom.bottomAxis), e)) {
+				return false;
+			}
+			if (!$tab_PaneTableViewWeb.$isPointOutsideOfRegion(tab.DomUtil.getRectXY(this.dom.topAxis), e)) {
+				return false;
+			}
+			return true;
+		},
+		onMouseOut: function PaneTableViewWeb$OnMouseOut(e) {
+			if (this.$isPointOutsideOfEntirePaneTable(e)) {
+				if (ss.isValue(this.sortWidget)) {
+					this.sortWidget.onMouseOutOfParentPaneTableView();
+				}
+				if (ss.isValue(this.drillWidget)) {
+					this.drillWidget.turnDrillWidgetsOff();
+				}
+				if (ss.isValue(this.axisContextMenuWidget)) {
+					this.axisContextMenuWidget.hideAxisContextMenuIcon();
+				}
+			}
+			if (this.isPointOutsideOfRelevantVizRegions(e)) {
+				this.get_vizToolTip().clearTooltipWithFakeHover();
+				this.$clearOverlays();
+			}
+		},
+		$clearOverlays: function PaneTableViewWeb$ClearOverlays() {
+			if (!this.$dragStarted) {
+				this.disposeOfOverlayImages();
+			}
+		},
+		onMouseMove: function PaneTableViewWeb$OnMouseMove(e) {
+			var tooltip = this.get_vizToolTip();
+			if (tooltip.get_isTooltipShown() && !tooltip.shownTooltipIsStatic() && this.$isPointOutsideOfVizRegion(e)) {
+				var c = tab.DomUtil.getRectXY(this.dom.view);
+				tooltip.hoverOverWhitespace({ x: c.x, y: c.y }, 'viz');
+			}
+		},
+		onViewMouseOut: function PaneTableViewWeb$OnViewMouseOut(e) {
+			this.$isMouseInVizRegion = false;
+			this.$mostRecentCapturedMousePosition = null;
+			var tooltip = this.get_vizToolTip();
+			if (this.$isPointOutsideOfVizRegion(e)) {
+				this.floatingZoomToolbarView.showFloatingZoomToolbar(false);
+				if (ss.isValue(this.mapsSearchView)) {
+					this.get_paneTableVM().get_mapsSearchViewModel().setVisible(false);
+				}
+				if (tooltip.get_isTooltipShown() && !tooltip.shownTooltipIsStatic()) {
+					var c = tab.DomUtil.getRectXY(this.dom.view);
+					tooltip.hoverOverWhitespace({ x: c.x, y: c.y }, 'viz');
+				}
+			}
+			if (!tooltip.get_isTooltipShown()) {
+				this.$clearOverlays();
+			}
+			this.checkForSuppressTooltipsAndOverlays(e.relatedTarget);
+			this.get_vizToolTip().onMouseLeaveTheView();
+		},
+		onViewMouseMove: function PaneTableViewWeb$OnViewMouseMove(e) {
+			this.$isMouseInVizRegion = true;
+			this.checkForSuppressTooltipsAndOverlays(e.target);
+		},
+		setupSortIndicators: function PaneTableViewWeb$SetupSortIndicators() {
+			this.sortWidget = new $tab_Sorting(this, this.dom.domRoot.get(0));
+			this.disposables.add$1(this.sortWidget);
+		},
+		setupAxisContextMenuIndicator: function PaneTableViewWeb$SetupAxisContextMenuIndicator() {
+			this.axisContextMenuWidget = new $tab_AxisContextMenu(this, this.dom.domRoot.get(0));
+			this.disposables.add$1(this.axisContextMenuWidget);
+		},
+		setupDrilling: function PaneTableViewWeb$SetupDrilling() {
+			this.drillWidget = new $tab_Drilling(this, this.dom.domRoot.get(0));
+			this.disposables.add$1(this.drillWidget);
+		},
+		setRegionGeometryHelper: function PaneTableViewWeb$SetRegionGeometryHelper(domNode, marginBoxSpec) {
+			if (ss.isValue(domNode) && domNode.children().first().hasClass('tvScrollContainer')) {
+				tab.DomUtil.setAbsolutePositionBox(domNode.children().first(), { l: 0, t: 0, w: marginBoxSpec.w, h: marginBoxSpec.h });
+			}
+		},
+		setGeometryForWebScrollbars: function PaneTableViewWeb$SetGeometryForWebScrollbars(regionGeometry, scrollXTop) {
+			var hasYScrollbar = regionGeometry.get_scrollWidth() > 0;
+			var hasXScrollbar = regionGeometry.get_scrollHeight() > 0;
+			this.$positionAndDisplayVerticalScrollbar(regionGeometry, hasYScrollbar);
+			this.$positionAndDisplayHorizontalScrollbar(regionGeometry, scrollXTop, hasXScrollbar);
+			var disallowDiagonalScrolling = !!(hasXScrollbar ^ hasYScrollbar);
+			this.$scrollAdjuster = new tab.ScrollAdjuster(disallowDiagonalScrolling);
+			this.$resetScrollbars(regionGeometry, hasYScrollbar, hasXScrollbar);
+		},
+		$positionAndDisplayVerticalScrollbar: function PaneTableViewWeb$PositionAndDisplayVerticalScrollbar(regionGeometry, hasScrollbar) {
+			var scrollbar = this.$domWeb.scrollY;
+			if (hasScrollbar) {
+				var scrollYHeight = Math.max(tab.Metrics.get_minScrollHeight(), regionGeometry.get_viewHeight());
+				var positionBox = { l: regionGeometry.get_overallWidth(), t: regionGeometry.get_scrollYTop(), w: regionGeometry.get_scrollWidth(), h: scrollYHeight };
+				tab.DomUtil.setAbsolutePositionBox(scrollbar, positionBox);
+			}
+			scrollbar.toggle(hasScrollbar);
+		},
+		$positionAndDisplayHorizontalScrollbar: function PaneTableViewWeb$PositionAndDisplayHorizontalScrollbar(regionGeometry, scrollXTop, hasScrollbar) {
+			var scrollbar = this.$domWeb.scrollX;
+			if (hasScrollbar) {
+				if (tab.FeatureFlags.isEnabled('ScrollingTables')) {
+					var scrollXWidth = Math.max(tab.Metrics.get_minScrollWidth(), regionGeometry.get_overallWidth());
+					var positionBox = { l: 0, t: scrollXTop, w: scrollXWidth, h: regionGeometry.get_scrollHeight() };
+					tab.DomUtil.setAbsolutePositionBox(scrollbar, positionBox);
+				}
+				else {
+					var scrollXWidth1 = Math.max(tab.Metrics.get_minScrollWidth(), regionGeometry.get_viewWidth());
+					var positionBox1 = { l: regionGeometry.get_scrollXLeft(), t: scrollXTop, w: scrollXWidth1, h: regionGeometry.get_scrollHeight() };
+					tab.DomUtil.setAbsolutePositionBox(scrollbar, positionBox1);
+				}
+			}
+			scrollbar.toggle(hasScrollbar);
+		},
+		$resetScrollbars: function PaneTableViewWeb$ResetScrollbars(regionGeometry, hasYScrollbar, hasXScrollbar) {
+			this.$resetVerticalScrollbar(regionGeometry, hasYScrollbar);
+			this.$resetHorizontalScrollbar(regionGeometry, hasXScrollbar);
+		},
+		$resetVerticalScrollbar: function PaneTableViewWeb$ResetVerticalScrollbar(regionGeometry, hasScrollbar) {
+			this.$scrollYTiledWindow.setYPos(this.$getScrollTop());
+			var scrollYinfo = (hasScrollbar ? { x: 0, y: 0, w: 1, h: regionGeometry.get_scrollableHeight(), r: null } : null);
+			this.$scrollYTiledWindow.reset(scrollYinfo, this.get_geometry().ts);
+		},
+		$resetHorizontalScrollbar: function PaneTableViewWeb$ResetHorizontalScrollbar(regionGeometry, hasScrollbar) {
+			this.$scrollXTiledWindow.setXPos(this.$getScrollLeft());
+			var scrollableWidth = (tab.FeatureFlags.isEnabled('ScrollingTables') ? regionGeometry.get_neededWidth() : regionGeometry.get_scrollableWidth());
+			var scrollXinfo = (hasScrollbar ? { x: 0, y: 0, w: scrollableWidth, h: 1, r: null } : null);
+			this.$scrollXTiledWindow.reset(scrollXinfo, this.get_geometry().ts);
+		},
+		maybeShowOverlayImages: function PaneTableViewWeb$MaybeShowOverlayImages(ubertipModel) {
+			if (!tab.ApplicationModel.get_instance().get_isLocalRenderMode()) {
+				var overlayImage = null;
+				if (ss.isValue(ubertipModel) && ss.isValue(ubertipModel.overlayImage)) {
+					overlayImage = this.createOverlayImageFromDataUri(ubertipModel.overlayImage);
+				}
+				else if (ss.isValue(ubertipModel.overlayImageKey)) {
+					overlayImage = this.createOverlayImageFromFile(ubertipModel.overlayImageKey);
+				}
+				this.showOverlayImages(overlayImage, ubertipModel.overlayAnchors);
+			}
+		},
+		setRegionResizersForWeb: function PaneTableViewWeb$SetRegionResizersForWeb() {
+			this.$drawHeaderResizers();
+			this.$setAxisRegionResizers();
+			this.$drawCellResizers();
+		},
+		$drawHeaderResizers: function PaneTableViewWeb$DrawHeaderResizers() {
+			if (tsConfig.is_authoring && ss.isValue(this.deferredHeaderResizerManager)) {
+				this.deferredHeaderResizerManager.done(function(manager) {
+					manager.handleResizerUpdate();
+				});
+			}
+		},
+		$drawCellResizers: function PaneTableViewWeb$DrawCellResizers() {
+			if (this.$cellsAreResizeable()) {
+				this.deferredCellResizerManager.done(ss.mkdel(this, function(manager) {
+					manager.scrollX(this.$getScrollLeft());
+				}));
+				this.deferredCellResizerManager.done(ss.mkdel(this, function(manager1) {
+					manager1.scrollY(this.$getScrollTop());
+				}));
+				this.deferredCellResizerManager.done(function(manager2) {
+					manager2.handleCellResizerUpdate();
+				});
+			}
+		},
+		$cellsAreResizeable: function PaneTableViewWeb$CellsAreResizeable() {
+			if (tsConfig.is_authoring && ss.isValue(this.deferredCellResizerManager)) {
+				return true;
+			}
+			return false;
+		},
+		$headersAreResizeable: function PaneTableViewWeb$HeadersAreResizeable() {
+			if (tsConfig.is_authoring && ss.isValue(this.deferredHeaderResizerManager)) {
+				return true;
+			}
+			return false;
+		},
+		$setAxisRegionResizers: function PaneTableViewWeb$SetAxisRegionResizers() {
+			if (tsConfig.is_authoring && ss.isValue(this.deferredAxisResizerManager)) {
+				this.deferredAxisResizerManager.done(function(manager) {
+					manager.setAxisResizers();
+				});
+			}
+		},
+		$setZoomVariableDefaults: function PaneTableViewWeb$SetZoomVariableDefaults() {
+			this.$currentAnchorPoint = null;
+			this.$scrollZoom = null;
+			if (ss.isValue(this.$scrollAdjuster)) {
+				this.$scrollAdjuster.forgetInputDevice();
+			}
+		},
+		$scrollZoomStarted: function PaneTableViewWeb$ScrollZoomStarted() {
+			return ss.isValue(this.$currentAnchorPoint);
+		},
+		$onMouseWheelScroll: function PaneTableViewWeb$OnMouseWheelScroll(e) {
+			if (ss.isNullOrUndefined(e) || e.ctrlKey) {
+				return;
+			}
+			var originalEvent = null;
+			if (ss.isValue(e['originalEvent'])) {
+				originalEvent = e['originalEvent'];
+			}
+			var scrollDeltas = this.$scrollAdjuster.normalizeScrollWheelDeltas(originalEvent);
+			this.get_paneTableVM().handleMouseWheelScroll();
+			if (this.isOneVisiblePane() && this.get_paneTableVM().get_isMap() && this.allowPanZoomActions() && !this.$isPointOutsideOfVizRegion(e)) {
+				if (this.$scrollZoomStarted() || !this.get_$vizWebRegion().isWaitingOnPanZoomServerResponse()) {
+					this.$doAnchorZoom(this.get_$vizWebRegion(), originalEvent, scrollDeltas.y);
+				}
+				e.preventDefault();
+				return;
+			}
+			var previousScrollTop = this.$getScrollTop();
+			var previousScrollLeft = this.$getScrollLeft();
+			this.$domWeb.scrollY.scrollTop(previousScrollTop + scrollDeltas.y);
+			this.$domWeb.scrollX.scrollLeft(previousScrollLeft + scrollDeltas.x);
+			if (previousScrollTop !== this.$getScrollTop()) {
+				this.$scrollY();
+				e.preventDefault();
+			}
+			if (previousScrollLeft !== this.$getScrollLeft()) {
+				this.$scrollX();
+				e.preventDefault();
+			}
+			this.get_vizToolTip().onScroll();
+			this.disposeOfOverlays();
+		},
+		$createScrollZoom: function PaneTableViewWeb$CreateScrollZoom() {
+			var mapSrvModel = this.get_paneTableVM().get_mapServerModel();
+			var startingZoomLevel = (mapSrvModel.get_hasPresModel() ? mapSrvModel.get_zoom() : 1);
+			if (mapSrvModel.get_hasPresModel() && mapSrvModel.get_rasterMapSourceModel().get_hasPresModel()) {
+				return new $tab_DiscreteScrollZoom(startingZoomLevel, this.$scrollAdjuster.get_isFromTouchpad());
+			}
+			else {
+				return new $tab_ContinuousScrollZoom(startingZoomLevel, this.$scrollAdjuster.get_isFromTouchpad());
+			}
+		},
+		$doAnchorZoom: function PaneTableViewWeb$DoAnchorZoom(vizRegion, originalEvent, scrollDelta) {
+			var wheelZoomFullyCompleteMetricContext = null;
+			if (!this.$scrollZoomStarted()) {
+				wheelZoomFullyCompleteMetricContext = tab.PaneTableViewWebMetrics.createWheelZoomFullyCompleteContext();
+				this.$currentAnchorPoint = $tab_PaneTableViewWeb.$getCursorPosInLocalCoordinates(vizRegion, originalEvent);
+				this.$scrollZoom = this.$createScrollZoom();
+				vizRegion.anchorZoomStart();
+			}
+			ss.Debug.assert(ss.isValue(this.$scrollZoom), 'scrollZoom cannot be null');
+			if (!this.$scrollZoom.update(scrollDelta)) {
+				return;
+			}
+			this.isAnimationOccurring = true;
+			var paneInfo = this.resolvePane(this.$currentAnchorPoint);
+			var zoomLevel = this.$scrollZoom.currentZoomLevel();
+			var zoomFactor = this.$scrollZoom.currentZoomFactor();
+			var shouldAnimate = !this.$scrollAdjuster.get_isFromTouchpad();
+			vizRegion.anchorZoom(paneInfo, this.$currentAnchorPoint, zoomLevel, zoomFactor, shouldAnimate);
+			this.disposeOfOverlays();
+			this.$clearZoomToAnchorTimeOut();
+			this.$zoomToAnchorTimer = window.setTimeout(ss.mkdel(this, function() {
+				vizRegion.anchorZoomEnd(paneInfo, this.$currentAnchorPoint, zoomLevel, zoomFactor, wheelZoomFullyCompleteMetricContext);
+				this.$setZoomVariableDefaults();
+			}), $tab_PaneTableViewWeb.$zoomToAnchorScrollTimeout);
+		},
+		$onScrollY: function PaneTableViewWeb$OnScrollY() {
+			this.get_vizToolTip().onScroll();
+			this.$scrollY();
+		},
+		$scrollY: function PaneTableViewWeb$ScrollY() {
+			var scrollY = this.$getScrollTop();
+			for (var $t1 = 0; $t1 < tab.PaneTableViewRegionParts.scrollableYRegions.length; $t1++) {
+				var regionPart = tab.PaneTableViewRegionParts.scrollableYRegions[$t1];
+				this.getWebRegion(regionPart).setYPos(scrollY);
+			}
+			var scrollLeft = (tab.FeatureFlags.isEnabled('ScrollingTables') ? 0 : this.$getScrollLeft());
+			this.set_scrollPosition({ x: scrollLeft, y: scrollY });
+			if (this.$cellsAreResizeable()) {
+				this.deferredCellResizerManager.done(function(manager) {
+					manager.scrollY(scrollY);
+				});
+			}
+			this.get_paneTableVM().scrollY(scrollY);
+		},
+		$onScrollX: function PaneTableViewWeb$OnScrollX() {
+			this.get_vizToolTip().onScroll();
+			this.$scrollX();
+		},
+		$scrollX: function PaneTableViewWeb$ScrollX() {
+			var scrollX = this.$getScrollLeft();
+			if (!tab.FeatureFlags.isEnabled('ScrollingTables') || this.get_geometryBundle().get_regionGeometry().get_scrollHeight() === 0) {
+				this.$scrollXViz(scrollX);
+			}
+			else {
+				this.$scrollXTables(scrollX);
+			}
+			this.get_paneTableVM().scrollX(scrollX);
+		},
+		$scrollXViz: function PaneTableViewWeb$ScrollXViz(scrollX) {
+			for (var $t1 = 0; $t1 < tab.PaneTableViewRegionParts.scrollableXRegions.length; $t1++) {
+				var regionPart = tab.PaneTableViewRegionParts.scrollableXRegions[$t1];
+				this.getWebRegion(regionPart).setXPos(scrollX);
+			}
+			this.set_scrollPosition({ x: scrollX, y: this.$getScrollTop() });
+			if (this.$cellsAreResizeable()) {
+				this.deferredCellResizerManager.done(function(manager) {
+					manager.scrollX(scrollX);
+				});
+			}
+		},
+		$scrollXTables: function PaneTableViewWeb$ScrollXTables(scrollX) {
+			for (var $t1 = 0; $t1 < tab.PaneTableViewRegionParts.scrollableTableRegions.length; $t1++) {
+				var regionPart = tab.PaneTableViewRegionParts.scrollableTableRegions[$t1];
+				this.$scrollLeftValueForRegion(regionPart, scrollX);
+			}
+			this.set_scrollPosition({ x: 0, y: this.$getScrollTop() });
+			if (this.$headersAreResizeable()) {
+				this.deferredHeaderResizerManager.done(function(manager) {
+					manager.updateHorizontalContainerScrollPosition();
+				});
+			}
+			if (this.$cellsAreResizeable()) {
+				this.deferredCellResizerManager.done(function(manager1) {
+					manager1.updateHorizontalContainerScrollPosition();
+				});
+			}
+		},
+		$scrollLeftValueForRegion: function PaneTableViewWeb$ScrollLeftValueForRegion(regionPart, scrollX) {
+			var rect = tab.PaneTableViewRegionParts.getRegionRectForRegionIfExists(regionPart, this.get_geometry());
+			var marginBox = tab.PaneTableViewRegionParts.getVisibleGeometryForRegionIfExists(regionPart, this.get_visibleGeometry());
+			if (ss.isNullOrUndefined(rect) || ss.isNullOrUndefined(marginBox)) {
+				return;
+			}
+			var domNode = this.regionParts.getSelectorForRegion(regionPart);
+			var scrollArea = { l: marginBox.l - scrollX, t: marginBox.t, w: Math.min(marginBox.w + scrollX, rect.w), h: marginBox.h };
+			tab.DomUtil.setAbsolutePositionBox(domNode, scrollArea);
+			this.setRegionGeometryHelper(domNode, scrollArea);
+			var region = this.regions[regionPart];
+			if (ss.isValue(region)) {
+				region.setGeometry(rect, scrollArea, this.get_geometry().ts);
+				if (regionPart === 'viz') {
+					this.updateOverlayTableGeometry(rect, this.get_geometry().ts, scrollArea);
+				}
+			}
+			if (regionPart === 'uleft') {
+				this.setupTopSpacerAreaRects(scrollArea, this.get_geometry());
+			}
+		},
+		$onKeyUp: function PaneTableViewWeb$OnKeyUp(e) {
+			if (this.get_$vizWebRegion().get_isDragTracking()) {
+				return;
+			}
+			if (!ss.referenceEquals(e.target, this.element.get(0)) && !ss.referenceEquals(e.target, this.dom.view.get(0)) && !ss.referenceEquals(e.target, this.dom.view.find('.tvimagesContainer').get(0))) {
+				return;
+			}
+			if (e.which === 46) {
+				this.get_paneTableVM().deleteSelectedAnnotations();
+			}
+			if (e.which === 27) {
+				this.get_paneTableVM().clearAnnotationSelection();
+			}
+			var mode;
+			switch (e.which) {
+				case 68: {
+					mode = 'lasso-selection';
+					break;
+				}
+				case 83: {
+					mode = 'radial-selection';
+					break;
+				}
+				case 65: {
+					mode = 'rectangular-selection';
+					break;
+				}
+				case 90: {
+					mode = 'area-zoom';
+					break;
+				}
+				case 70: {
+					mode = 'pan-map';
+					break;
+				}
+				default: {
+					return;
+				}
+			}
+			if (mode === this.get_paneTableVM().get_vizRegionToolModeViewModel().get_currentPointerToolMode()) {
+				mode = this.defaultPointerToolMode();
+			}
+			var zoomToolbarModeSet = this.floatingZoomToolbarView.setToolMode(mode, true);
+			if (!zoomToolbarModeSet) {
+				this.setPointerToolMode(mode, true);
+			}
+		},
+		checkForHoverOverlay: function PaneTableViewWeb$CheckForHoverOverlay() {
+			this.$checkForOverlay(true);
+		},
+		$checkForOverlay: function PaneTableViewWeb$CheckForOverlay(updateTargetStateToHover) {
+			if (ss.isValue(this.lastVizHoverPoint) && this.$isMouseInVizRegion) {
+				this.hitTestAndSetHoverOverMarkOrVisualPartHelper(updateTargetStateToHover);
+			}
+			else {
+				this.disposeOfOverlayImages();
+			}
+		},
+		$onHoverHeadersAndAxes: function PaneTableViewWeb$OnHoverHeadersAndAxes(region, pseudoEvent) {
+			var regionCoordinates = region.toLocalCoordsEvent(pseudoEvent, false);
+			var visualListVM = this.getVisualListViewModelForRegion(region.get_regionPart());
+			if (ss.isNullOrUndefined(regionCoordinates) || this.isUserDragging() || !tab.ApplicationModel.get_instance().get_isLocalRenderMode() || ss.isNullOrUndefined(visualListVM)) {
+				return;
+			}
+			var hoveredHeaderOrAxis = visualListVM.hitTestNodes(regionCoordinates);
+			if (ss.isValue(hoveredHeaderOrAxis)) {
+				var isCategoricalHeader = tab.SelectionUtils.isCategoricalAndTupleAssociatedHeader(hoveredHeaderOrAxis.node);
+				var isQAxisInAuthMode = tab.FeatureFlags.isEnabled('EditAxisWebAffordance') && tab.SelectionUtils.isQuantitative(hoveredHeaderOrAxis) && tsConfig.is_authoring;
+				hoveredHeaderOrAxis = ((isCategoricalHeader || isQAxisInAuthMode) ? hoveredHeaderOrAxis : null);
+			}
+			var visualPart = tab.ModelUtils.regionToVisualPartMap[region.get_regionPart()];
+			this.updateHoveredCategoricalHeadersAndQuantitativeAxes(hoveredHeaderOrAxis, 'hover', visualPart);
+		},
+		$onFirstTouchHeadersAndAxes: function PaneTableViewWeb$OnFirstTouchHeadersAndAxes(region) {
+			var visualListVM = this.getVisualListViewModelForRegion(region.get_regionPart());
+			if (!tab.ApplicationModel.get_instance().get_isLocalRenderMode() || ss.isNullOrUndefined(visualListVM)) {
+				return;
+			}
+			var visualPart = tab.ModelUtils.regionToVisualPartMap[region.get_regionPart()];
+			this.updateHoveredCategoricalHeadersAndQuantitativeAxes(null, 'press', visualPart);
+		},
+		$onMouseOutHeadersAndAxes: function PaneTableViewWeb$OnMouseOutHeadersAndAxes(regionPart) {
+			var visualPart = tab.ModelUtils.regionToVisualPartMap[regionPart];
+			var vlvm = this.get_paneTableVM().get_vizRegionMap()[visualPart];
+			if (ss.isValue(vlvm)) {
+				vlvm.set_hoveredNodeOrAxis(null);
+			}
+		},
+		isUserDragging: function PaneTableViewWeb$IsUserDragging() {
+			return EventUtils.DragDropManager.get_isDragging() || $tab_TiledViewerRegionWeb.isDragTrackingInAnyRegion;
+		},
+		onHoverOverVisualPart: function PaneTableViewWeb$OnHoverOverVisualPart(vizRegion, hitSomething) {
+			var region = ss.cast(vizRegion, $tab_TiledViewerRegionWeb);
+			region.setMouseOverMarkOrVisualPart(hitSomething);
+		},
+		$onFirstTouch: function PaneTableViewWeb$OnFirstTouch(region, pseudoEvent) {
+			if (ss.isValue(this.mapsSearchView)) {
+				this.get_paneTableVM().get_mapsSearchViewModel().removeSuggestionList();
+			}
+			if (tab.ApplicationModel.get_instance().get_isLocalRenderMode() && region.get_regionPart() === 'viz') {
+				var coords = region.toLocalCoordsEvent(pseudoEvent, false);
+				var objectHit = this.get_paneTableVM().get_localRenderVizHitTester().onTapHitTest(coords);
+				if (objectHit.get_shouldRenderOverlay()) {
+					this.wasPressOverlayJustUpdated = true;
+					this.updateOverlayTarget(objectHit.get_id(), 'press', objectHit.get_overlayTargetType());
+				}
+			}
+		},
+		$existsLegendSelectionForViz: function PaneTableViewWeb$ExistsLegendSelectionForViz() {
+			var $t1 = this.get_paneTableVM().get_selectionsModel().get_allLegendSelections();
+			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+				var legendSelectionModel = $t1[$t2];
+				if (!legendSelectionModel.isEmpty) {
+					return true;
+				}
+			}
+			return false;
+		},
+		isSelectActionOnVizAllowed: function PaneTableViewWeb$IsSelectActionOnVizAllowed(action) {
+			return action === 'simple' || !this.$existsLegendSelectionForViz();
+		},
+		onHitTestUpdated: function PaneTableViewWeb$OnHitTestUpdated(region, hitTest) {
+			this.$destroyDragIcon();
+			if (this.getVizDragApproval(hitTest)) {
+				var coordinates = region.toLocalCoords(hitTest.get_pageCoordinates(), false);
+				this.$createDragIcon(coordinates);
+			}
+		},
+		$createDragIcon: function PaneTableViewWeb$CreateDragIcon(coordinates) {
+			var target = $('<div class="tabDragIcon" ></div>');
+			if (BrowserSupport.BrowserSupport.IsIE()) {
+				target.css('cursor', 'alias');
+			}
+			else {
+				target.css('cursor', '-webkit-grab');
+				target.css('cursor', '-moz-grab');
+				target.css('cursor', 'grab');
+			}
+			target.css('position', 'absolute');
+			var MaxHitTestDistance = tab.VizHitTestDebouncer.maxHitTestDistance;
+			target.css('top', coordinates.y - MaxHitTestDistance + 'px');
+			target.css('left', coordinates.x - MaxHitTestDistance + 'px');
+			target.css('height', 40 + 'px');
+			target.css('width', 40 + 'px');
+			var spec = this.makeMouseSpec(this.get_$vizWebRegion());
+			this.get_vizRegionDomNode().append(target);
+			if (!tsConfig.is_mobile_device) {
+				var handler = function(e) {
+					e.stopPropagation();
+				};
+				this.get_vizRegionDomNode().on(this.createNamespacedEventName('touchstart'), handler).on(this.createNamespacedEventName('touchend'), handler);
+			}
+			this.$dragIconHandler = new EventUtils.TableauEventHandler(target.get(0), spec);
+		},
+		disposeOfOverlays: function PaneTableViewWeb$DisposeOfOverlays() {
+			this.$destroyDragIcon();
+			tab.PaneTableView.prototype.disposeOfOverlays.call(this);
+		},
+		$destroyDragIcon: function PaneTableViewWeb$DestroyDragIcon() {
+			this.$dragIconHandler = tab.MiscUtil.dispose$1(this.$dragIconHandler);
+			this.get_vizRegionDomNode().children('.tabDragIcon').remove();
+		},
+		handleTapServerCall: function PaneTableViewWeb$HandleTapServerCall(region, action, pageCoords, regionCoords) {
+			var tooltipCallback = ss.mkdel(this, function() {
+				if (this.get_paneTableVM().get_localRenderVizHitTester().onTapHitTest(regionCoords).get_hitObjectType() === 2) {
+					return;
+				}
+				if (!tsConfig.allow_select) {
+					this.makeHoverApi().unsuppressHover(region);
+				}
+				var targetType = tab.PaneTableView.guessTooltipTargetTypeFromRegion(region.get_regionPart());
+				this.get_vizToolTip().singleSelectCoordinates(pageCoords, regionCoords, region.get_regionPart(), targetType, null);
+			});
+			var regionSelectionRect = { x: regionCoords.x, y: regionCoords.y, w: 0, h: 0 };
+			tab.SelectionClientCommands.selectRectRegionAndDoUbertip(region.get_regionPart(), regionSelectionRect, action, this.get_paneTableVM().get_visualId(), tooltipCallback, 'default', null);
+			this.refreshScrollingAndAxisIcons();
+			this.dom.domRoot.focus();
+		},
+		$onTap: function PaneTableViewWeb$OnTap(region, pseudoEvent) {
+			if (this.$ignoreNextTap) {
+				this.$ignoreNextTap = false;
+				return;
+			}
+			this.$mostRecentCapturedMousePosition = { x: pseudoEvent.pageX, y: pseudoEvent.pageY };
+			pseudoEvent.stopPropagation();
+			this.get_vizToolTip().onTap();
+			if (tab.ApplicationModel.get_instance().get_isLocalRenderMode()) {
+				this.disposeOfOverlays();
+			}
+			if (pseudoEvent.originalEvent['button'] > 1) {
+				return;
+			}
+			var regionCoords = region.toLocalCoordsEvent(pseudoEvent, false);
+			var pageCoords = tab.PointUtil.add(regionCoords, region.getLocalOffsetPoint(false));
+			if (this.allowPanZoomActions() && region.get_toolModeViewModel().get_isZoomToolActive()) {
+				var pane = this.resolvePane(region.toLocalCoordsEvent(pseudoEvent, false));
+				region.$zoomFromClick(pseudoEvent, pane);
+				return;
+			}
+			var action = $tab_PaneTableViewWeb.$resolveSelectAction(region, pseudoEvent);
+			this.get_paneTableVM().handleAnnotationSelection(regionCoords, action, pseudoEvent);
+			if (tab.ApplicationModel.get_instance().get_isLocalRenderMode()) {
+				var isMultiSelect = tab.FeatureFlags.isEnabled('MultiSelect') && tab.DashboardView.canMultiSelectZones(pseudoEvent);
+				this.handleLocalTap(region, action, pageCoords, regionCoords, 'default', false, isMultiSelect);
+			}
+			else {
+				this.handleTapServerCall(region, action, pageCoords, regionCoords);
+			}
+		},
+		getHitTestResults: function PaneTableViewWeb$GetHitTestResults(region, pseudoEvent) {
+			return this.get_paneTableVM().get_localRenderVizHitTester().onTapHitTest(region.toLocalCoordsEvent(pseudoEvent, false));
+		},
+		onRightClickViz: function PaneTableViewWeb$OnRightClickViz(region, p) {
+			if (ss.isNullOrUndefined(this.get_paneTableVM().get_vizContextMenuViewModel()) || !tab.AnnotationSelectionChromeViewModel.canAnnotationInCurrentSheetType() || !tsConfig.is_authoring || !(tab.FeatureFlags.isEnabled('RichTextCreateBlankAreaAnnotation') || tab.FeatureFlags.isEnabled('RichTextDeleteAnnotation') || tab.FeatureFlags.isEnabled('RichTextCreateBlankPointAndMarkAnnotation') || tab.FeatureFlags.isEnabled('RichTextCreateAnnotationAndOpenEditor'))) {
+				return;
+			}
+			if (ss.isValue(this.vizTooltip)) {
+				this.vizTooltip.clearTooltipWithFakeHover();
+			}
+			if (tab.ApplicationModel.get_instance().get_isLocalRenderMode()) {
+				this.get_paneTableVM().handleRightClick(this.get_paneTableVM().get_localRenderVizHitTester().onTapHitTest(p), p);
+			}
+			else {
+				region.handleRightClickHitTestServerWithCallback(p, ss.mkdel(this, function(result) {
+					this.get_paneTableVM().handleRightClick(result, p);
+				}));
+			}
+		},
+		$onDoubleTapViz: function PaneTableViewWeb$OnDoubleTapViz(region, pseudoEvent) {
+			if (!this.isPointerToolLocked) {
+				this.resetPointerToolMode();
+			}
+			if (this.doAnnotationDoubleTap(region, pseudoEvent)) {
+				return;
+			}
+			var scale = ((pseudoEvent.shiftKey && !spiff.EventUtil.isCtrlKey(pseudoEvent)) ? 0.5 : 2);
+			this.doDoubleTap(region, pseudoEvent, scale);
+		},
+		$onDragStart: function PaneTableViewWeb$OnDragStart(region, pseudoEvent) {
+			tab.Log.get(this).debug('PaneTableViewWeb.OnDragStart', []);
+			if (tab.FeatureFlags.isEnabled('WebAuthoringDragAggregation') && pseudoEvent.get_IsMouseEvent() && !pseudoEvent.get_IsLeftMouseEvent()) {
+				return;
+			}
+			var pane = this.resolvePane(region.toLocalCoordsEvent(pseudoEvent, false));
+			this.$addDragHelperElementsToDocument();
+			var annotationDragStarted = this.get_paneTableVM().handleAnnotationDragStarted(region.toLocalCoordsEvent(pseudoEvent, false));
+			this.$setUpCursorWithDragListeners();
+			if (annotationDragStarted) {
+				return;
+			}
+			if (!tsConfig.allow_filter) {
+				this.setPointerToolMode(region.get_toolModeViewModel().get_currentPointerToolMode(), false);
+			}
+			else {
+				var isLocked;
+				switch (region.get_toolModeViewModel().get_currentPointerToolMode()) {
+					case 'pan-map':
+					case 'area-zoom': {
+						isLocked = !pseudoEvent.shiftKey;
+						this.setPointerToolMode(region.get_toolModeViewModel().get_currentPointerToolMode(), isLocked);
+						break;
+					}
+					case 'zoom-out': {
+						isLocked = !pseudoEvent.shiftKey;
+						this.setPointerToolMode('area-zoom', isLocked);
+						break;
+					}
+				}
+			}
+			this.$removeToolTipAndOverlays(region);
+			if (ss.isValue(this.drillWidget)) {
+				this.drillWidget.set_enabled(false);
+			}
+			if (ss.isValue(this.sortWidget)) {
+				this.sortWidget.set_enabled(false);
+			}
+			if (ss.isValue(this.mapsSearchView)) {
+				this.get_paneTableVM().get_mapsSearchViewModel().enableUserInteraction(false);
+			}
+			this.floatingZoomToolbarView.enableUserInteraction(false);
+			region.$onDragStart(pseudoEvent, pane);
+		},
+		$onDrag: function PaneTableViewWeb$OnDrag(pseudoEvent) {
+			if (EventUtils.DragDropManager.get_isDragging()) {
+				return;
+			}
+			var vizRegion = this.get_$vizWebRegion();
+			vizRegion.$onDragMove(pseudoEvent);
+			if (this.get_paneTableVM().get_vizRegionToolModeViewModel().get_isSelectingToolActive()) {
+				this.checkForDragOverlays();
+				this.$dragStarted = true;
+			}
+			this.get_paneTableVM().handleDrag(this.get_vizRegion().toLocalCoordsEvent(pseudoEvent, false));
+		},
+		$onDragEnd: function PaneTableViewWeb$OnDragEnd(pseudoEvent) {
+			if (EventUtils.DragDropManager.get_isDragging()) {
+				return;
+			}
+			this.$ignoreNextTap = pseudoEvent.type === 'mousedown';
+			this.get_vizToolTip().onDragEnd(null);
+			this.disposeOfOverlays();
+			this.$dragStarted = false;
+			this.get_$vizWebRegion().$onDragEnd(pseudoEvent, this.get_vizToolTip());
+			this.$removeDragHelperElementsFromDocument();
+			if (!this.isPointerToolLocked) {
+				this.resetPointerToolMode();
+			}
+			if (ss.isValue(this.drillWidget)) {
+				this.drillWidget.set_enabled(true);
+			}
+			if (ss.isValue(this.sortWidget)) {
+				this.sortWidget.set_enabled(true);
+			}
+			if (ss.isValue(this.mapsSearchView)) {
+				this.get_paneTableVM().get_mapsSearchViewModel().enableUserInteraction(true);
+			}
+			this.get_paneTableVM().handleDragEnded(this.get_vizRegion().toLocalCoordsEvent(pseudoEvent, false));
+			this.floatingZoomToolbarView.enableUserInteraction(true);
+		},
+		$onPressDragStart: function PaneTableViewWeb$OnPressDragStart(region, pseudoEvent) {
+			var pane = this.resolvePane(region.toLocalCoordsEvent(pseudoEvent, false));
+			this.$addDragHelperElementsToDocument();
+			if (this.get_paneTableVM().handleAnnotationDragStarted(region.toLocalCoordsEvent(pseudoEvent, false))) {
+				return;
+			}
+			this.$setUpCursorWithDragListeners();
+			if (!tsConfig.allow_filter) {
+				this.setPointerToolMode(region.get_toolModeViewModel().get_currentPointerToolMode(), false);
+			}
+			else {
+				switch (region.get_toolModeViewModel().get_currentPointerToolMode()) {
+					case 'pan-map': {
+						var isLocked = !pseudoEvent.shiftKey;
+						this.setPointerToolMode(region.get_toolModeViewModel().get_currentPointerToolMode(), isLocked);
+						break;
+					}
+					case 'zoom-out':
+					case 'area-zoom': {
+						break;
+					}
+				}
+			}
+			region.$onDragStart(pseudoEvent, pane);
+			this.$removeToolTipAndOverlays(region);
+		},
+		$onCancelPotentialDoubleTap: function PaneTableViewWeb$OnCancelPotentialDoubleTap() {
+			if (!this.isPointerToolLocked) {
+				this.resetPointerToolMode();
+			}
+		},
+		$removeToolTipAndOverlays: function PaneTableViewWeb$RemoveToolTipAndOverlays(region) {
+			this.lastVizHoverPoint = null;
+			this.get_vizToolTip().onPanOrDragStart(null);
+			this.$destroyDragIcon();
+			if (!region.get_toolModeViewModel().get_isSelectingToolActive()) {
+				this.disposeOfOverlays();
+			}
+		},
+		$removeDragHelperElementsFromDocument: function PaneTableViewWeb$RemoveDragHelperElementsFromDocument() {
+			this.$dragGlass = tab.MiscUtil.dispose$1(this.$dragGlass);
+		},
+		$addDragHelperElementsToDocument: function PaneTableViewWeb$AddDragHelperElementsToDocument() {
+			tab.WindowHelper.clearSelection();
+			tab.MiscUtil.dispose$1(this.$dragGlass);
+			this.$dragGlass = new spiff.Glass(null, false);
+			this.$dragGlass.show();
+		},
+		$setUpCursorWithDragListeners: function PaneTableViewWeb$SetUpCursorWithDragListeners() {
+			var region = this.get_$vizWebRegion();
+			region.setCursor(region.determineDragSelectionCursor(), this.$dragGlass.element);
+		},
+		$clearZoomToAnchorTimeOut: function PaneTableViewWeb$ClearZoomToAnchorTimeOut() {
+			this.$zoomToAnchorTimer = tab.MiscUtil.clearTimeout(this.$zoomToAnchorTimer);
+		},
+		allowPanZoomActions: function PaneTableViewWeb$AllowPanZoomActions() {
+			return this.$allowPanZoomHelper('other');
+		},
+		allowPanZoomActionsOnDoubleTap: function PaneTableViewWeb$AllowPanZoomActionsOnDoubleTap() {
+			return this.$allowPanZoomHelper('doubleTap');
+		},
+		$allowPanZoomHelper: function PaneTableViewWeb$AllowPanZoomHelper(eventName) {
+			if (!tsConfig.allow_filter) {
+				return false;
+			}
+			if (this.get_paneTableVM().get_visualModel().get_vizNavigationSetting() === 'fixed') {
+				return false;
+			}
+			if (ss.isNullOrUndefined(this.get_geometry())) {
+				return false;
+			}
+			var geometryOfPanes = this.get_geometry().pi;
+			switch (eventName) {
+				case 'doubleTap': {
+					var isQQViz = geometryOfPanes.hasXQAxis && geometryOfPanes.hasYQAxis;
+					var toolBarIsOffOrHome = this.floatingZoomToolbarView.get_toolBarIsOffOrHome();
+					if (!this.get_paneTableVM().get_isMap() && isQQViz && toolBarIsOffOrHome) {
+						return false;
+					}
+					return isQQViz;
+				}
+				case 'other':
+				default: {
+					return geometryOfPanes.hasXQAxis || geometryOfPanes.hasYQAxis;
+				}
+			}
+		},
+		$getScrollTop: function PaneTableViewWeb$GetScrollTop() {
+			return tab.DoubleUtil.roundToInt(this.$domWeb.scrollY.scrollTop());
+		},
+		$getScrollLeft: function PaneTableViewWeb$GetScrollLeft() {
+			return this.$domWeb.scrollX.scrollLeft();
+		},
+		$getCapturedPaneTableViewMousePosition: function PaneTableViewWeb$GetCapturedPaneTableViewMousePosition() {
+			if (ss.isNullOrUndefined(this.$mostRecentCapturedMousePosition)) {
+				return null;
+			}
+			return { x: this.$mostRecentCapturedMousePosition.x - this.get_tableViewPosition().x, y: this.$mostRecentCapturedMousePosition.y - this.get_tableViewPosition().y };
+		},
+		HandleCapturedMouseMove: function PaneTableViewWeb$HandleCapturedMouseMove(e) {
+			this.$mostRecentCapturedMousePosition = { x: e.pageX, y: e.pageY };
+		},
+		HandleCapturedMouseComplete: function PaneTableViewWeb$HandleCapturedMouseComplete(e) {
+		}
+	}, tab.PaneTableView, [tab.IWidget, tab.IAppendableView, ss.IDisposable, ss.makeGenericType(tab.IView$1, [tab.IPaneTableViewModel]), tab.IPaneTableView, tab.IZoomToolbarContainer, EventUtils.IMouseCaptureEventHandler]);
+	ss.initClass($tab_Sorting, $asm, {
+		get_widgetFeatureEnabled: function Sorting$get_WidgetFeatureEnabled() {
+			return ss.isValue(this.$sortIndicators) && tsConfig.allow_filter;
+		},
+		dispose: function Sorting$Dispose() {
+			this.set_parentViewer(null);
+			this.$sortIndicatorButton.element.remove();
+			this.$sortIndicatorButton.dispose();
+			$tab_SortDrillBase.prototype.dispose.call(this);
+		},
+		onUpdate: function Sorting$OnUpdate() {
+			this.$sortIndicators = this.get_parentViewer().get_sortIndicators();
+			if (!ss.staticEquals(this.$updateDelegate, null)) {
+				this.$updateDelegate();
+				this.$updateDelegate = null;
+			}
+			this.$indicateSortOnTableViewMouseEvent(this.get_parentViewer().get_capturedPaneTableViewMousePosition());
+		},
+		onMouseOutOfParentPaneTableView: function Sorting$OnMouseOutOfParentPaneTableView() {
+			this.$hideSortIndicator();
+		},
+		$hideSortIndicator: function Sorting$HideSortIndicator() {
+			if (!this.$isSortIndicatorVisible()) {
+				return;
+			}
+			var regex = new RegExp('(sortInd\\w+)?', 'g');
+			this.$domSortIndicator.get(0).className = this.$domSortIndicator.get(0).className.replace(regex, '');
+			this.$domSortIndicator.css('display', 'none');
+			this.$sortIndicatorState = null;
+			this.$domSortMenuDropDown.css('display', 'none');
+		},
+		onMouseMove: function Sorting$OnMouseMove(e) {
+			this.$indicateSortOnTableViewMouseEvent$1(e);
+		},
+		isActiveInRect: function Sorting$IsActiveInRect(rect) {
+			if (ss.isValue(this.$sortIndicatorState) && this.$sortIndicatorState.$isActive && tab.RectXYUtil.intersectsWith(rect, this.$domSortIndicatorXYRect)) {
+				return true;
+			}
+			return false;
+		},
+		$createSortIndicatorMenuButton: function Sorting$CreateSortIndicatorMenuButton() {
+			var button = spiff.LabelButton.newNativeButton();
+			button.element.addClass('sortDropdownSolid');
+			button.element.css('border', '0');
+			button.element.css('position', 'absolute');
+			button.element.css('padding', '0px');
+			button.element.css('background-color', 'transparent');
+			button.element.append("<span class='sortIndicatorDropdownArrow sortDropdownSolid'></span>");
+			button.element.click(ss.mkdel(this, this.$onSortMenuDropdownClick));
+			button.element.hide();
+			return button;
+		},
+		$createSortIndicatorButton: function Sorting$CreateSortIndicatorButton() {
+			var button = spiff.LabelButton.newNativeButton();
+			button.element.addClass('tab-tvSortIndicator');
+			button.element.css('border', '0');
+			button.element.css('position', 'absolute');
+			button.element.css('padding', '0px');
+			return button;
+		},
+		$setupSortIndicators: function Sorting$SetupSortIndicators() {
+			this.$sortIndicators = this.get_parentViewer().get_sortIndicators();
+			this.set_enabled(true);
+		},
+		$attachStaticEventHandlers: function Sorting$AttachStaticEventHandlers() {
+			var $t1 = new EventUtils.EventHandleSpec();
+			$t1.tap = ss.mkdel(this, function(e) {
+				this.$onSortIndicatorTap(e);
+			});
+			$t1.hover = ss.mkdel(this, function(e1) {
+				this.$onSortIndicatorMouseOver(e1);
+			});
+			var spec = $t1;
+			this.disposables.add$1(new EventUtils.TableauEventHandler(this.$domSortIndicator.get(0), spec));
+			this.$domSortIndicator.mouseout(ss.mkdel(this, this.$onSortIndicatorMouseOut));
+		},
+		$indicateSortOnTableViewMouseEvent$1: function Sorting$IndicateSortOnTableViewMouseEvent(e) {
+			if (e.button > 0) {
+				return;
+			}
+			var mouse = this.getPaneTableViewMousePositionFromCoordinates(e.pageX, e.pageY, this.get_parentViewer());
+			this.$indicateSortOnTableViewMouseEvent(mouse);
+		},
+		$indicateSortOnTableViewMouseEvent: function Sorting$IndicateSortOnTableViewMouseEvent(mouse) {
+			if (ss.isNullOrUndefined(mouse)) {
+				return;
+			}
+			if (ss.isNullOrUndefined(this.$sortIndicators) || !tsConfig.allow_filter) {
+				return;
+			}
+			var region = this.get_parentViewer().getRegionForPoint(mouse);
+			if (ss.isValue(region)) {
+				if (tab.FeatureFlags.isEnabled('ScrollingTables')) {
+					mouse.x += this.get_scrollAmountX();
+					region.position.l += this.get_scrollAmountX();
+				}
+				var sortIndicatorRegion = this.$getSIRegionFromName(this.get_parentViewer(), region.imageRegion);
+				this.$possiblyShowSortIndicatorInRegion(sortIndicatorRegion, region.position, mouse);
+			}
+			else {
+				this.$hideSortIndicator();
+			}
+		},
+		$updateSortIndicator: function Sorting$UpdateSortIndicator(siregion, siitemIdx, isActive) {
+			var direction;
+			var siitem = siregion.sortIndicatorItems[siitemIdx];
+			var currState = this.$sortIndicatorState;
+			if (!siregion.isHorizontal) {
+				direction = ((siitem.sortIndicatorState.sortOrder === 'asc') ? 'Left' : 'Right');
+			}
+			else {
+				direction = ((siitem.sortIndicatorState.sortOrder === 'asc') ? 'Up' : 'Down');
+			}
+			var isSorted = siitem.sortIndicatorState.isSorted;
+			var status = (isSorted ? 'Solid' : 'Hollow');
+			this.$sortIndicatorState = new $tab_$Sorting$SortIndicatorState(siregion, siitem, siitemIdx, direction, status, isActive);
+			var tooltip = siitem.tooltipText;
+			if (isSorted && !ss.isNullOrEmptyString(tooltip)) {
+				this.$sortIndicatorButton.element.attr('title', tooltip);
+			}
+			else {
+				this.$sortIndicatorButton.element.removeAttr('title');
+			}
+			if (ss.isNullOrUndefined(currState) || !ss.referenceEquals(currState.$direction, direction) || !ss.referenceEquals(currState.$status, status) || currState.$isActive !== isActive) {
+				this.$updateSortIndicatorClass();
+			}
+		},
+		$updateSortIndicatorClass: function Sorting$UpdateSortIndicatorClass() {
+			if (ss.isNullOrUndefined(this.$sortIndicatorState)) {
+				return;
+			}
+			this.$clearButtonImageClass($tab_Sorting.$sortIndicatorImageClassPrefix, this.$domSortIndicator.get(0));
+			this.$setSortIndicatorImageClass();
+		},
+		$setSortIndicatorImageClass: function Sorting$SetSortIndicatorImageClass() {
+			this.$domSortIndicator.addClass(this.$generateSortIndicatorImageClass());
+		},
+		$generateSortIndicatorImageClass: function Sorting$GenerateSortIndicatorImageClass() {
+			var sortIndicatorType = '';
+			var sortIndicatorItem = this.$sortIndicatorState.$siItem;
+			if (ss.isValue(sortIndicatorItem)) {
+				if (sortIndicatorItem.sortIndicatorState.sortIndicatorType === 'alphabetic') {
+					sortIndicatorType = 'Alphabetic';
+				}
+			}
+			var newCssClass = $tab_Sorting.$sortIndicatorImageClassPrefix + sortIndicatorType + this.$sortIndicatorState.$status + this.$sortIndicatorState.$direction + (this.$sortIndicatorState.$isActive ? 'Active' : '');
+			return newCssClass;
+		},
+		$getDefaultSortDirection: function Sorting$GetDefaultSortDirection(sortIndicatorType) {
+			return ((sortIndicatorType === 'alphabetic') ? 'asc' : 'desc');
+		},
+		$toggleSortIndicatorState: function Sorting$ToggleSortIndicatorState() {
+			if (!this.$isSortIndicatorVisible()) {
+				return;
+			}
+			var siitem = this.$sortIndicatorState.$siItem;
+			var siregion = this.$sortIndicatorState.$siRegion;
+			var defaultSortDirection = this.$getDefaultSortDirection(siitem.sortIndicatorState.sortIndicatorType);
+			if (!siitem.sortIndicatorState.isSorted) {
+				siitem.sortIndicatorState.isSorted = true;
+				siitem.sortIndicatorState.sortOrder = defaultSortDirection;
+			}
+			else if (siitem.sortIndicatorState.sortOrder === defaultSortDirection) {
+				siitem.sortIndicatorState.sortOrder = ((defaultSortDirection === 'asc') ? 'desc' : 'asc');
+			}
+			else {
+				siitem.sortIndicatorState.sortOrder = defaultSortDirection;
+				siitem.sortIndicatorState.isSorted = false;
+			}
+			this.$updateSortIndicator(siregion, this.$sortIndicatorState.$siItemIdx, this.$sortIndicatorState.$isActive);
+		},
+		$onSortIndicatorMouseOver: function Sorting$OnSortIndicatorMouseOver(e) {
+			if (this.isOtherActiveInRect(this.$domSortIndicatorXYRect)) {
+				return;
+			}
+			if (this.$isSortIndicatorVisible() && !this.$sortIndicatorState.$isActive) {
+				this.$sortIndicatorState.$isActive = true;
+				this.$updateSortIndicatorClass();
+			}
+			e.stopPropagation();
+		},
+		$onSortIndicatorMouseOut: function Sorting$OnSortIndicatorMouseOut(e) {
+			if (!this.$isSortIndicatorVisible()) {
+				return;
+			}
+			var pos = $(this.$domSortIndicator.get(0)).offset();
+			var height = tab.DoubleUtil.roundToInt($(this.$domSortIndicator.get(0)).outerHeight());
+			var width = tab.DoubleUtil.roundToInt($(this.$domSortIndicator.get(0)).outerWidth());
+			if (pos.left > e.pageX || pos.left + width <= e.pageX || pos.top > e.pageY || pos.top + height <= e.pageY) {
+				this.$sortIndicatorState.$isActive = false;
+				this.$updateSortIndicatorClass();
+				e.stopPropagation();
+			}
+		},
+		$onSortIndicatorTap: function Sorting$OnSortIndicatorTap(e) {
+			spiff.EventUtil.stopEvent$1(e);
+			this.$toggleSortIndicatorState();
+			this.$domSortIndicator.addClass('clicked');
+			this.$updateDelegate = ss.mkdel(this, function() {
+				this.$domSortIndicator.removeClass('clicked');
+			});
+			var mouse = this.$getMousePosition(e);
+			var scrollAmount;
+			if (tab.FeatureFlags.isEnabled('ScrollingTables')) {
+				scrollAmount = { x: 0, y: this.get_scrollAmountY() };
+			}
+			else {
+				scrollAmount = this.get_scrollAmount();
+			}
+			tab.SortServerCommands.sortFromIndicator(mouse, scrollAmount, this.get_parentViewer().get_visualId(), this.$getSortIndicatorType(), this.$getSortIndicatorRegion());
+		},
+		$getSortIndicatorRegion: function Sorting$GetSortIndicatorRegion() {
+			if (ss.isNullOrUndefined(this.$sortIndicatorState)) {
+				return null;
+			}
+			return this.$sortIndicatorState.$siRegion;
+		},
+		$getSortIndicatorType: function Sorting$GetSortIndicatorType() {
+			if (ss.isNullOrUndefined(this.$sortIndicatorState) || ss.isNullOrUndefined(this.$sortIndicatorState.$siItem) || ss.isNullOrUndefined(this.$sortIndicatorState.$siItem.sortIndicatorState)) {
+				return null;
+			}
+			return this.$sortIndicatorState.$siItem.sortIndicatorState.sortIndicatorType;
+		},
+		$onSortMenuDropdownClick: function Sorting$OnSortMenuDropdownClick(e) {
+			spiff.EventUtil.stopEvent$2(e);
+			this.$showContextMenu(this.$domSortMenuDropDown);
+		},
+		$getMousePosition: function Sorting$GetMousePosition(e) {
+			var mousePosition = this.getPaneTableViewMousePositionFromCoordinates(e.pageX, e.pageY, this.get_parentViewer());
+			var region = this.get_parentViewer().getRegionForPoint(mousePosition);
+			if (ss.isNullOrUndefined(region)) {
+				return null;
+			}
+			var siregion = this.$getSIRegionFromName(this.get_parentViewer(), region.imageRegion);
+			var regionRect = siregion.regionRect;
+			mousePosition.y += regionRect.y - region.position.t;
+			mousePosition.x += regionRect.x - region.position.l;
+			return mousePosition;
+		},
+		$showContextMenu: function Sorting$ShowContextMenu(relativeDom) {
+			var menu = this.$sortIndicatorState.$siItem.sortIndicatorMenu;
+			if (ss.isNullOrUndefined(menu)) {
+				return;
+			}
+			var hideMenuAction = ss.mkdel(this, function() {
+				this.get_parentViewer().tryUpdateSortDrillAndContextMenuWidgets();
+			});
+			var menuViewModel = tab.WidgetUtil.menuViewModelFromCommands(menu, ss.mkdel(this, this.$onSortingMenuItemClicked), hideMenuAction, null, ss.mkdel(this, this.$createMenuCommandHandler));
+			if (ss.isValue(menuViewModel)) {
+				menuViewModel.show(new spiff.ShowMenuOptions(relativeDom, false));
+			}
+		},
+		$createMenuCommandHandler: function Sorting$CreateMenuCommandHandler(commandItem) {
+			return ss.mkdel(this, function() {
+				tab.SortServerCommands.sortFromCommandItem(commandItem, this.get_parentViewer().get_visualId());
+			});
+		},
+		$onSortingMenuItemClicked: function Sorting$OnSortingMenuItemClicked(menuItem) {
+			tab.WidgetUtil.commandMenuItemClicked(menuItem);
+		},
+		$showSortIndicator: function Sorting$ShowSortIndicator(siregion, siitemIdx, xyrect, isActive) {
+			if (tab.FeatureFlags.isEnabled('ScrollingTables')) {
+				xyrect.x -= this.get_scrollAmountX();
+			}
+			if (this.isOtherActiveInRect(xyrect)) {
+				return;
+			}
+			var menuButtonRectangle = null;
+			ss.Debug.assert(siitemIdx < siregion.sortIndicatorItems.length, 'siitemIdx must be within in the array bounds');
+			var sortIndicatorItem = siregion.sortIndicatorItems[siitemIdx];
+			if (ss.isValue(sortIndicatorItem.sortIndicatorMenu)) {
+				var commandItems = sortIndicatorItem.sortIndicatorMenu['commandItems'.toString()];
+				if (commandItems.length > 0) {
+					menuButtonRectangle = sortIndicatorItem.menuButtonRect;
+				}
+			}
+			this.$domSortIndicatorXYRect = xyrect;
+			this.$updateSortIndicator(siregion, siitemIdx, isActive);
+			this.repositionAndShowElement(this.$domSortIndicator.get(0), xyrect);
+			this.$updateSortDropdownButtonLocationAndVisibility(menuButtonRectangle);
+		},
+		$updateSortDropdownButtonLocationAndVisibility: function Sorting$UpdateSortDropdownButtonLocationAndVisibility(menuButtonRectangle) {
+			if (ss.isValue(menuButtonRectangle)) {
+				var position = tab.RecordCast.rectPresModelAsRectXY(menuButtonRectangle);
+				if (tab.FeatureFlags.isEnabled('ScrollingTables')) {
+					position.x -= this.get_scrollAmountX();
+				}
+				this.repositionAndShowElement(this.$domSortMenuDropDown.get(0), position);
+			}
+			else if (ss.isValue(this.$domSortMenuDropDown)) {
+				this.$domSortMenuDropDown.css('display', 'none');
+			}
+		},
+		$isSortIndicatorVisible: function Sorting$IsSortIndicatorVisible() {
+			return ss.isValue(this.$sortIndicatorState);
+		},
+		$possiblyShowSortIndicatorInRegion: function Sorting$PossiblyShowSortIndicatorInRegion(siregion, tvRegionRect, mouse) {
+			if (ss.isNullOrUndefined(siregion)) {
+				this.$hideSortIndicator();
+				return;
+			}
+			if (ss.isValue(this.$sortIndicatorState) && ss.isValue(this.$sortIndicatorState.$siRegion) && siregion.sortRegion !== this.$sortIndicatorState.$siRegion.sortRegion) {
+				this.$hideSortIndicator();
+			}
+			var pointInRegion = { x: mouse.x, y: mouse.y };
+			var regionRect = siregion.regionRect;
+			pointInRegion.y += regionRect.y - tvRegionRect.t;
+			pointInRegion.x += regionRect.x - tvRegionRect.l;
+			var scrollAmount = this.get_scrollAmount();
+			if (siregion.canScrollY) {
+				pointInRegion.y += scrollAmount.y;
+			}
+			if (!tab.FeatureFlags.isEnabled('ScrollingTables') && siregion.canScrollX) {
+				pointInRegion.x += scrollAmount.x;
+			}
+			var items = siregion.sortIndicatorItems;
+			for (var i = 0, len = items.length; i < len; i++) {
+				if (ss.isNullOrUndefined(items[i].itemRect)) {
+					continue;
+				}
+				if (ss.isNullOrUndefined(items[i].buttonRect)) {
+					continue;
+				}
+				var itemRect = tab.RecordCast.rectPresModelAsRectXY(items[i].itemRect);
+				if (this.isPointInRectXY(itemRect, pointInRegion)) {
+					var buttonRect = tab.RecordCast.rectPresModelAsRectXY(items[i].buttonRect);
+					var tvButtonRect = tab.RectXYUtil.clone(buttonRect);
+					tvButtonRect = this.computeTvButtonRectFromUnrolledRegionCoordinates(tvButtonRect, tvRegionRect, mouse, pointInRegion);
+					if (ss.isValue(tvButtonRect)) {
+						this.$showSortIndicator(siregion, i, tvButtonRect, this.isPointInRectXY(tvButtonRect, pointInRegion));
+						return;
+					}
+				}
+			}
+			this.$hideSortIndicator();
+		},
+		$getSIRegionFromName: function Sorting$GetSIRegionFromName(parentViewer, areaName) {
+			var i, len;
+			var regionName = areaName.toString();
+			var si = parentViewer.get_sortIndicators();
+			var regions = si.sortIndicatorRegions;
+			for (i = 0, len = regions.length; i < len; i++) {
+				if (ss.referenceEquals(regions[i].sortRegion.toString(), regionName)) {
+					return regions[i];
+				}
+			}
+			return null;
+		},
+		$clearButtonImageClass: function Sorting$ClearButtonImageClass(imagePrefix, domElement) {
+			var imageClassesPattern = ss.formatString('({0}\\w+)?', imagePrefix);
+			var regex = new RegExp(imageClassesPattern, 'g');
+			var oldCssClasses = domElement.className;
+			var newCssClasses = oldCssClasses.replace(regex, '').trim();
+			domElement.className = newCssClasses;
+		}
+	}, $tab_SortDrillBase, [tab.IWidget, tab.IAppendableView, ss.IDisposable]);
+	ss.initClass($tab_TiledViewerRegionWeb, $asm, {
+		get_$useExtendedCursors: function TiledViewerRegionWeb$get_UseExtendedCursors() {
+			return this.get_toolModeViewModel().get_isAppendMode();
+		},
+		get_isDragTracking: function TiledViewerRegionWeb$get_IsDragTracking() {
+			return this.$isDragTracking;
+		},
+		$setDragTracking: function TiledViewerRegionWeb$SetDragTracking(value) {
+			this.$isDragTracking = value;
+			$tab_TiledViewerRegionWeb.isDragTrackingInAnyRegion = value;
+		},
+		destroy: function TiledViewerRegionWeb$Destroy() {
+			this.$hoverApi = null;
+			tab.TiledViewerRegion.prototype.destroy.call(this);
+		},
+		setXPos: function TiledViewerRegionWeb$SetXPos(xPos) {
+			if (this.regionContent.get_hasContent()) {
+				this.regionContent.setXPos(xPos);
+				this.backgroundMap.setScrollX(xPos);
+			}
+		},
+		setYPos: function TiledViewerRegionWeb$SetYPos(yPos) {
+			if (this.regionContent.get_hasContent()) {
+				this.regionContent.setYPos(yPos);
+				this.backgroundMap.setScrollY(yPos);
+			}
+		},
+		resetVisualState: function TiledViewerRegionWeb$ResetVisualState() {
+			tab.TiledViewerRegion.prototype.resetVisualState.call(this);
+			if (this.isScrolling) {
+				this.wasScrolling = false;
+				return;
+			}
+			if (!this.$allowRegionSelect) {
+				return;
+			}
+			this.$hoverApi.unsuppressHover(this);
+		},
+		setMouseOverMarkOrVisualPart: function TiledViewerRegionWeb$SetMouseOverMarkOrVisualPart(over) {
+			if (this.$mouseOverMarkOrVisualPart !== over) {
+				this.$mouseOverMarkOrVisualPart = over;
+				this.$setCursorForPointerToolMode();
+			}
+		},
+		$onDragStart: function TiledViewerRegionWeb$OnDragStart(pseudoEvent, pane) {
+			this.$delegateDragStart(pseudoEvent, pane);
+		},
+		$onDragMove: function TiledViewerRegionWeb$OnDragMove(pseudoEvent) {
+			if (this.get_isDragTracking()) {
+				this.$onDragMouseMove(pseudoEvent);
+			}
+		},
+		$onDragEnd: function TiledViewerRegionWeb$OnDragEnd(pseudoEvent, tooltipMode) {
+			this.get_toolModeViewModel().updateDefaultToolMode(this.allowPanZoomActions());
+			if (this.get_isDragTracking()) {
+				this.$onDragMouseUp(pseudoEvent, tooltipMode);
+			}
+		},
+		$onSelectDragStart: function TiledViewerRegionWeb$OnSelectDragStart(pseudoEvent, pane) {
+			this.$startShowingMarquee(this.get_shapeSelector());
+			this.$startDragTracking(pseudoEvent);
+		},
+		$onSelectDragEnd: function TiledViewerRegionWeb$OnSelectDragEnd(normalizedEvent, tooltipMode) {
+			if (!tsConfig.allow_select) {
+				this.$hoverApi.unsuppressHover(this);
+				return;
+			}
+			var tooltipAnchor = this.get_shapeSelector().get_tooltipAnchor();
+			var vizRegion = this.get_regionPart();
+			var pageTooltipAnchor = tab.PointUtil.add(tooltipAnchor, this.getLocalOffsetPoint(false));
+			var hitTestingBox = this.get_shapeSelector().get_hitTestingBox();
+			var tooltipCallback = ss.mkdel(this, function() {
+				tooltipMode.multiSelectComplete(pageTooltipAnchor, hitTestingBox, vizRegion);
+				if (ss.isValue(this.$hoverApi)) {
+					this.$hoverApi.unsuppressHover(this);
+				}
+			});
+			var action = tab.SelectActionResolver.fromNormalizedEvent(normalizedEvent, 0);
+			if (tab.ApplicationModel.get_instance().get_isLocalRenderMode()) {
+				var hitTestResults = this.paneTableViewModel.get_localRenderVizHitTester().hitTestMarksAgainstSelectionShape(this.get_shapeSelector());
+				var selectedSomething = tab.LocalRenderVizSelectionDispatcher.doMultiSelect(hitTestResults, action, tooltipCallback, this.paneTableViewModel.get_visualId());
+				if (!selectedSomething || !tsConfig.allow_tooltip) {
+					this.$hoverApi.unsuppressHover(this);
+				}
+			}
+			else {
+				this.get_shapeSelector().sendSelectionCommand(vizRegion, action, this.get_visualId(), tooltipCallback);
+			}
+		},
+		$onZoomDragStart: function TiledViewerRegionWeb$OnZoomDragStart(pseudoEvent, pane) {
+			if (this.isWaitingOnPanZoomServerResponse()) {
+				return;
+			}
+			this.$startShowingMarquee(this.domPanZoomRect);
+			this.$startDragTracking(pseudoEvent);
+			this.domPanZoomRect.set_pi(pane);
+		},
+		$onZoomDragEnd: function TiledViewerRegionWeb$OnZoomDragEnd(pseudoEvent, tooltipMode) {
+			var pane = this.domPanZoomRect.get_pi();
+			var dragRegionRect = tab.DomUtil.getRectXY(this.domPanZoomRect.get_dom());
+			var rect = this.toLocalCoordsRect(dragRegionRect, false);
+			if (!this.get_toolModeViewModel().get_isZoomToolActive()) {
+				tab.Log.get(this).warn('ZoomDragEnd expecting a zoom tool to be active, but one is not', []);
+			}
+			if (this.get_toolModeViewModel().get_currentPointerToolMode() === 'zoom-out' && this.allowMapZoomAtCurrentLevel(0.5)) {
+				this.$zoomOnCenter(pane, 0.5);
+			}
+			else if (rect.w < 4 && rect.h < 4) {
+				this.$zoomFromClick(pseudoEvent, pane);
+			}
+			else {
+				this.$zoomRect(pane, rect, 2);
+			}
+		},
+		$onZoomBoxMouseUp: function TiledViewerRegionWeb$OnZoomBoxMouseUp(e, tooltipMode) {
+			this.$onSelectorMouseUp(e, tooltipMode, this.domPanZoomRect);
+		},
+		$onMarqueeMouseUp: function TiledViewerRegionWeb$OnMarqueeMouseUp(e, tooltipMode) {
+			this.$onSelectorMouseUp(e, tooltipMode, this.get_shapeSelector());
+		},
+		$onSelectorMouseUp: function TiledViewerRegionWeb$OnSelectorMouseUp(e, tooltipMode, selector) {
+			if (!this.get_isDragTracking()) {
+				return;
+			}
+			var original = e.originalEvent;
+			if (original['button'] > 1) {
+				return;
+			}
+			this.$stopDragTracking(e, selector);
+			this.debugWindowLog(function() {
+				return '';
+			});
+			this.$hoverApi.suppressHover(this);
+			this.$delegateDragEnd(e, tooltipMode);
+			tab.Log.get(this).debug('handled mouse up', []);
+		},
+		$onPanMouseMove: function TiledViewerRegionWeb$OnPanMouseMove(pseudoEvent) {
+			spiff.EventUtil.stopEvent$1(pseudoEvent);
+			var info = pseudoEvent.get_GestureInfo();
+			if (this.mapIsBrowserRendered()) {
+				this.backgroundMap.panTo(info.deltaX, info.deltaY);
+			}
+			else {
+				var offsetLeft = info.pageX - this.domPanZoomRect.get_dragStart().x;
+				var offsetTop = info.pageY - this.domPanZoomRect.get_dragStart().y;
+				if (ss.isNullOrUndefined(this.domPanZoomRect.get_pi()) || !this.domPanZoomRect.get_pi().canDragH) {
+					offsetLeft = 0;
+				}
+				if (ss.isNullOrUndefined(this.domPanZoomRect.get_pi()) || !this.domPanZoomRect.get_pi().canDragV) {
+					offsetTop = 0;
+				}
+				var AdditionalOffset = 1;
+				offsetLeft += AdditionalOffset;
+				offsetTop += AdditionalOffset;
+				tab.DomUtil.setMarginBoxJQ(this.domDragImage, { l: offsetLeft, t: offsetTop, w: tab.DoubleUtil.roundToInt(this.domDragImage.width()), h: tab.DoubleUtil.roundToInt(this.domDragImage.height()) });
+				this.debugWindowLog(ss.mkdel(this, function() {
+					var actual = tab.DomUtil.getRectXY(this.domDragImage);
+					var t = 'Origin=(' + this.domPanZoomRect.get_dragStart().x + ',' + this.domPanZoomRect.get_dragStart().y + ')<br>';
+					t += 'Event=(' + info.pageX + ',' + info.pageY + ')<br>';
+					t += 'Offset=(' + offsetLeft + ',' + offsetTop + '}<br>';
+					t += 'Actual=(' + actual.x + ',' + actual.y + ',' + (actual.x + actual.w) + ',' + (actual.y + actual.h) + ')<br>';
+					return t;
+				}));
+			}
+		},
+		$onPanMouseUp: function TiledViewerRegionWeb$OnPanMouseUp(pseudoEvent, tooltipMode) {
+			if (!this.get_isDragTracking()) {
+				return;
+			}
+			if (pseudoEvent.originalEvent['button'] > 1) {
+				return;
+			}
+			this.$panMouseUpFullyCompleteMetricsContext = tab.TiledViewerRegionWebMetrics.createPanMapMouseUpFullyCompleteContext();
+			this.$panMouseUpLocalWorkCompleteMetricsContext = tab.TiledViewerRegionWebMetrics.createPanMapMouseUpLocalWorkCompleteContext();
+			spiff.EventUtil.stopEvent$1(pseudoEvent);
+			this.$stopDragTracking(pseudoEvent, null);
+			this.debugWindowLog(function() {
+				return '';
+			});
+			var info = pseudoEvent.get_GestureInfo();
+			this.$hoverApi.suppressHover(this);
+			var origin = this.toLocalCoords(this.domPanZoomRect.get_dragStart(), false);
+			var delta = { x: info.pageX - this.domPanZoomRect.get_dragStart().x, y: info.pageY - this.domPanZoomRect.get_dragStart().y };
+			if (ss.isNullOrUndefined(this.domPanZoomRect.get_pi()) || !this.domPanZoomRect.get_pi().canDragH) {
+				delta.x = 0;
+			}
+			if (ss.isNullOrUndefined(this.domPanZoomRect.get_pi()) || !this.domPanZoomRect.get_pi().canDragV) {
+				delta.y = 0;
+			}
+			this.$pan(origin, delta);
+			tab.Log.get(this).debug('handled mouse up', []);
+			this.$hoverApi.unsuppressHover(this);
+		},
+		$onPanStart: function TiledViewerRegionWeb$OnPanStart(pseudoEvent, paneInfo) {
+			if (this.isWaitingOnPanZoomServerResponse()) {
+				return;
+			}
+			this.$hoverApi.suppressHover(this);
+			this.$startDragTracking(pseudoEvent);
+			this.domPanZoomRect.set_pi(paneInfo);
+			tab.Log.get(this).debug('_onPanStart canDragH: ' + paneInfo.canDragH + ' canDragV: ' + paneInfo.canDragV, []);
+			this.resetIsWaitingOnTransition = true;
+			if (this.mapIsBrowserRendered()) {
+				this.setViewportBorderVisibility(true);
+				this.backgroundMap.splatOverlayToMapForTransition(tab.TiledViewerRegion.getCanvasElement(this.connectNode));
+				var marksCanvas = tab.TiledViewerRegion.getCanvasElement(this.connectNode);
+				if (ss.isValue(marksCanvas)) {
+					marksCanvas.style.visibility = 'hidden';
+				}
+			}
+			else {
+				this.get_toolModeViewModel().deferModeChanges();
+				this.setViewportBorderVisibility(true);
+				this.showDomDragImage(paneInfo);
+			}
+		},
+		$noop: function TiledViewerRegionWeb$Noop() {
+		},
+		$stopShowingMarquee: function TiledViewerRegionWeb$StopShowingMarquee(selector) {
+			if (ss.isValue(selector)) {
+				selector.hide();
+			}
+		},
+		$startShowingMarquee: function TiledViewerRegionWeb$StartShowingMarquee(selector) {
+			if (ss.isValue(selector)) {
+				selector.show();
+			}
+		},
+		updateForToolMode: function TiledViewerRegionWeb$UpdateForToolMode(mode) {
+			tab.TiledViewerRegion.prototype.updateForToolMode.call(this, mode);
+			this.$setCursorForPointerToolMode();
+			switch (mode) {
+				case 'no-tools': {
+					this.$onDragMouseMove = ss.mkdel(this, this.$noop$1);
+					this.$onDragMouseUp = ss.mkdel(this, this.$noop$1);
+					this.$delegateDragStart = ss.mkdel(this, this.$noop$1);
+					this.$delegateDragEnd = ss.mkdel(this, this.$noop$1);
+					break;
+				}
+				case 'rectangular-selection':
+				case 'lasso-selection':
+				case 'radial-selection': {
+					this.$onDragMouseMove = ss.mkdel(this, this.onMarqueeMouseMove);
+					this.$onDragMouseUp = ss.mkdel(this, this.$onMarqueeMouseUp);
+					this.$delegateDragStart = ss.mkdel(this, this.$onSelectDragStart);
+					this.$delegateDragEnd = ss.mkdel(this, this.$onSelectDragEnd);
+					break;
+				}
+				case 'pan-map': {
+					this.$onDragMouseMove = ss.mkdel(this, this.$onPanMouseMove);
+					this.$onDragMouseUp = ss.mkdel(this, this.$onPanMouseUp);
+					this.$delegateDragStart = ss.mkdel(this, this.$onPanStart);
+					this.$delegateDragEnd = ss.mkdel(this, this.$noop$1);
+					break;
+				}
+				case 'area-zoom':
+				case 'zoom-out': {
+					this.$onDragMouseMove = ss.mkdel(this, this.onZoomBoxMouseMove);
+					this.$onDragMouseUp = ss.mkdel(this, this.$onZoomBoxMouseUp);
+					this.$delegateDragStart = ss.mkdel(this, this.$onZoomDragStart);
+					this.$delegateDragEnd = ss.mkdel(this, this.$onZoomDragEnd);
+					break;
+				}
+			}
+		},
+		$isAppendModKeys: function TiledViewerRegionWeb$IsAppendModKeys(pseudoEvent) {
+			return !pseudoEvent.shiftKey && spiff.EventUtil.isCtrlKey(pseudoEvent) && this.get_toolModeViewModel().get_isSelectingToolActive();
+		},
+		$isZoomInModKeys: function TiledViewerRegionWeb$IsZoomInModKeys(pseudoEvent) {
+			return !pseudoEvent.altKey && pseudoEvent.shiftKey && spiff.EventUtil.isCtrlKey(pseudoEvent);
+		},
+		$isZoomOutModKeys: function TiledViewerRegionWeb$IsZoomOutModKeys(pseudoEvent) {
+			return pseudoEvent.altKey && (this.get_toolModeViewModel().get_isZoomToolActive() || pseudoEvent.shiftKey && spiff.EventUtil.isCtrlKey(pseudoEvent));
+		},
+		$modifierKeysChanged: function TiledViewerRegionWeb$ModifierKeysChanged(jevent) {
+			var pseudoEvent = jevent;
+			if (pseudoEvent.altKey && !pseudoEvent.ctrlKey && !BrowserSupport.BrowserSupport.IsMac()) {
+				pseudoEvent.preventDefault();
+			}
+			if (!tsConfig.allow_filter) {
+				return;
+			}
+			var oldModifierKeyToolMode = this.get_toolModeViewModel().currentModifierKeyToolMode;
+			var oldAppendMode = this.get_toolModeViewModel().get_isAppendMode();
+			this.get_toolModeViewModel().set_isAppendMode(this.$isAppendModKeys(pseudoEvent));
+			if (!this.get_isDragTracking()) {
+				if (this.allowPanZoomActions()) {
+					if ($tab_TiledViewerRegionWeb.$isPanModKeys(pseudoEvent)) {
+						this.get_toolModeViewModel().currentModifierKeyToolMode = 'pan-map';
+					}
+					else if (this.$isZoomInModKeys(pseudoEvent)) {
+						this.get_toolModeViewModel().currentModifierKeyToolMode = 'area-zoom';
+					}
+					else if (this.$isZoomOutModKeys(pseudoEvent)) {
+						this.get_toolModeViewModel().currentModifierKeyToolMode = 'zoom-out';
+					}
+					else {
+						this.get_toolModeViewModel().currentModifierKeyToolMode = 'no-tools';
+					}
+				}
+				else {
+					this.get_toolModeViewModel().currentModifierKeyToolMode = 'no-tools';
+				}
+			}
+			if (oldModifierKeyToolMode !== this.get_toolModeViewModel().currentModifierKeyToolMode || oldAppendMode !== this.get_toolModeViewModel().get_isAppendMode()) {
+				this.$setCursorForPointerToolMode();
+			}
+		},
+		startScrolling: function TiledViewerRegionWeb$StartScrolling(scrollX, scrollY, scrollSpeed) {
+			this.stopScrolling();
+			if (!(scrollX !== 0 && this.scroller.get_canScrollX() || scrollY !== 0 && this.scroller.get_canScrollY())) {
+				return;
+			}
+			if (!ss.isValue(this.$scrollTimer)) {
+				this.$handleScrollInterval(scrollX, scrollY, scrollSpeed);
+			}
+			var scrollInterval = ((scrollSpeed === 'fast') ? $tab_TiledViewerRegionWeb.$scrollIntervalFast : $tab_TiledViewerRegionWeb.$scrollIntervalSlow);
+			tab.Log.get(this).debug('scrolling with interval ' + scrollInterval, []);
+			this.$scrollTimer = window.setInterval(ss.mkdel(this, function() {
+				this.$handleScrollInterval(scrollX, scrollY, scrollSpeed);
+			}), scrollInterval);
+			this.isScrolling = true;
+		},
+		stopScrolling: function TiledViewerRegionWeb$StopScrolling() {
+			if (ss.isValue(this.$scrollTimer)) {
+				window.clearInterval(ss.unbox(this.$scrollTimer));
+			}
+			this.$scrollTimer = null;
+			this.wasScrolling = this.isScrolling;
+			this.isScrolling = false;
+		},
+		$handleScrollInterval: function TiledViewerRegionWeb$HandleScrollInterval(scrollXDir, scrollYDir, scrollSpeed) {
+			var scrollAmountX = 0;
+			var scrollAmountY = 0;
+			if (scrollXDir !== 0) {
+				scrollAmountX = this.$computeAxisScrollAmount(0, scrollXDir);
+				this.scroller.scrollX(scrollAmountX);
+			}
+			if (scrollYDir !== 0) {
+				scrollAmountY = this.$computeAxisScrollAmount(1, scrollYDir);
+				this.scroller.scrollY(scrollAmountY);
+			}
+			this.get_shapeSelector().shapeScrolled(scrollAmountX, scrollAmountY);
+			this.get_shapeSelector().get_dom().css('display', '');
+			if (scrollAmountX === 0 && scrollXDir !== 0 || scrollAmountY === 0 && scrollYDir !== 0) {
+				var scrollXDirNew = ((scrollAmountX === 0) ? 0 : scrollXDir);
+				var scrollYDirNew = ((scrollAmountY === 0) ? 0 : scrollYDir);
+				this.startScrolling(scrollXDirNew, scrollYDirNew, scrollSpeed);
+			}
+		},
+		$computeAxisScrollAmount: function TiledViewerRegionWeb$ComputeAxisScrollAmount(scrollAxis, scrollDirection) {
+			var scrollCurrent = ((scrollAxis === 0) ? this.scroller.get_scrollPos().x : this.scroller.get_scrollPos().y);
+			var scrollMax = ((scrollAxis === 0) ? this.scroller.get_maxScroll().x : this.scroller.get_maxScroll().y);
+			var scrollAmount = scrollDirection * $tab_TiledViewerRegionWeb.$scrollIncrement;
+			var scrollNew = Math.max(0, Math.min(scrollCurrent + scrollAmount, scrollMax));
+			return scrollNew - scrollCurrent;
+		},
+		determineScrollDirection: function TiledViewerRegionWeb$DetermineScrollDirection(scrollAxis, outsideViz) {
+			var scrollCurrent = ((scrollAxis === 0) ? this.scroller.get_scrollPos().x : this.scroller.get_scrollPos().y);
+			var scrollMax = ((scrollAxis === 0) ? this.scroller.get_maxScroll().x : this.scroller.get_maxScroll().y);
+			var scrollDir = ((outsideViz < 0) ? -1 : ((outsideViz > 0) ? 1 : 0));
+			if (scrollDir === -1 && scrollCurrent === 0 || scrollDir === 1 && scrollCurrent >= scrollMax) {
+				scrollDir = 0;
+			}
+			return scrollDir;
+		},
+		suppressTooltips: function TiledViewerRegionWeb$SuppressTooltips() {
+			this.$hoverApi.suppressHover(this);
+		},
+		setCursor: function TiledViewerRegionWeb$SetCursor(cursorName, element) {
+			element.css('cursor', cursorName);
+		},
+		$setCursor: function TiledViewerRegionWeb$SetCursor(cursorName) {
+			this.setCursor(cursorName, this.connectNode);
+		},
+		$getCursorMode: function TiledViewerRegionWeb$GetCursorMode() {
+			var cursorMode = this.get_toolModeViewModel().get_currentPointerToolMode();
+			if (cursorMode === 'no-tools') {
+				cursorMode = this.get_toolModeViewModel().defaultPointerToolMode;
+			}
+			return cursorMode;
+		},
+		$setCursorForPointerToolMode: function TiledViewerRegionWeb$SetCursorForPointerToolMode() {
+			var cursorMode = this.$getCursorMode();
+			switch (cursorMode) {
+				case 'area-zoom': {
+					this.$setCursor($tab_TiledViewerRegionWeb.$cursors['zoomIn']);
+					break;
+				}
+				case 'zoom-out': {
+					this.$setCursor($tab_TiledViewerRegionWeb.$cursors['zoomOut']);
+					break;
+				}
+				default: {
+					this.$setCursor((this.$mouseOverMarkOrVisualPart ? $tab_TiledViewerRegionWeb.$cursors['select'] : $tab_TiledViewerRegionWeb.$cursors['defaultKey']));
+					break;
+				}
+			}
+		},
+		determineDragSelectionCursor: function TiledViewerRegionWeb$DetermineDragSelectionCursor() {
+			if (this.paneTableViewModel.isAnnotationDragging()) {
+				return $tab_TiledViewerRegionWeb.$cursors['defaultKey'];
+			}
+			var cursorMode = this.$getCursorMode();
+			switch (cursorMode) {
+				case 'area-zoom': {
+					return $tab_TiledViewerRegionWeb.$cursors['zoomIn'];
+				}
+				case 'zoom-out': {
+					return $tab_TiledViewerRegionWeb.$cursors['zoomOut'];
+				}
+				case 'lasso-selection': {
+					return (this.get_$useExtendedCursors() ? $tab_TiledViewerRegionWeb.$cursors['lassoExtended'] : $tab_TiledViewerRegionWeb.$cursors['lassoSelect']);
+				}
+				case 'radial-selection': {
+					return (this.get_$useExtendedCursors() ? $tab_TiledViewerRegionWeb.$cursors['radialExtended'] : $tab_TiledViewerRegionWeb.$cursors['radialSelect']);
+				}
+				case 'rectangular-selection': {
+					return (this.get_$useExtendedCursors() ? $tab_TiledViewerRegionWeb.$cursors['rectExtended'] : $tab_TiledViewerRegionWeb.$cursors['rectSelect']);
+				}
+				case 'pan-map': {
+					return $tab_TiledViewerRegionWeb.$cursors['panDrag'];
+				}
+				default: {
+					return $tab_TiledViewerRegionWeb.$cursors['defaultKey'];
+				}
+			}
+		},
+		$startDragTracking: function TiledViewerRegionWeb$StartDragTracking(pseudoEvent) {
+			if (pseudoEvent.originalEvent['button'] > 1) {
+				return;
+			}
+			if (this.get_isDragTracking()) {
+				return;
+			}
+			this.$setDragTracking(true);
+			tab.Log.get(this).debug('Start drag tracking...', []);
+			pseudoEvent.preventDefault();
+			this.$hoverApi.suppressHover(this);
+			var info = pseudoEvent.get_GestureInfo();
+			this.domPanZoomRect.set_pi(null);
+			this.domPanZoomRect.dragStarted(info.startX, info.startY, this.getLocalOffset(true));
+			this.get_shapeSelector().dragStarted(info.startX, info.startY, this.getLocalOffset(true));
+			this.$setCursorForPointerToolMode();
+		},
+		$stopDragTracking: function TiledViewerRegionWeb$StopDragTracking(e, selector) {
+			if (!this.get_isDragTracking()) {
+				return;
+			}
+			this.$setDragTracking(false);
+			this.$stopShowingMarquee(selector);
+			this.stopScrolling();
+			this.$setCursorForPointerToolMode();
+		},
+		$zoomFromClick: function TiledViewerRegionWeb$ZoomFromClick(pseudoEvent, paneInfo) {
+			var coords = this.toLocalCoordsEvent(pseudoEvent, false);
+			this.paneTableViewModel.hideAnnotations();
+			if (!this.get_toolModeViewModel().get_isZoomToolActive()) {
+				tab.Log.get(this).warn('ZoomFromClick expecting a zoom tool to be active, but one is not', []);
+			}
+			var scale = ((this.get_toolModeViewModel().get_currentPointerToolMode() === 'zoom-out') ? 0.5 : 2);
+			this.zoomPoint(paneInfo, coords, scale, false, null);
+		},
+		$zoomOnCenter: function TiledViewerRegionWeb$ZoomOnCenter(paneInfo, scale) {
+			this.zoomPoint(paneInfo, null, scale, false, null);
+		},
+		$zoomRect: function TiledViewerRegionWeb$ZoomRect(paneInfo, rect, scale) {
+			if (this.isWaitingOnPanZoomServerResponse()) {
+				return;
+			}
+			this.setWaitingOnPanZoomServerResponseState();
+			var zoomRectLocalWorkCompleteMetricsContext = tab.TiledViewerRegionWebMetrics.createZoomRectLocalWorkCompleteContext();
+			var zoomRectFullyCompleteMetricsContext = tab.TiledViewerRegionWebMetrics.createZoomRectFullyCompleteContext();
+			var paneCenter = tab.TiledViewerRegion.getCenterPoint(paneInfo);
+			var zoomFactor = 1 / scale;
+			this.zoomAnimationProtectionGlass = new spiff.Glass(null, false);
+			this.zoomAnimationProtectionGlass.show();
+			var onLocalWorkCompleted = ss.mkdel(this, function() {
+				zoomRectLocalWorkCompleteMetricsContext.dispose();
+				if (this.paneTableViewModel.get_visualModel().get_runtimeReady()) {
+					this.reset();
+				}
+			});
+			var onZoomCompleted = ss.mkdel(this, function(result) {
+				if (result === 'failure') {
+					this.reset();
+				}
+				this.zoomAnimationProtectionGlass = tab.MiscUtil.dispose$1(this.zoomAnimationProtectionGlass);
+				if (result === 'success') {
+					zoomRectFullyCompleteMetricsContext.dispose();
+				}
+				this.clearWaitingOnPanZoomServerResponseState();
+			});
+			var doZoom = ss.mkdel(this, function() {
+				tab.PanZoomCommands.zoomIn(rect, paneCenter, zoomFactor, onLocalWorkCompleted, onZoomCompleted, this.get_sheetid());
+			});
+			if (this.mapIsBrowserRendered()) {
+				this.animateZoomRectMap(paneInfo, rect, doZoom);
+			}
+			else {
+				if (tab.ApplicationModel.get_instance().get_isLocalRenderMode() || tab.ViewSession.canUseTileCacheUrl(this.paneTableViewModel.get_tileCacheUrl())) {
+					this.animateZoomRectImage(paneInfo, paneCenter, rect);
+				}
+				doZoom();
+			}
+		},
+		$pan: function TiledViewerRegionWeb$Pan(origin, delta) {
+			this.setWaitingOnPanZoomServerResponseState();
+			this.resetIsWaitingOnTransition = false;
+			if (this.mapIsBrowserRendered()) {
+				this.backgroundMap.updateLocalCenter(delta.x, delta.y);
+			}
+			var onLocalWorkCompleted = ss.mkdel(this, function() {
+				if (this.paneTableViewModel.get_visualModel().get_runtimeReady()) {
+					this.reset();
+				}
+				this.$panMouseUpLocalWorkCompleteMetricsContext.dispose();
+			});
+			var onPanCompleted = ss.mkdel(this, function(result) {
+				if (result === 'failure') {
+					this.reset();
+				}
+				this.clearWaitingOnPanZoomServerResponseState();
+				this.$panMouseUpFullyCompleteMetricsContext.dispose();
+			});
+			tab.PanZoomCommands.pan(this.get_regionPart(), origin, delta, onLocalWorkCompleted, onPanCompleted, this.get_sheetid());
+		}
+	}, tab.TiledViewerRegion);
+	ss.initClass($tab_TooltipLegacyMode, $asm, {
+		onMoving: function TooltipLegacyMode$OnMoving() {
+			this.get_tooltip().close();
+		},
+		onDragEnd$1: function TooltipLegacyMode$OnDragEnd() {
+			this.get_tooltip().close();
+		},
+		buildBehaviorsDictionary: function TooltipLegacyMode$BuildBehaviorsDictionary() {
+			var legacyTooltipBehavior = new $tab_LegacyTooltipBehavior(this.get_tooltip());
+			this.tooltipBehaviors['sticky'] = legacyTooltipBehavior;
+		},
+		dispose: function TooltipLegacyMode$Dispose() {
+			this.get_tooltip().remove_showed(ss.mkdel(this, this.showCommandAreaAndActions));
+			tab.TooltipBaseLegacyMode.prototype.dispose.call(this);
+		}
+	}, tab.TooltipBaseLegacyMode);
+	ss.initClass($tab_VizContextMenuComponent, $asm, {
+		render: function VizContextMenuComponent$Render() {
+			return (this.props.isHidden ? null : this.$renderContextMenu());
+		},
+		componentWillMount: function VizContextMenuComponent$ComponentWillMount() {
+			this.$menuAnchor = $('<div>').css({ visibility: 'hidden', position: 'relative' })[0];
+			this.$menuAnchor.className = $tab_VizContextMenuComponent.$menuAnchorClass;
+			this.$updateMenuAnchorPosition(this.props);
+		},
+		componentWillUpdate: function VizContextMenuComponent$ComponentWillUpdate(nextProps) {
+			this.$updateMenuAnchorPosition(nextProps);
+		},
+		componentWillUnmount: function VizContextMenuComponent$ComponentWillUnmount() {
+			if (this.props.vizOverlayDiv.contains(this.$menuAnchor)) {
+				this.props.vizOverlayDiv.removeChild(this.$menuAnchor);
+			}
+		},
+		$updateMenuAnchorPosition: function VizContextMenuComponent$UpdateMenuAnchorPosition(currentProps) {
+			if (!currentProps.isHidden) {
+				currentProps.vizOverlayDiv.appendChild(this.$menuAnchor);
+				this.$menuAnchor.style.top = 100 * currentProps.location.y / currentProps.vizOverlayDiv.clientHeight + '%';
+				this.$menuAnchor.style.left = 100 * currentProps.location.x / currentProps.vizOverlayDiv.clientWidth + '%';
+			}
+			else if (currentProps.isHidden && currentProps.vizOverlayDiv.contains(this.$menuAnchor)) {
+				currentProps.vizOverlayDiv.removeChild(this.$menuAnchor);
+			}
+		},
+		$renderContextMenu: function VizContextMenuComponent$RenderContextMenu() {
+			var props = { testId: $tab_VizContextMenuComponent.$testId, allowAutoPosition: true, anchorEl: this.$menuAnchor, anchorOrigin: { vertical: 0, horizontal: 0 }, menuItemInfos: this.props.menuOptions, requestCloseAll: ss.mkdel(this, this.$handleMenuClosed), onSelect: this.props.handleItemClicked };
+			return React.createElement(SharedWidgets.FlyoutListMenuWidget, props);
+		},
+		$handleMenuClosed: function VizContextMenuComponent$HandleMenuClosed() {
+			if (!ss.staticEquals(this.props.hide, null)) {
+				this.props.hide();
+			}
+		}
+	}, spiff.PureRenderComponent);
+	ss.initClass($tab_VizZoneWebFactory, $asm, {
+		createPaneTableView: function VizZoneWebFactory$CreatePaneTableView(paneTableVM) {
+			return new $tab_PaneTableViewWeb(ss.cast(paneTableVM, tab.PaneTableViewModel));
+		}
+	}, tab.VizZoneFactory, [tab.IVizZoneModule]);
+	(function() {
+		$tab_AnnotationSelectionChromeComponent.chevronClass = 'tabAuthoringAnnotationChevron';
+		$tab_AnnotationSelectionChromeComponent.chevronIconClass = 'tabAuthoringAnnotationChevronIcon';
+	})();
+	(function() {
+		$tab_SortDrillBase.$instances = [];
+	})();
+	(function() {
+		$tab_AxisContextMenu.axisContextMenuElementClassName = 'tab-tiledViewerAxisContextMenu';
+	})();
+	(function() {
+		$tab_ContinuousScrollZoom.$wheelZoomRate = 0.00333333333333333;
+		$tab_ContinuousScrollZoom.$touchpadZoomRate = 0.01;
+		$tab_ContinuousScrollZoom.$maxZoomFactor = 2;
+		$tab_ContinuousScrollZoom.maxValidMapZoomLevel = 30;
+	})();
+	(function() {
+		$tab_Drilling.$drillUpMargin = 17;
+		$tab_Drilling.$drillControlsIndent = 7;
+		$tab_Drilling.$yheaderMargin = 10;
+		$tab_Drilling.$bottomAxisMargin = 20;
+	})();
+	(function() {
+		tab.ObjectRegistry.registerType(tab.FloatingZoomToolbar, $tab_FloatingZoomToolbarWeb).call(null);
+	})();
+	(function() {
+		$tab_LegacyTooltipBehavior.$bindingNamespace = '.LegacyTooltipBehavior';
+		$tab_LegacyTooltipBehavior.$involuntaryMouseMoveTime = 500;
+		$tab_LegacyTooltipBehavior.$mouseStopDetectionTime = 250;
+		$tab_LegacyTooltipBehavior.$timeoutInitialShown = 10000;
+		$tab_LegacyTooltipBehavior.$timeoutMove = 1200;
+		$tab_LegacyTooltipBehavior.$uniqueEventTypeCounter = 0;
+		tab.ObjectRegistry.registerType(tab.ITooltipBehavior, $tab_LegacyTooltipBehavior).call(null);
+	})();
+	(function() {
+		tab.ObjectRegistry.registerType(tab.MapsSearchView, $tab_MapsSearchViewWeb).call(null);
+	})();
+	(function() {
+		$tab_PaneTableTemplateWeb.htmlTemplate = "<div class='tab-tiledViewer placeholder' data-tb-test-id='VisualizationContainer'><div class='tab-clip'><h2 class='tab-tvTitle tvimagesNS'></h2><div class='tab-tvTLSpacer tvimagesNS'><img></img></div><div class='tab-tvTRSpacer tvimagesNS'><img></img></div><div class='tab-tvBLSpacer tvimagesNS'><img></img></div><div class='tab-tvBRSpacer tvimagesNS'><img></img></div><div class='tab-tvYLabel tvimagesNS'><div class='tvimagesContainer'></div></div><div class='tab-tvLeftAxis tvimagesNS'><div class='tvimagesContainer'></div></div><div class='tab-tvRightAxis tvimagesNS'><div class='tvimagesContainer'></div></div><div class='tab-tvXLabel tvimagesNS'><div class='tvimagesContainer'></div></div><div class='tab-tvBottomAxis tvimagesNS'><div class='tvimagesContainer'></div></div><div class='tab-tvTopAxis tvimagesNS'><div class='tvimagesContainer'></div></div><div class='tab-tvView tvimagesNS'><div class='tvScrollContainer' data-tb-test-id='VisualizationScrollContainer'><div class='tvBackgroundContainer'></div><div class='tvimagesContainer'></div></div><div class='tvViewportBorders'></div></div><div class='tab-tvCaption tvimagesNS'></div><div class='tab-tvScrollX tvimages'><div class='tvimagesContainer'></div></div><div class='tab-tvScrollY tvimages'><div class='tvimagesContainer'></div></div></div></div>";
+	})();
+	(function() {
+		$tab_VizContextMenuComponent.$testId = 'VizContextMenu';
+		$tab_VizContextMenuComponent.$menuAnchorClass = 'VizContextMenu-MenuAnchor';
+	})();
+	(function() {
+		$tab_TiledViewerRegionWeb.isDragTrackingInAnyRegion = false;
+		$tab_TiledViewerRegionWeb.$scrollIncrement = 15;
+		$tab_TiledViewerRegionWeb.$scrollIntervalFast = 15;
+		$tab_TiledViewerRegionWeb.$scrollIntervalSlow = 200;
+		$tab_TiledViewerRegionWeb.$cursors = null;
+	})();
+	(function() {
+		tab.ObjectRegistry.registerType(tab.TooltipBaseLegacyMode, $tab_TooltipLegacyMode).call(null);
+	})();
+	(function() {
+		$tab_Sorting.sortingElementClassName = 'tab-tiledViewerSort';
+		$tab_Sorting.sortIndicatorButtonClassName = 'tab-tvSortIndicator';
+		$tab_Sorting.sortMenuDropDownButtonClassName = 'sortDropdownSolid';
+		$tab_Sorting.$sortIndicatorImageClassPrefix = 'sortInd';
+	})();
+	(function() {
+		$tab_PaneTableViewWeb.$zoomToAnchorScrollTimeout = 500;
+		$tab_PaneTableViewWeb.$resizerThickness = 10;
+	})();
+})();
+// END VizZoneWeb

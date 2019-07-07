@@ -1,0 +1,204 @@
+/*! BEGIN LegacyDojoModuleInterfaces */
+
+(function() {
+	'dont use strict';
+	var $asm = {};
+	global.tab = global.tab || {};
+	ss.initAssembly($asm, 'vqllegacydojomoduleinterfaces');
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ICategoricalLegendView
+	var $tab_ICategoricalLegendView$1 = function(TViewModel) {
+		var $type = function() {
+		};
+		ss.registerGenericInterfaceInstance($type, $tab_ICategoricalLegendView$1, [TViewModel], {}, function() {
+			return [ss.IDisposable, tab.IAppendableView, ss.makeGenericType(tab.IView$1, [TViewModel])];
+		});
+		ss.setMetadata($type, { variance: [1] });
+		return $type;
+	};
+	$tab_ICategoricalLegendView$1.__typeName = 'tab.ICategoricalLegendView$1';
+	ss.initGenericInterface($tab_ICategoricalLegendView$1, $asm, 1);
+	global.tab.ICategoricalLegendView$1 = $tab_ICategoricalLegendView$1;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ICategoricalLegendViewModel
+	var $tab_ICategoricalLegendViewModel = function() {
+	};
+	$tab_ICategoricalLegendViewModel.__typeName = 'tab.ICategoricalLegendViewModel';
+	global.tab.ICategoricalLegendViewModel = $tab_ICategoricalLegendViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IContinuousSlider
+	var $tab_IContinuousSlider = function() {
+	};
+	$tab_IContinuousSlider.__typeName = 'tab.IContinuousSlider';
+	global.tab.IContinuousSlider = $tab_IContinuousSlider;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IContinuousSliderViewModel
+	var $tab_IContinuousSliderViewModel = function() {
+	};
+	$tab_IContinuousSliderViewModel.__typeName = 'tab.IContinuousSliderViewModel';
+	global.tab.IContinuousSliderViewModel = $tab_IContinuousSliderViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ICurrentPagePanelWidgetShim
+	var $tab_ICurrentPagePanelWidgetShim = function() {
+	};
+	$tab_ICurrentPagePanelWidgetShim.__typeName = 'tab.ICurrentPagePanelWidgetShim';
+	global.tab.ICurrentPagePanelWidgetShim = $tab_ICurrentPagePanelWidgetShim;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IFilterPanelWidgetShim
+	var $tab_IFilterPanelWidgetShim = function() {
+	};
+	$tab_IFilterPanelWidgetShim.__typeName = 'tab.IFilterPanelWidgetShim';
+	global.tab.IFilterPanelWidgetShim = $tab_IFilterPanelWidgetShim;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ILegacyDojoUIModule
+	var $tab_ILegacyDojoUIModule = function() {
+	};
+	$tab_ILegacyDojoUIModule.__typeName = 'tab.ILegacyDojoUIModule';
+	global.tab.ILegacyDojoUIModule = $tab_ILegacyDojoUIModule;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ILegacyDojoWidgetMaker
+	var $tab_ILegacyDojoWidgetMaker = function() {
+	};
+	$tab_ILegacyDojoWidgetMaker.__typeName = 'tab.ILegacyDojoWidgetMaker';
+	global.tab.ILegacyDojoWidgetMaker = $tab_ILegacyDojoWidgetMaker;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ILegacyLegendView
+	var $tab_ILegacyLegendView$1 = function(TViewModel) {
+		var $type = function() {
+		};
+		ss.registerGenericInterfaceInstance($type, $tab_ILegacyLegendView$1, [TViewModel], {}, function() {
+			return [ss.IDisposable, tab.IAppendableView, ss.makeGenericType(tab.IView$1, [TViewModel])];
+		});
+		ss.setMetadata($type, { variance: [1] });
+		return $type;
+	};
+	$tab_ILegacyLegendView$1.__typeName = 'tab.ILegacyLegendView$1';
+	ss.initGenericInterface($tab_ILegacyLegendView$1, $asm, 1);
+	global.tab.ILegacyLegendView$1 = $tab_ILegacyLegendView$1;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ILegacyLegendViewModel
+	var $tab_ILegacyLegendViewModel = function() {
+	};
+	$tab_ILegacyLegendViewModel.__typeName = 'tab.ILegacyLegendViewModel';
+	global.tab.ILegacyLegendViewModel = $tab_ILegacyLegendViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ILegacyQuickFilterDisplayView
+	var $tab_ILegacyQuickFilterDisplayView$1 = function(TViewModel) {
+		var $type = function() {
+		};
+		ss.registerGenericInterfaceInstance($type, $tab_ILegacyQuickFilterDisplayView$1, [TViewModel], {}, function() {
+			return [ss.IDisposable, tab.IAppendableView, ss.makeGenericType(tab.IView$1, [TViewModel])];
+		});
+		ss.setMetadata($type, { variance: [1] });
+		return $type;
+	};
+	$tab_ILegacyQuickFilterDisplayView$1.__typeName = 'tab.ILegacyQuickFilterDisplayView$1';
+	ss.initGenericInterface($tab_ILegacyQuickFilterDisplayView$1, $asm, 1);
+	global.tab.ILegacyQuickFilterDisplayView$1 = $tab_ILegacyQuickFilterDisplayView$1;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ILegacyQuickFilterDisplayViewModel
+	var $tab_ILegacyQuickFilterDisplayViewModel = function() {
+	};
+	$tab_ILegacyQuickFilterDisplayViewModel.__typeName = 'tab.ILegacyQuickFilterDisplayViewModel';
+	global.tab.ILegacyQuickFilterDisplayViewModel = $tab_ILegacyQuickFilterDisplayViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ILegacyWidgetShim
+	var $tab_ILegacyWidgetShim = function() {
+	};
+	$tab_ILegacyWidgetShim.__typeName = 'tab.ILegacyWidgetShim';
+	global.tab.ILegacyWidgetShim = $tab_ILegacyWidgetShim;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IPageView
+	var $tab_IPageView$1 = function(TViewModel) {
+		var $type = function() {
+		};
+		ss.registerGenericInterfaceInstance($type, $tab_IPageView$1, [TViewModel], {}, function() {
+			return [ss.IDisposable, tab.IAppendableView, ss.makeGenericType(tab.IView$1, [TViewModel])];
+		});
+		ss.setMetadata($type, { variance: [1] });
+		return $type;
+	};
+	$tab_IPageView$1.__typeName = 'tab.IPageView$1';
+	ss.initGenericInterface($tab_IPageView$1, $asm, 1);
+	global.tab.IPageView$1 = $tab_IPageView$1;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IPageViewModel
+	var $tab_IPageViewModel = function() {
+	};
+	$tab_IPageViewModel.__typeName = 'tab.IPageViewModel';
+	global.tab.IPageViewModel = $tab_IPageViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IParameterControlView
+	var $tab_IParameterControlView$1 = function(TViewModel) {
+		var $type = function() {
+		};
+		ss.registerGenericInterfaceInstance($type, $tab_IParameterControlView$1, [TViewModel], { updateViewProperties: null }, function() {
+			return [ss.IDisposable, tab.IAppendableView, ss.makeGenericType(tab.IView$1, [TViewModel])];
+		});
+		ss.setMetadata($type, { variance: [1] });
+		return $type;
+	};
+	$tab_IParameterControlView$1.__typeName = 'tab.IParameterControlView$1';
+	ss.initGenericInterface($tab_IParameterControlView$1, $asm, 1);
+	global.tab.IParameterControlView$1 = $tab_IParameterControlView$1;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IParameterControlViewModel
+	var $tab_IParameterControlViewModel = function() {
+	};
+	$tab_IParameterControlViewModel.__typeName = 'tab.IParameterControlViewModel';
+	global.tab.IParameterControlViewModel = $tab_IParameterControlViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IParameterControlWidgetShim
+	var $tab_IParameterControlWidgetShim = function() {
+	};
+	$tab_IParameterControlWidgetShim.__typeName = 'tab.IParameterControlWidgetShim';
+	global.tab.IParameterControlWidgetShim = $tab_IParameterControlWidgetShim;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IQuantitativeColorLegendView
+	var $tab_IQuantitativeColorLegendView$1 = function(TViewModel) {
+		var $type = function() {
+		};
+		ss.registerGenericInterfaceInstance($type, $tab_IQuantitativeColorLegendView$1, [TViewModel], {}, function() {
+			return [ss.IDisposable, tab.IAppendableView, ss.makeGenericType(tab.IView$1, [TViewModel])];
+		});
+		ss.setMetadata($type, { variance: [1] });
+		return $type;
+	};
+	$tab_IQuantitativeColorLegendView$1.__typeName = 'tab.IQuantitativeColorLegendView$1';
+	ss.initGenericInterface($tab_IQuantitativeColorLegendView$1, $asm, 1);
+	global.tab.IQuantitativeColorLegendView$1 = $tab_IQuantitativeColorLegendView$1;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.IQuantitativeColorLegendViewModel
+	var $tab_IQuantitativeColorLegendViewModel = function() {
+	};
+	$tab_IQuantitativeColorLegendViewModel.__typeName = 'tab.IQuantitativeColorLegendViewModel';
+	global.tab.IQuantitativeColorLegendViewModel = $tab_IQuantitativeColorLegendViewModel;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.LegacyDojoModuleInterfaces.ITabbedNavigation
+	var $tab_ITabbedNavigation = function() {
+	};
+	$tab_ITabbedNavigation.__typeName = 'tab.ITabbedNavigation';
+	global.tab.ITabbedNavigation = $tab_ITabbedNavigation;
+	ss.initInterface($tab_ICategoricalLegendViewModel, $asm, {}, [ss.IDisposable, tab.IViewModel]);
+	ss.initInterface($tab_IContinuousSlider, $asm, { get_widgetNode: null, onAddedToDomShim: null });
+	ss.initInterface($tab_IContinuousSliderViewModel, $asm, { add_sliderValueChange: null, remove_sliderValueChange: null, add_intermediateChange: null, remove_intermediateChange: null, get_sliderClassName: null, set_sliderClassName: null, get_currentFraction: null, set_currentFraction: null, get_pixelWidth: null, set_pixelWidth: null, get_ruleTickCount: null, set_ruleTickCount: null, currentFractionUpdated: null }, [ss.IDisposable, tab.IViewModel, spiff.IHasEnabledState]);
+	ss.initInterface($tab_ILegacyWidgetShim, $asm, { getDomNode: null, destroyRecursiveShim: null, startupShim: null });
+	ss.initInterface($tab_ICurrentPagePanelWidgetShim, $asm, { destroyRecursiveShim$1: null, updatePropertiesShim: null, refreshLayoutShim: null }, [$tab_ILegacyWidgetShim]);
+	ss.initInterface($tab_IFilterPanelWidgetShim, $asm, { updateAttributesShim: null, updateFilterStateShim: null, setTitleSizeShim: null, updateFilterPropertiesShim: null, updateSubWidgetShim: null }, [$tab_ILegacyWidgetShim, ss.IDisposable]);
+	ss.initInterface($tab_ILegacyDojoUIModule, $asm, { createTabbedNavigation: null, createPageViewModel: null, createCategoricalLegendViewModel: null, createQuantitativeColorLegendViewModel: null, createLegacyLegendViewModel: null, createLegacyQuickFilterDisplayViewModel: null, createParameterControlViewModel: null, createPageView: null, createLegacyQuickFilterDisplayView: null, createParameterControlView: null, createQuantitativeColorLegendView: null, createContinuousSliderViewModel: null, createLegacyLegendView: null, createContinuousSlider: null });
+	ss.initInterface($tab_ILegacyDojoWidgetMaker, $asm, { makeCurrentPagePanelWidget: null, makeFilterPanelWidget: null, makeControlWidget: null });
+	ss.initInterface($tab_ILegacyLegendViewModel, $asm, {}, [ss.IDisposable, tab.IViewModel]);
+	ss.initInterface($tab_ILegacyQuickFilterDisplayViewModel, $asm, {}, [ss.IDisposable, tab.IViewModel]);
+	ss.initInterface($tab_IPageViewModel, $asm, { get_visualId: null, get_isHistoryToggleInteractionDisabled: null, get_pageModel: null }, [ss.IDisposable, tab.IViewModel]);
+	ss.initInterface($tab_IParameterControlViewModel, $asm, { get_parameterCtrlModel: null, get_hasBorder: null, get_hasContextMenu: null, showContextMenu: null }, [ss.IDisposable, tab.IViewModel]);
+	ss.initInterface($tab_IParameterControlWidgetShim, $asm, { destroyRecursiveShim$1: null, updatePropertiesShim: null, layoutShim: null }, [$tab_ILegacyWidgetShim]);
+	ss.initInterface($tab_IQuantitativeColorLegendViewModel, $asm, {}, [ss.IDisposable, tab.IViewModel]);
+	ss.initInterface($tab_ITabbedNavigation, $asm, { get_widgetDomNode: null, destroyShim: null, startupShim: null, resizeShim: null });
+	ss.setMetadata($tab_ICategoricalLegendView$1, { variance: [1] });
+	ss.setMetadata($tab_ILegacyLegendView$1, { variance: [1] });
+	ss.setMetadata($tab_ILegacyQuickFilterDisplayView$1, { variance: [1] });
+	ss.setMetadata($tab_IPageView$1, { variance: [1] });
+	ss.setMetadata($tab_IParameterControlView$1, { variance: [1] });
+	ss.setMetadata($tab_IQuantitativeColorLegendView$1, { variance: [1] });
+})();
+// END LegacyDojoModuleInterfaces

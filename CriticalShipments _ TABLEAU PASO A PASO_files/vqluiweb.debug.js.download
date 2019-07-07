@@ -1,0 +1,336 @@
+/*! BEGIN UIWeb */
+(function() {
+	'dont use strict';
+	var $asm = {};
+	global.tab = global.tab || {};
+	ss.initAssembly($asm, 'vqluiweb');
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.UIWeb.ApplicationViewModelWeb
+	var $tab_ApplicationViewModelWeb = function(skipInit, layoutSession) {
+		tab.ApplicationViewModel.call(this, skipInit, layoutSession);
+		$(window).on(this.createNamespacedEventName('resize'), ss.mkdel(this, function() {
+			this.resize(false);
+		}));
+	};
+	$tab_ApplicationViewModelWeb.__typeName = 'tab.ApplicationViewModelWeb';
+	global.tab.ApplicationViewModelWeb = $tab_ApplicationViewModelWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.UI.Views.DataHighlighterViewWeb
+	var $tab_DataHighlighterViewWeb = function(vm) {
+		this.$compositeSearchWidgetWeb = null;
+		this.$onListItemMouseOut = null;
+		this.$currentlySpotlightedItem = null;
+		tab.DataHighlighterView.call(this, vm, new tab.DataHighlighterViewTemplate());
+		this.$compositeSearchWidgetWeb = ss.cast(this.get_compositeSearchWidget(), spiff.CompositeSearchWidgetWeb);
+		this.$compositeSearchWidgetWeb.add_listItemMouseEnter(ss.mkdel(this, this.$listItemMouseEnter));
+		this.$compositeSearchWidgetWeb.add_listItemMouseMove(ss.mkdel(this, this.$listItemMouseMove));
+		this.$compositeSearchWidgetWeb.add_spotlightedListItemChanged(ss.mkdel(this, this.$spotlightedItemChanged));
+		this.$compositeSearchWidgetWeb.add_tabKeyPressed(ss.mkdel(this, this.$handleTabKeyPress));
+		this.disposables.add$1(new tab.CallOnDispose(ss.mkdel(this, function() {
+			this.$compositeSearchWidgetWeb.remove_listItemMouseEnter(ss.mkdel(this, this.$listItemMouseEnter));
+			this.$compositeSearchWidgetWeb.remove_listItemMouseMove(ss.mkdel(this, this.$listItemMouseMove));
+			this.$compositeSearchWidgetWeb.remove_spotlightedListItemChanged(ss.mkdel(this, this.$spotlightedItemChanged));
+			this.$compositeSearchWidgetWeb.remove_tabKeyPressed(ss.mkdel(this, this.$handleTabKeyPress));
+		})));
+		this.$compositeSearchWidgetWeb.set_spotlightedItemLogic(this);
+	};
+	$tab_DataHighlighterViewWeb.__typeName = 'tab.DataHighlighterViewWeb';
+	global.tab.DataHighlighterViewWeb = $tab_DataHighlighterViewWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.UI.Web.Utility.ScrollAdjuster
+	var $tab_ScrollAdjuster = function(disallowDiagonalScrolling) {
+		this.$disallowDiagonalScrolling = false;
+		this.$prevDirection = 'vertical';
+		this.$1$IsFromTouchpadField = false;
+		this.$disallowDiagonalScrolling = disallowDiagonalScrolling;
+		this.forgetInputDevice();
+	};
+	$tab_ScrollAdjuster.__typeName = 'tab.ScrollAdjuster';
+	global.tab.ScrollAdjuster = $tab_ScrollAdjuster;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.UI.Web.Utility.ScrollAdjusterUtil
+	var $tab_ScrollAdjusterUtil = function() {
+	};
+	$tab_ScrollAdjusterUtil.__typeName = 'tab.ScrollAdjusterUtil';
+	$tab_ScrollAdjusterUtil.getProperty = function ScrollAdjusterUtil$GetProperty(originalEvent, property) {
+		return originalEvent[property];
+	};
+	$tab_ScrollAdjusterUtil.adjustVerticalScrollDeltaForMap = function ScrollAdjusterUtil$AdjustVerticalScrollDeltaForMap(scrollDelta) {
+		if (scrollDelta % tab.MapUtil.defaultWheelDeltaIncrement !== 0) {
+			var deltaMagnitude = Math.abs(scrollDelta);
+			if (deltaMagnitude > 0 && deltaMagnitude < tab.MapUtil.defaultWheelDeltaIncrement) {
+				deltaMagnitude = tab.MapUtil.defaultWheelDeltaIncrement;
+			}
+			var multiple = ss.Int32.div(deltaMagnitude + ss.Int32.div(tab.MapUtil.defaultWheelDeltaIncrement, 2), tab.MapUtil.defaultWheelDeltaIncrement);
+			if (scrollDelta < 0) {
+				multiple *= -1;
+			}
+			scrollDelta = tab.MapUtil.defaultWheelDeltaIncrement * multiple;
+		}
+		return scrollDelta;
+	};
+	global.tab.ScrollAdjusterUtil = $tab_ScrollAdjusterUtil;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.UIWeb.WebScroller
+	var $tab_WebScroller = function(domHNodeToScroll, domVNodeToScroll) {
+		this.$scrollHNode = null;
+		this.$scrollVNode = null;
+		this.$scrollHNode = domHNodeToScroll.get(0);
+		this.$scrollVNode = domVNodeToScroll.get(0);
+	};
+	$tab_WebScroller.__typeName = 'tab.WebScroller';
+	global.tab.WebScroller = $tab_WebScroller;
+	ss.initClass($tab_ApplicationViewModelWeb, $asm, {
+		destroy: function ApplicationViewModelWeb$Destroy() {
+			$(window).off(this.createNamespacedEventName('resize'));
+			tab.ApplicationViewModel.prototype.destroy.call(this);
+		}
+	}, tab.ApplicationViewModel, [tab.IWidget, tab.IAppendableView, ss.IDisposable, tab.IClient, tab.IApiStorytellingClient]);
+	ss.initClass($tab_DataHighlighterViewWeb, $asm, {
+		$spotlightedItemChanged: function DataHighlighterViewWeb$SpotlightedItemChanged(newSpotlightedListItem) {
+			this.$currentlySpotlightedItem = newSpotlightedListItem;
+			if (ss.isValue(this.$currentlySpotlightedItem)) {
+				var dataHighlighterItem = this.$currentlySpotlightedItem.get_data();
+				this.get_viewModel().highlightItems([dataHighlighterItem.objectId]);
+			}
+			else if (this.currentListPopulationMode === 2) {
+				this.get_viewModel().restoreSearchResultsHighlighting();
+			}
+			else {
+				this.get_viewModel().clearHighlighting();
+			}
+		},
+		$changeSpotlightedItem: function DataHighlighterViewWeb$ChangeSpotlightedItem(listItemViewModel) {
+			if (ss.isNullOrUndefined(listItemViewModel.get_data())) {
+				return;
+			}
+			this.$compositeSearchWidgetWeb.changeSpotlightedListItem(4, listItemViewModel);
+			if (ss.isNullOrUndefined(this.$onListItemMouseOut)) {
+				var searchResultsPopup = $(document).find('.tabDataHighlighterViewSearchResultList');
+				this.$onListItemMouseOut = spiff.EventUtil.bindWithDispose(searchResultsPopup, 'mouseleave', ss.mkdel(this, this.$onListMouseOut));
+				this.disposables.add$1(this.$onListItemMouseOut);
+			}
+		},
+		$listItemMouseEnter: function DataHighlighterViewWeb$ListItemMouseEnter(listItemViewModel) {
+			this.$changeSpotlightedItem(listItemViewModel);
+		},
+		$listItemMouseMove: function DataHighlighterViewWeb$ListItemMouseMove(listItemViewModel) {
+			this.$changeSpotlightedItem(listItemViewModel);
+		},
+		$onListMouseOut: function DataHighlighterViewWeb$OnListMouseOut(e) {
+			this.$compositeSearchWidgetWeb.resetSpotlightedItem();
+			this.$removeListMouseOutHandler();
+		},
+		removeList: function DataHighlighterViewWeb$RemoveList() {
+			this.$removeListMouseOutHandler();
+			tab.DataHighlighterView.prototype.removeList.call(this);
+		},
+		$removeListMouseOutHandler: function DataHighlighterViewWeb$RemoveListMouseOutHandler() {
+			if (ss.isNullOrUndefined(this.$onListItemMouseOut)) {
+				return;
+			}
+			this.$onListItemMouseOut.dispose();
+			this.$onListItemMouseOut = null;
+		},
+		handleEnterKeyPress: function DataHighlighterViewWeb$HandleEnterKeyPress() {
+			if (ss.isValue(this.$currentlySpotlightedItem)) {
+				this.handleListItemSelected(this.$currentlySpotlightedItem);
+				return;
+			}
+			tab.DataHighlighterView.prototype.handleEnterKeyPress.call(this);
+		},
+		handleListItemSelected: function DataHighlighterViewWeb$HandleListItemSelected(listItemViewModel) {
+			this.removeList();
+			tab.DataHighlighterView.prototype.handleListItemSelected.call(this, listItemViewModel);
+		},
+		$handleTabKeyPress: function DataHighlighterViewWeb$HandleTabKeyPress() {
+			var dataHighlighterItem;
+			if (ss.isNullOrUndefined(this.$currentlySpotlightedItem)) {
+				var list = this.$compositeSearchWidgetWeb.get_listViewModel();
+				if (ss.isNullOrUndefined(list) || list.get_collection().length === 0) {
+					return;
+				}
+				var searchTextLength = this.get_compositeSearchWidget().get_textInputView().get_text().trim().length;
+				if (searchTextLength === 0) {
+					this.removeList();
+					return;
+				}
+				dataHighlighterItem = list.get_collection()[0].get_data();
+			}
+			else {
+				dataHighlighterItem = this.$currentlySpotlightedItem.get_data();
+			}
+			this.get_compositeSearchWidget().setSearchText(dataHighlighterItem.text);
+			this.dataHighlighterViewModel.sendSearchQuery(dataHighlighterItem.text, false);
+		},
+		populateAndDisplayList: function DataHighlighterViewWeb$PopulateAndDisplayList(dataHighlighterItemSet, mode) {
+			tab.DataHighlighterView.prototype.populateAndDisplayList.call(this, dataHighlighterItemSet, mode);
+			this.$compositeSearchWidgetWeb.resetSpotlightedItem();
+		},
+		calculateNewSpotlightedItemIndex: function DataHighlighterViewWeb$CalculateNewSpotlightedItemIndex(oldSpotlightedItemIndex, mode, moveToListItemIndex) {
+			var lastItemIndex = this.get_compositeSearchWidget().get_listViewModel().get_collection().length - (this.notShownResultsListItemIsVisible ? 2 : 1);
+			if (mode === 4) {
+				if (ss.Nullable$1.gt(moveToListItemIndex, lastItemIndex)) {
+					moveToListItemIndex = lastItemIndex;
+				}
+				return moveToListItemIndex;
+			}
+			if (ss.isNullOrUndefined(oldSpotlightedItemIndex)) {
+				return 0;
+			}
+			var newSpotlightedItemIndex = oldSpotlightedItemIndex;
+			switch (mode) {
+				case 1: {
+					newSpotlightedItemIndex = ss.Nullable$1.add(newSpotlightedItemIndex, 1);
+					if (ss.Nullable$1.gt(newSpotlightedItemIndex, lastItemIndex)) {
+						newSpotlightedItemIndex = lastItemIndex;
+					}
+					break;
+				}
+				case 0: {
+					newSpotlightedItemIndex = ss.Nullable$1.sub(newSpotlightedItemIndex, 1);
+					if (ss.Nullable$1.lt(newSpotlightedItemIndex, 0)) {
+						newSpotlightedItemIndex = null;
+					}
+					break;
+				}
+				case 2: {
+					newSpotlightedItemIndex = 0;
+					break;
+				}
+				case 3: {
+					newSpotlightedItemIndex = lastItemIndex;
+					break;
+				}
+			}
+			return newSpotlightedItemIndex;
+		}
+	}, tab.DataHighlighterView, [tab.IWidget, tab.IAppendableView, ss.IDisposable, ss.makeGenericType(tab.IView$1, [tab.DataHighlighterViewModel]), spiff.IListItemContentCreator, spiff.ICompositeSearchWidgetSpotlightedItemLogic]);
+	ss.initClass($tab_ScrollAdjuster, $asm, {
+		get_isFromTouchpad: function ScrollAdjuster$get_IsFromTouchpad() {
+			return this.$1$IsFromTouchpadField;
+		},
+		set_isFromTouchpad: function ScrollAdjuster$set_IsFromTouchpad(value) {
+			this.$1$IsFromTouchpadField = value;
+		},
+		forgetInputDevice: function ScrollAdjuster$ForgetInputDevice() {
+			this.set_isFromTouchpad(false);
+		},
+		normalizeScrollWheelDeltas: function ScrollAdjuster$NormalizeScrollWheelDeltas(originalEvent) {
+			var axis = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'axis');
+			var wheelDelta = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'wheelDelta');
+			var wheelDeltaY = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'wheelDeltaY');
+			var wheelDeltaX = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'wheelDeltaX');
+			var deltaY = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'deltaY');
+			var deltaX = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'deltaX');
+			var deltaMode = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'deltaMode');
+			var detail = $tab_ScrollAdjusterUtil.getProperty(originalEvent, 'detail');
+			var spinX = 0, spinY = 0;
+			var pixelX = 0, pixelY = 0;
+			if (ss.isValue(detail)) {
+				spinY = ss.unbox(detail);
+			}
+			if (ss.isValue(wheelDelta)) {
+				spinY = -ss.unbox(wheelDelta) / 120;
+			}
+			if (ss.isValue(wheelDeltaY)) {
+				spinY = -ss.unbox(wheelDeltaY) / 120;
+			}
+			if (ss.isValue(wheelDeltaX)) {
+				spinX = -ss.unbox(wheelDeltaX) / 120;
+			}
+			if (ss.isValue(axis) && axis === $tab_ScrollAdjuster.$mouseScrollEventHorizontalAxis) {
+				spinX = spinY;
+				spinY = 0;
+			}
+			pixelX = ss.Int32.trunc(spinX * 10);
+			pixelY = ss.Int32.trunc(spinY * 10);
+			if (ss.isValue(deltaY)) {
+				pixelY = ss.unbox(deltaY);
+			}
+			if (ss.isValue(deltaX)) {
+				pixelX = ss.unbox(deltaX);
+			}
+			if ((pixelX !== 0 || pixelY !== 0) && ss.isValue(deltaMode)) {
+				if (ss.unbox(deltaMode) === WheelEvent.DOM_DELTA_LINE) {
+					var lineHeight = (BrowserSupport.BrowserSupport.IsMac() ? $tab_ScrollAdjuster.$defaultLineHeightMac : $tab_ScrollAdjuster.$defaultLineHeight);
+					pixelX *= lineHeight;
+					pixelY *= lineHeight;
+				}
+				else if (ss.unbox(deltaMode) === WheelEvent.DOM_DELTA_PAGE) {
+					pixelX *= $tab_ScrollAdjuster.$defaultPageHeight;
+					pixelY *= $tab_ScrollAdjuster.$defaultPageHeight;
+				}
+			}
+			this.$identifyInputDeviceFromVerticalScrollDeltas(pixelY);
+			return ((this.get_isFromTouchpad() && this.$disallowDiagonalScrolling) ? this.$unidirectionalize(pixelX, pixelY) : { x: pixelX, y: pixelY });
+		},
+		$identifyInputDeviceFromVerticalScrollDeltas: function ScrollAdjuster$IdentifyInputDeviceFromVerticalScrollDeltas(deltaY) {
+			var deltaYMagnitude = Math.abs(deltaY);
+			if (deltaYMagnitude % $tab_ScrollAdjuster.$minWheelDelta === 0) {
+				this.set_isFromTouchpad(false);
+			}
+			else if (deltaYMagnitude > 0 && deltaYMagnitude < $tab_ScrollAdjuster.$minWheelDelta) {
+				this.set_isFromTouchpad(true);
+			}
+		},
+		$unidirectionalize: function ScrollAdjuster$Unidirectionalize(scrollX, scrollY) {
+			var currDirection = ((scrollX !== 0 && scrollY !== 0) ? this.$prevDirection : ((scrollX === 0) ? 'vertical' : 'horizontal'));
+			if (this.$prevDirection === 'vertical') {
+				scrollX = 0;
+			}
+			if (this.$prevDirection === 'horizontal') {
+				scrollY = 0;
+			}
+			this.$prevDirection = currDirection;
+			return { x: scrollX, y: scrollY };
+		}
+	});
+	ss.initClass($tab_ScrollAdjusterUtil, $asm, {});
+	ss.initClass($tab_WebScroller, $asm, {
+		get_canScrollX: function WebScroller$get_CanScrollX() {
+			return this.get_maxScroll().x > 0;
+		},
+		get_canScrollY: function WebScroller$get_CanScrollY() {
+			return this.get_maxScroll().y > 0;
+		},
+		get_scrollPos: function WebScroller$get_ScrollPos() {
+			var x = (ss.isNullOrUndefined(this.$scrollHNode) ? 0 : $(this.$scrollHNode).scrollLeft());
+			var y = (ss.isNullOrUndefined(this.$scrollVNode) ? 0 : tab.DoubleUtil.roundToInt($(this.$scrollVNode).scrollTop()));
+			return { x: x, y: y };
+		},
+		get_maxScroll: function WebScroller$get_MaxScroll() {
+			return { x: (ss.isNullOrUndefined(this.$scrollHNode) ? 0 : (this.$scrollHNode.scrollWidth - this.$scrollHNode.offsetWidth)), y: (ss.isNullOrUndefined(this.$scrollVNode) ? 0 : (this.$scrollVNode.scrollHeight - this.$scrollVNode.offsetHeight)) };
+		},
+		get_visibleArea: function WebScroller$get_VisibleArea() {
+			return { w: (ss.isNullOrUndefined(this.$scrollHNode) ? 0 : this.$scrollHNode.offsetWidth), h: (ss.isNullOrUndefined(this.$scrollVNode) ? 0 : this.$scrollVNode.offsetHeight) };
+		},
+		scrollX: function WebScroller$ScrollX(amount) {
+			if (this.get_canScrollX()) {
+				this.$scrollHNode.scrollLeft += amount;
+			}
+		},
+		scrollY: function WebScroller$ScrollY(amount) {
+			if (this.get_canScrollY()) {
+				this.$scrollVNode.scrollTop += amount;
+			}
+		},
+		setScrollTarget: function WebScroller$SetScrollTarget(scrollTarget) {
+		},
+		refresh: function WebScroller$Refresh() {
+		}
+	}, null, [spiff.IScroller]);
+	(function() {
+		tab.ObjectRegistry.registerType(tab.DataHighlighterView, $tab_DataHighlighterViewWeb).call(null);
+	})();
+	(function() {
+		$tab_ScrollAdjuster.$defaultLineHeight = 40;
+		$tab_ScrollAdjuster.$defaultLineHeightMac = 20;
+		$tab_ScrollAdjuster.$defaultPageHeight = 800;
+		$tab_ScrollAdjuster.$defaultWheelDeltaIncrement = 120;
+		$tab_ScrollAdjuster.$pixelStep = 10;
+		$tab_ScrollAdjuster.$minWheelDelta = 4.000244140625;
+		$tab_ScrollAdjuster.$mouseScrollEventHorizontalAxis = 1;
+	})();
+})();
+// END UIWeb

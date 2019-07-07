@@ -9,33 +9,28 @@
 
     
 <body onload="initialize();">
-     <div id="controls" style="padding:20px;">
-        <h1>What do you want to do: <select id="Type" onchange="filterType(value);">
-            <option value="OK">Keep everything fine</option>
-            <option value="danger">Break havoc</option>         
-        </select></h1> 
-    </div>
-    <h1 style="text-align: center;">CRITICAL MONITOR OF IMPORTANT THINGS</h1>
-                <p style="font-family: sans-serif; font-size: 14px; font-variant-caps: all-small-caps; text-align: center; ">We are happy as long as everything remains <span style="color: darkseagreen; font-variant-caps: unicase;">green</span></p>
-    <div class="row">
-        <div class="backgroundTitle" id="bckgTitle">
+
+    <h1 style="text-align: center;font-family: Montserrat;font-weight: 100;">CRITICAL MONITOR OF IMPORTANT THINGS</h1>
+        <p style="font-family: sans-serif; font-size: 14px; font-variant-caps: all-small-caps; text-align: center; ">We are happy as long as everything remains <span style="color: darkseagreen; font-variant-caps: unicase;">green</span></p>
+    <div class="row" id="bckgTitle">
+        <div class="backgroundTitle" >
             <div class="column1">
-                <p style="font-family: sans-serif;">Alerts will be modified once the viz refreshes. Check the timer!</p>
                 <div class="circle" id="countdown"></div>
+                <div id="controls" style="padding:20px;">
+                    <h3 style="font-family: Montserrat;">What do you want to do: <select id="Type" onchange="filterType(value);">
+                        <option value="OK">Keep everything fine</option>
+                        <option value="danger">Break havoc</option>         
+                    </select></h3> 
+                    <p style="font-family:Montserrat; font-size: 100;">Alerts will be modified once the viz refreshes. Check the timer!</p>
+                </div>
             </div>
             <div class="column2">
                 <div class="titleClass" id="titleD"></div>
                 <div class="detailedView" id="detailedView"></div>
                 <div class="vizContainer" id="myViz"></div>
-            
             </div>
-            <br/>
-            <p></p>
-        </div>
-        
+        </div>    
     </div>
-    
-
 </body>
 <script>
     var viz;
@@ -45,8 +40,6 @@
     var timeleft = ourInterval/1000;
     var refreshInterval =  setInterval(refreshView,ourInterval);
     var downloadTimer = setInterval(countdownDownloadTimer, 1000);
-    var textInterval = setInterval(function(){},3000);
-    var arrayN;
     
     const audio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/submarine-diving-alarm-daniel_simon.mp3');
     const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted-happy-birthday.mp3');
@@ -90,8 +83,18 @@
     
     
     function getUnderlyingSummary(){
-        // I'm sure this long function that does multiple things
-        // is not good practice, but I'm still learning...
+         /* 
+        I'm sure this long function that does multiple things is not good practice, but I'm still learning...
+        
+        This function 
+        1. Gets the data from the marks shown in the viz
+        2. Checks, for every mark, if any of the marks should trigger an alert.
+            2.1. If so, it triggers the alert (calls the audio file, changes the background of the object and brings the data of the "culprit" to the screen).
+            2.2. If not, checks whether any of the "alarm features" are on, and deactivates them 
+        
+        
+        
+        */
         sheet = viz.getWorkbook().getActiveSheet().getWorksheets().get("salesatrisk_");
         // If the active sheet is not a dashboard, then you can just enter:
         // viz.getWorkbook().getActiveSheet();
@@ -128,6 +131,7 @@
                     titleDiv.innerHTML = "<b>Sales at Risk $" + row[4].formattedValue+"<b>";
                     var backgTitle = document.getElementById('bckgTitle');
                     backgTitle.classList.add('playing');
+                    
                     myCounter =myCounter + 1;            
                 } else {}
 
@@ -194,7 +198,7 @@
 .circle {
     position: relative;
     top: 0%;
-    left: 0%;
+    left: 25%;
   width: 65px;
   height: 65px;
   border-radius: 50%;
@@ -262,9 +266,9 @@
 
     /* Clear floats after the columns */
     .row:after {
-      content: "";
-      display: table;
-      clear: both;
+        content: "";
+        display: table;
+        clear: both;
         overflow: hidden;
         margin: 0 auto;
     }

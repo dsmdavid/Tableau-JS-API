@@ -1,0 +1,858 @@
+/*! BEGIN BrowserSupport */
+
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["BrowserSupport"] = factory();
+	else
+		root["BrowserSupport"] = factory();
+})(typeof self !== 'undefined' ? self : this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/dist/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var JsMapPolyfillImpl_1 = __webpack_require__(1);
+var JsSetPolyfillImpl_1 = __webpack_require__(2);
+var TouchScreenUtil_1 = __webpack_require__(3);
+/**
+ * This is your main. This is where you re-export everything you want to be publicly available.
+ *
+ * The build enforces that the file has the same name as the global variable that is exported.
+ */
+var selectStart = false;
+var fonts = 'fonts' in document;
+var postMessage = false;
+var historyApi = false;
+var cssTransformName = 'transform';
+var cssTransitionName = 'transition';
+var shouldUseAlternateHitStrategy = false;
+var canvasLinePattern = false;
+var isSafari = false;
+var isChrome = false;
+var isIE = false;
+var isEdge = false;
+var internetExplorerVersion = 0.0;
+var googleChromeVersion = 0.0;
+var safariVersion = 0.0;
+var iosVersion = 0.0;
+var isFF = false;
+var isOpera = false;
+var isKhtml = false;
+var isWebKit = false;
+var isMozilla = false;
+var isIos = false;
+var isAndroid = false;
+var isMac = false;
+var isWindows = false;
+var isTouch = false;
+var devicePixelRatio = 1.0;
+var backingStoragePixelRatio = 1.0;
+var dateInput = false;
+var dateTimeInput = false;
+var dateTimeLocalInput = false;
+var timeInput = false;
+var setSelectionRange = false;
+var config = {
+    isMobile: function () { return false; }
+};
+// Contains information about what is currently supported in the browser or environment.
+var BrowserSupport = /** @class */ (function () {
+    function BrowserSupport() {
+    }
+    // Note: setConfig doesn't currently trigger DetectBrowser to be re-run, so
+    // if there's ever code run by DetectBrowserSupport that depends on the config,
+    // then we'll need to re-run DetectBrowserSupport here.
+    BrowserSupport.setConfig = function (newConfig) {
+        config = newConfig;
+    };
+    // Gets a value indicating whether the browser supports getComputedStyle.
+    // https://developer.mozilla.org/en-US/docs/DOM/window.getComputedStyle
+    BrowserSupport.GetComputedStyle = function () {
+        return 'getComputedStyle' in window;
+    };
+    // Gets a value indicating whether the browser supports addEventListener.
+    BrowserSupport.AddEventListener = function () {
+        return 'addEventListener' in document;
+    };
+    // Gets a value indicating whether the selectstart event is supported.
+    BrowserSupport.SelectStart = function () {
+        return selectStart;
+    };
+    // Gets a value indicating whether touch events are supported. Note that this does not imply that it's a mobile
+    // browser since many Windows 7 devices support touch and may still have a mouse.
+    // WARNING: This method only detects whether or not there is a potential support for touch, not if a touch screen is actually connected.
+    // To check if the current screen is a touch screen use IsTouchScreen instead.
+    BrowserSupport.IsTouch = function () {
+        return isTouch;
+    };
+    // Gets a value indicating whether the browser supports the CSS Font Loader API.
+    // See https://drafts.csswg.org/css-font-loading
+    BrowserSupport.FontLoader = function () {
+        return fonts;
+    };
+    // Gets a value indicating if JavaScript Promises are supported.
+    // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+    BrowserSupport.Promise = function () {
+        return 'Promise' in window;
+    };
+    // Gets a value indicating whether or not this browser supports postMessage.
+    BrowserSupport.PostMessage = function () {
+        return postMessage;
+    };
+    BrowserSupport.HistoryApi = function () {
+        return historyApi;
+    };
+    BrowserSupport.IsMobile = function () {
+        return isAndroid || isIos;
+    };
+    BrowserSupport.IsIos = function () {
+        return isIos;
+    };
+    BrowserSupport.IsAndroid = function () {
+        return isAndroid;
+    };
+    BrowserSupport.IsChrome = function () {
+        return isChrome;
+    };
+    BrowserSupport.IsMac = function () {
+        return isMac;
+    };
+    BrowserSupport.IsIE = function () {
+        return isIE;
+    };
+    BrowserSupport.IsEdge = function () {
+        return isEdge;
+    };
+    BrowserSupport.IsFF = function () {
+        return isFF;
+    };
+    BrowserSupport.IsOpera = function () {
+        return isOpera;
+    };
+    BrowserSupport.IsSafari = function () {
+        return isSafari;
+    };
+    BrowserSupport.IsWindows = function () {
+        return isWindows;
+    };
+    BrowserSupport.IsHighDpi = function () {
+        return window.matchMedia('(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)').matches;
+    };
+    // Returns the version of Internet Explorer that made this request.
+    // If the client is not IE, this returns 0.0
+    BrowserSupport.BrowserVersion = function () {
+        return internetExplorerVersion;
+    };
+    BrowserSupport.SafariVersion = function () {
+        return safariVersion;
+    };
+    // Returns the version of Google Chrome that made this request.
+    // If the client is not GC, this returns 0.0
+    BrowserSupport.GoogleChromeVersion = function () {
+        return googleChromeVersion;
+    };
+    // Returns the version of iOS that made this request.
+    // If the client is not iOS, this returns 0.0
+    BrowserSupport.IosVersion = function () {
+        return iosVersion;
+    };
+    BrowserSupport.RaisesEventOnImageReassignment = function () {
+        // $NOTE-rbunker-2008-06-17: B17794, safari doesn't fire
+        // onload if the src doesn't change
+        return !isSafari;
+    };
+    BrowserSupport.ImageLoadIsSynchronous = function () {
+        return isIE;
+    };
+    // Gets a value indicating whether document.elementFromPoint on the current browser
+    // requires screen vs. client coordinates for reasons of DPI, etc.
+    // See BUGZID 55280
+    BrowserSupport.UseAlternateHitStrategy = function () {
+        return shouldUseAlternateHitStrategy;
+    };
+    // Gets a value indicating the name of the CSS transform property.
+    BrowserSupport.CssTransformName = function () {
+        return cssTransformName;
+    };
+    // Gets a value indicating the name of the CSS transition property.
+    BrowserSupport.CssTransitionName = function () {
+        return cssTransitionName;
+    };
+    BrowserSupport.BackingStoragePixelRatio = function () {
+        return backingStoragePixelRatio;
+    };
+    BrowserSupport.DevicePixelRatio = function () {
+        return devicePixelRatio;
+    };
+    BrowserSupport.CanvasLinePattern = function () {
+        return canvasLinePattern;
+    };
+    // Gets a value indicating whether the device supports a native HTML5 date picker.
+    // http://www.w3.org/TR/html-markup/input.date.html
+    BrowserSupport.DateInput = function () {
+        return dateInput;
+    };
+    // Gets a value indicating whether the device supports a native HTML5 datetime picker.
+    // http://www.w3.org/TR/html-markup/input.datetime.html
+    BrowserSupport.DateTimeInput = function () {
+        return dateTimeInput;
+    };
+    // Gets a value indicating whether the device supports a native HTML5 local datetime picker.
+    // http://www.w3.org/TR/html-markup/input.datetime-local.html
+    BrowserSupport.DateTimeLocalInput = function () {
+        return dateTimeLocalInput;
+    };
+    // Gets a value indicating whether the device supports a native HTML5 local time picker.
+    // http://www.w3.org/TR/html-markup/input.time.html
+    BrowserSupport.TimeInput = function () {
+        return timeInput;
+    };
+    // Indicates whether setSelectionRange is supported on an input element
+    BrowserSupport.SetSelectionRange = function () {
+        return setSelectionRange;
+    };
+    // Gets the mousewheel event to use via feature detection.
+    // https://developer.mozilla.org/en-US/docs/Web/Reference/Events/wheel
+    BrowserSupport.MouseWheelEvent = function () {
+        // Used by all modern browsers, except IE. There is no onwheel attribute on DOM objects in IE; it does support 'mousewheel' though.
+        if ('onwheel' in window.document.documentElement) {
+            return 'wheel';
+        }
+        // Deprecated; used in Chrome before version 31, Safari before version 7
+        if ('onmousewheel' in window.document.documentElement) {
+            return 'mousewheel';
+        }
+        // Deprecated; used in Firefox before version 17
+        return 'MozMousePixelScroll';
+    };
+    // Tests if mouse capture support is present.  As of 6/1/14, only IE and Firefox support this.
+    // https://developer.mozilla.org/en-US/docs/Web/API/Element.setCapture
+    //
+    // See the comments in <see cref='MouseCapture'/>) for how this is used during dragging. We have some
+    // special browser-specific logic there.
+    BrowserSupport.MouseCapture = function () {
+        return 'releaseCapture' in document;
+    };
+    // Indicates whether orientationchange event is supported by the browser
+    BrowserSupport.OrientationChange = function () {
+        return 'onorientationchange' in window;
+    };
+    // Indicates whether HTML5 Proxy objects are supported by the browser
+    BrowserSupport.ProxyObjectSupport = function () {
+        return 'Proxy' in window;
+    };
+    // Reports whether browser supports geolocation
+    BrowserSupport.IsGeolocationSupported = function () {
+        return window.navigator.geolocation !== null || window.navigator.geolocation !== undefined;
+    };
+    // Gets a value indicating whether the browser is running on an iPad.
+    // @returns {boolean} true if running on iPad; otherwise, false.
+    BrowserSupport.IsIpad = function () {
+        return window.navigator.userAgent.indexOf('iPad') !== -1;
+    };
+    // This method returns true only if this is a touch screen of a non-mobile device. Mobile devices should have their own logic.
+    // Can only detect a touch screen, after the user has touched the screen for the first time.
+    BrowserSupport.IsTouchAndNonMobile = function () {
+        return TouchScreenUtil_1.TouchScreenUtil.HasUserTouchedScreen && !config.isMobile();
+    };
+    // Returns whether or not the current screen is a touch screen.
+    // Can only detect it after the user has touched the screen for the first time.
+    // <returns>true if this is an actual touch screen, and the user used it as such, false otherwiser</returns>
+    BrowserSupport.IsTouchScreen = function () {
+        return TouchScreenUtil_1.TouchScreenUtil.HasUserTouchedScreen;
+    };
+    BrowserSupport.GetUserAgent = function () {
+        return window.navigator.userAgent;
+    };
+    // Gets the location.origin property in a browser-independent way.
+    // IE still does not support location.origin. Use a polyfill:
+    // @see {@link http://stackoverflow.com/questions/1420881/javascript-jquery-method-to-find-base-url-from-a-string}
+    BrowserSupport.GetOrigin = function (location) {
+        var origin = location.origin;
+        if (origin === null || origin === undefined) {
+            origin = location.protocol + '//' + location.host;
+        }
+        return origin;
+    };
+    // Public only for testing purposes.  Real consumers shouldn't need to call this function
+    BrowserSupport.DetectBrowserSupport = function () {
+        // Taken from jQuery UI
+        var body = document.body;
+        var div = document.createElement('div');
+        body.appendChild(div);
+        selectStart = 'onselectstart' in div;
+        // set display to none to avoid a layout bug in IE
+        // http://dev.jquery.com/ticket/4014
+        body.removeChild(div).style.display = 'none';
+        postMessage = 'postMessage' in window;
+        historyApi = typeof window.history.pushState === 'function' && typeof window.history.replaceState === 'function';
+        DetectBrowser();
+        DetectTransitionSupport();
+        DetectTransformSupport();
+        DetectDocumentElementFromPoint();
+        DetectDevicePixelRatio();
+        DetectBackingStoragePixelRatio();
+        DetectDateInputSupport();
+        DetectCanvasLinePattern();
+        DetectSetSelectionRangeSupport();
+    };
+    return BrowserSupport;
+}());
+exports.BrowserSupport = BrowserSupport;
+//
+// Initialize fields used by BrowserSupport
+//
+(function () {
+    config = {
+        isMobile: function () { return false; }
+    };
+    DetectBrowser();
+    var init = function () {
+        TouchScreenUtil_1.TouchScreenUtil.Init();
+        BrowserSupport.DetectBrowserSupport();
+    };
+    // tslint:disable:no-any
+    if (document.readyState === 'complete' || (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
+        init();
+    }
+    else {
+        document.addEventListener('DOMContentLoaded', init);
+    }
+    // tslint:enable:no-any
+    InstallPolyfill('Set', function () { return new JsSetPolyfillImpl_1.JsSetPolyfillImpl(); });
+    InstallPolyfill('Map', function () { return new JsMapPolyfillImpl_1.JsMapPolyfillImpl(); });
+})();
+// Our default hit-testing uses coordinates which assume we aren't scrolled. This tests for a scroll possibility
+// and then also checks an actual hit test on absolute-positioned temporary DOM element.
+// Call this statically or rarely (once per drag at most).
+function DetectDocumentElementFromPoint() {
+    var body = window.document.body;
+    if (isWebKit && BrowserSupport.IsMobile()) {
+        // Perform a hit test far from origin to ensure that window.devicePixelRation is a factor.
+        // BUGZID 63572 For Google Nexus tablets until fixed. This just tests brokenness.
+        var target = document.createElement('div');
+        // Coordinates fit within minimum viable dashboard size but far from origin for scaling bugs.
+        // Also tests with a target large enough to matter for touch/pill/cursor size.
+        target.style.setProperty('position', 'absolute');
+        target.style.setProperty('top', '300px');
+        target.style.setProperty('left', '300px');
+        target.style.setProperty('width', '25px');
+        target.style.setProperty('height', '25px');
+        target.style.setProperty('z-index', '10000');
+        try {
+            body.appendChild(target);
+            shouldUseAlternateHitStrategy = document.elementFromPoint(310, 310) !== target;
+        }
+        catch (err) {
+            // Do nothing
+        }
+        finally {
+            target.remove();
+        }
+    }
+}
+// NOTE-jrockwood-2012-11-29: Avoid browser detection like the plague.
+// Instead use feature detection. However, there are some small cases
+// where you have to sniff the browser user agent. Just be careful.
+function DetectBrowser() {
+    var ua = BrowserSupport.GetUserAgent();
+    isKhtml = ua.indexOf('Konqueror') >= 0;
+    isWebKit = ua.indexOf('WebKit') >= 0;
+    isChrome = ua.indexOf('Chrome') >= 0;
+    // NOTE-jfurdell-2015-01-21: Chrome's user agent string currently contains 'Safari'.
+    // Check that the user agent string has 'Safari' and not 'Chrome'; if so, we're Safari.
+    isSafari = ua.indexOf('Safari') >= 0 && !isChrome;
+    isOpera = ua.indexOf('Opera') >= 0;
+    // Check Safari version
+    if (isSafari) {
+        var versionMatches = ua.match(/\bVersion\/(\d+\.\d+)/);
+        if (versionMatches !== null) {
+            safariVersion = parseFloat(versionMatches[1]);
+        }
+    }
+    // Check Chrome version
+    if (isChrome) {
+        var versionMatches = ua.match(/\bChrome\/(\d+\.\d+)/);
+        if (versionMatches !== null) {
+            googleChromeVersion = parseFloat(versionMatches[1]);
+        }
+    }
+    // Check for IE versions (10 and earlier)
+    internetExplorerVersion = 0.0;
+    isIE = false;
+    var oldIEVersions = ua.match(/\bMSIE (\d+\.\d+)/);
+    if (oldIEVersions !== null) {
+        isIE = true;
+        // Element 0 is the whole 'MSIE: #.#' string
+        internetExplorerVersion = parseFloat(oldIEVersions[1]);
+    }
+    // Check for IE versions (11 and later)
+    if (!isIE && !isOpera && (ua.indexOf('Trident') >= 0 || ua.indexOf('Edge/') >= 0)) {
+        var tridentIEVersions = ua.match(/\brv:(\d+\.\d+)/);
+        var edgeIEVersions = ua.match(/Edge\/(\d+\.\d+)/);
+        if (tridentIEVersions !== null) {
+            isIE = true;
+            isEdge = false;
+            // Element 0 is the whole 'rv:##.#' string
+            internetExplorerVersion = parseFloat(tridentIEVersions[1]);
+        }
+        else if (edgeIEVersions !== null) {
+            isIE = true;
+            isEdge = true;
+            isChrome = false;
+            isSafari = false;
+            // Element 0 is the whole 'rv:##.#' string
+            internetExplorerVersion = parseFloat(edgeIEVersions[1]);
+        }
+    }
+    // NOTE-rshasan-2015-01-27: IE11's user agent string contains 'Gecko', which
+    // is historically associated with Mozilla.
+    // To avoid identifying IE11 as Mozilla, we make sure that 'IE words' are
+    // absent ('MSIE' and 'Trident').
+    isMozilla = !isKhtml
+        && !isWebKit
+        && !isIE
+        && ua.indexOf('Gecko') >= 0;
+    isFF = isMozilla || ua.indexOf('Firefox') >= 0 || ua.indexOf('Minefield') >= 0;
+    var commandRegex = /iPhone|iPod|iPad/;
+    isIos = commandRegex.test(ua);
+    if (isIos) {
+        var iosVersions = ua.match(/\bOS ([\d+_?]+) like Mac OS X/);
+        if (iosVersions !== null) {
+            iosVersion = parseFloat(iosVersions[1].replace(/_/, '.').replace(/_/g, ''));
+        }
+    }
+    isAndroid = ua.indexOf('Android') >= 0 && !isIE;
+    isMac = ua.indexOf('Mac') >= 0;
+    isWindows = ua.indexOf('Windows') >= 0;
+    isTouch = GetIsTouch();
+}
+// This is a static way of detecting a touch screen without user interaction. Note that the only guaranteed way
+// of detecting touch is by listening for touch start when waiting for a user to touch.
+function GetIsTouch() {
+    var isTouchEnabled;
+    try {
+        isTouchEnabled = 'ontouchstart' in window || HasDocumentTouch();
+    }
+    catch (err) {
+        isTouchEnabled = false;
+    }
+    return isTouchEnabled;
+}
+function HasDocumentTouch() {
+    // tslint:disable:no-any
+    return (!!window.DocumentTouch && document instanceof window.DocumentTouch);
+    // tslint:enable:no-any
+}
+function DetectTransitionSupport() {
+    var transitions = {
+        'transition': 'transition',
+        'webkitTransition': '-webkit-transition',
+        'msTransition': '-ms-transition',
+        'mozTransition': '-moz-transition',
+        'oTransition': '-o-transition'
+    };
+    cssTransitionName = DetectCssStyleSupport(transitions) || cssTransitionName;
+}
+function DetectTransformSupport() {
+    var transforms = {
+        'transform': 'transform',
+        'webkitTransform': '-webkit-transform',
+        'msTransform': '-ms-transform',
+        'mozTransform': '-moz-transform',
+        'oTransform': '-o-transform'
+    };
+    cssTransformName = DetectCssStyleSupport(transforms) || cssTransformName;
+}
+function DetectCssStyleSupport(browserNames) {
+    var keys = Object.keys(browserNames);
+    for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i];
+        if (key in document.body.style) {
+            return browserNames[key];
+        }
+    }
+    return null;
+}
+function DetectDevicePixelRatio() {
+    devicePixelRatio = window.self.devicePixelRatio || 1.0;
+}
+function DetectBackingStoragePixelRatio() {
+    var canvas = document.createElement('canvas');
+    if (canvas === null || canvas === undefined) {
+        backingStoragePixelRatio = 1.0;
+        return;
+    }
+    var context = null;
+    if ('getContext' in canvas && typeof canvas.getContext === 'function') {
+        context = canvas.getContext('2d');
+    }
+    if (context === null || context === undefined) {
+        backingStoragePixelRatio = 1.0;
+        return;
+    }
+    // tslint:disable:no-any
+    var ctx = context;
+    backingStoragePixelRatio = ctx.webkitBackingStorePixelRatio
+        || ctx.mozBackingStorePixelRatio
+        || ctx.msBackingStorePixelRatio
+        || ctx.oBackingStorePixelRatio
+        || 1.0;
+    // tslint:enable:no-any
+}
+// Detects if the canvas supports custom line patterns.
+function DetectCanvasLinePattern() {
+    var canvas = document.createElement('canvas');
+    if (canvas === null || canvas === undefined) {
+        return;
+    }
+    var context = null;
+    if ('getContext' in canvas && typeof canvas.getContext === 'function') {
+        context = canvas.getContext('2d');
+    }
+    if (context === null || context === undefined) {
+        return;
+    }
+    canvasLinePattern =
+        // Chrome
+        typeof context.setLineDash === 'function' ||
+            // Mozilla Firefox
+            'mozDash' in context ||
+            // Safari
+            'webkitLineDash' in context;
+}
+function DetectSetSelectionRangeSupport() {
+    var inputObject = document.createElement('input');
+    // tslint:disable:no-any
+    setSelectionRange = typeof inputObject.setSelectionRange === 'function';
+    // tslint:enable:no-any
+}
+function DetectDateInputSupport() {
+    dateInput = DetectCustomInputSupport('date');
+    dateTimeInput = DetectCustomInputSupport('datetime');
+    dateTimeLocalInput = DetectCustomInputSupport('datetime-local');
+    timeInput = DetectCustomInputSupport('time');
+}
+function DetectCustomInputSupport(inputType) {
+    var input = document.createElement('input');
+    input.setAttribute('type', inputType);
+    input.style.setProperty('position', 'absolute');
+    input.style.setProperty('visibility', 'hidden');
+    document.body.appendChild(input);
+    // if a device does not have an custom HTML5 input widget, this will usually get reset to 'text'.
+    var reportedInputType = input.getAttribute('type');
+    // a real custom input will filter out invalid data (e.g., http://www.w3.org/tr/html5/forms.html#date-state-%28type=date%29)
+    var invalidDataString = '@inva/1d:)';
+    input.value = invalidDataString;
+    var supportsInput = (reportedInputType === inputType && input.value !== invalidDataString);
+    document.body.removeChild(input);
+    return supportsInput;
+}
+// This method will create polyfill for the ES6 set if not supported
+// #crossbrowser: Remove once Android browsers for 4.4 and 5.0 no longer supported
+// @param T The implementation of the missing functionality
+// @param {string} constructorName Native name of the constructor
+function InstallPolyfill(constructorName, constructor) {
+    var supported = constructorName in window;
+    if (!supported) {
+        // tslint:disable:no-any
+        var windowAsDynamic = window;
+        // tslint:enable:no-any
+        windowAsDynamic[constructorName] = constructor;
+    }
+}
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/// <summary>
+/// Polyfill for the EcmaScript6 data type (JsMap)
+/// This is mainly for Android browsers (4.4 and 5.0 does not support maps) + PhantomJS
+/// #crossbrowser: Remove once Android browsers for 4.4 and 5.0 no longer supported
+/// </summary>
+var JsMapPolyfillImpl = /** @class */ (function () {
+    function JsMapPolyfillImpl() {
+        // tslint:disable:no-any
+        this.store = {};
+    }
+    Object.defineProperty(JsMapPolyfillImpl.prototype, "size", {
+        // tslint:enable:no-any
+        get: function () {
+            return Object.keys(this.store).length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /// <summary>
+    /// Sets the value for the key in the Map object.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    /// <returns>Returns the Map object (this).</returns>
+    JsMapPolyfillImpl.prototype.set = function (key, value) {
+        // Debug.Assert(key is string || key is int, "Invalid type of the dictionary key.");
+        this.store[key] = value;
+        return this;
+    };
+    /// <summary>
+    /// Gets the value from the map associated with given key
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns>Value object associated with given key</returns>
+    JsMapPolyfillImpl.prototype.get = function (key) {
+        return this.store[key];
+    };
+    /// <summary>
+    /// Removes the element associated to the value
+    /// </summary>
+    /// <param name="i">The value that Set.prototype.has(value) would have previously returned</param>
+    JsMapPolyfillImpl.prototype.delete = function (i) {
+        var result = this.has(i);
+        delete this.store[i];
+        return result;
+    };
+    /// <summary>
+    /// Removes all elements from the Set object.
+    /// </summary>
+    JsMapPolyfillImpl.prototype.clear = function () {
+        this.store = {};
+    };
+    /// <summary>
+    /// Returns a boolean asserting whether an element is present with the given value in the Set object or not.
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns>true if entry present in the set</returns>
+    JsMapPolyfillImpl.prototype.has = function (i) {
+        return this.store.propertyIsEnumerable(i);
+    };
+    /// <summary>
+    /// Executes a provided function once per each key/value pair in the Map object, in insertion order.
+    /// </summary>
+    /// <param name="callbackFn">Function to execute for each element.</param>
+    JsMapPolyfillImpl.prototype.forEach = function (callbackFn) {
+        var _this = this;
+        Object.keys(this.store).forEach(function (itemKey) {
+            callbackFn(_this.store[itemKey], itemKey);
+        });
+    };
+    return JsMapPolyfillImpl;
+}());
+exports.JsMapPolyfillImpl = JsMapPolyfillImpl;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/// <summary>
+/// Polyfill for the EcmaScript6 data type (JsSet)
+/// This is mainly for Android browsers (4.4 and 5.0 does not support sets yet)
+/// #crossbrowser: Remove once Android browsers for 4.4 and 5.0 no longer supported
+/// </summary>
+var JsSetPolyfillImpl = /** @class */ (function () {
+    function JsSetPolyfillImpl() {
+        // tslint:disable:no-any
+        this.store = {};
+    }
+    Object.defineProperty(JsSetPolyfillImpl.prototype, "size", {
+        // tslint:enable:no-any
+        get: function () {
+            return Object.keys(this.store).length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /// <summary>
+    /// Appends a new element with the given value to the Set object.
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns>Returns the Set object (this)</returns>
+    JsSetPolyfillImpl.prototype.add = function (i) {
+        // todo: handle asserts
+        // Debug.Assert(i is string || i is int, "Invalid type of the dictionary key.");
+        this.store[i] = i;
+        return this;
+    };
+    /// <summary>
+    /// Removes the element associated to the value
+    /// </summary>
+    /// <param name="i">The value that Set.prototype.has(value) would have previously returned</param>
+    JsSetPolyfillImpl.prototype.delete = function (i) {
+        var result = this.has(i);
+        delete this.store[i];
+        return result;
+    };
+    /// <summary>
+    /// Removes all elements from the Set object.
+    /// </summary>
+    JsSetPolyfillImpl.prototype.clear = function () {
+        this.store = {};
+    };
+    /// <summary>
+    /// Returns a boolean asserting whether an element is present with the given value in the Set object or not.
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns>true if entry present in the set</returns>
+    JsSetPolyfillImpl.prototype.has = function (i) {
+        return this.store.propertyIsEnumerable(i);
+    };
+    /// <summary>
+    /// Calls callbackFn once for each value present in the Set object, in insertion order
+    /// </summary>
+    /// <param name="callbackFn">Function to invoke for every entry in the set</param>
+    JsSetPolyfillImpl.prototype.forEach = function (callbackFn) {
+        var _this = this;
+        Object.keys(this.store).forEach(function (key) {
+            callbackFn(_this.store[key]);
+        });
+    };
+    return JsSetPolyfillImpl;
+}());
+exports.JsSetPolyfillImpl = JsSetPolyfillImpl;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/// <summary>
+/// Detects and saves if this is a touch screen of a non-mobile device.
+/// The only reliable way to detect if this is actually a touch screen, is to catch a touch event.
+/// </summary>
+var TouchScreenUtil = /** @class */ (function () {
+    function TouchScreenUtil() {
+    }
+    Object.defineProperty(TouchScreenUtil, "HasUserTouchedScreen", {
+        /// <summary>
+        /// Returns whether or not the user has touched a touch screen.
+        /// This can be used to determine if the current connected screen is a touch screen or not.
+        /// (Best way found so far, to check an actual connection of a touch screen).
+        /// </summary>
+        get: function () {
+            return TouchScreenUtil.hasUserTouchedScreen;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /// <summary>
+    /// Starts listening to the TouchStart event to detect the first StartTouch event.
+    /// </summary>
+    TouchScreenUtil.Init = function () {
+        if (document.body !== null && document.body !== undefined) {
+            document.body.addEventListener('touchstart', TouchScreenUtil.HandleTouchStart, false);
+        }
+    };
+    /// <summary>
+    /// Updates the userHasTouchedScreen variable once a TouchStart event has been detected.
+    /// No need to keep listening to the event. Once a touch event has detected, it must be a touch screen.
+    /// </summary>
+    TouchScreenUtil.HandleTouchStart = function (e) {
+        if (TouchScreenUtil.hasUserTouchedScreen) {
+            return;
+        }
+        TouchScreenUtil.hasUserTouchedScreen = true;
+        document.body.removeEventListener('touchstart', TouchScreenUtil.HandleTouchStart, false);
+    };
+    TouchScreenUtil.hasUserTouchedScreen = false;
+    return TouchScreenUtil;
+}());
+exports.TouchScreenUtil = TouchScreenUtil;
+
+
+/***/ })
+/******/ ]);
+});
+//# sourceMappingURL=browser-support.js.map
+(function() {
+
+(function() {
+	'dont use strict';
+	var $asm = {};
+	ss.initAssembly($asm, 'vqlbrowsersupport');
+})();
+
+}());
+
+// END BrowserSupport

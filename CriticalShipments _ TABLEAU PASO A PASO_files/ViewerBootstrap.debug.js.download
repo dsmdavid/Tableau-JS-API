@@ -1,0 +1,3852 @@
+(function() {
+
+/*! BEGIN MscorlibSlim */
+
+
+function informDevOfUnsupportedMethod(methodName, additionalMessage) {
+  try {
+    throw new Error(methodName + " is not supported in MscorlibSlim. " + (additionalMessage || ''));
+  } catch (e) {
+    throw e.message + "\n" + e.stack;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Globals and assembly registration
+////////////////////////////////////////////////////////////////////////////////
+
+var global = window;
+
+(function(global) {
+"use strict";
+
+var ss = {};
+
+ss.initAssembly = function (obj, name, res) {
+};
+
+ss.load = function ss$load(name) {
+  informDevOfUnsupportedMethod("ss.load");
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Utility methods (generated via Script.IsNull, etc.)
+////////////////////////////////////////////////////////////////////////////////
+
+ss.enc64 = function (a, b) {
+  informDevOfUnsupportedMethod("ss.enc64");
+};
+
+ss.dec64 = function (a, b) {
+  informDevOfUnsupportedMethod("ss.dec64");
+};
+
+ss.getAssemblies = function ss$getAssemblies() {
+  informDevOfUnsupportedMethod("ss.getAssemblies");
+};
+
+ss.isNullOrUndefined = function ss$isNullOrUndefined(o) {
+  return (o === null) || (o === undefined);
+};
+
+ss.isValue = function ss$isValue(o) {
+  return (o !== null) && (o !== undefined);
+};
+
+ss.referenceEquals = function ss$referenceEquals(a, b) {
+  return ss.isValue(a) ? a === b : !ss.isValue(b);
+};
+
+ss.mkdict = function ss$mkdict() {
+  var a = (arguments.length != 1 ? arguments : arguments[0]);
+  var r = {};
+  for (var i = 0; i < a.length; i += 2) {
+    r[a[i]] = a[i + 1];
+  }
+  return r;
+};
+
+ss.clone = function ss$clone(t, o) {
+  return o ? t.$clone(o) : o;
+}
+
+ss.coalesce = function ss$coalesce(a, b) {
+  return ss.isValue(a) ? a : b;
+};
+
+ss.isDate = function ss$isDate(obj) {
+  return Object.prototype.toString.call(obj) === '[object Date]';
+};
+
+ss.isArray = function ss$isArray(obj) {
+  return Object.prototype.toString.call(obj) === '[object Array]';
+};
+
+ss.isTypedArrayType = function ss$isTypedArrayType(type) {
+  informDevOfUnsupportedMethod("ss.isTypedArrayType");
+};
+
+ss.isArrayOrTypedArray = function ss$isArray(obj) {
+  informDevOfUnsupportedMethod("ss.isArrayOrTypedArray");
+};
+
+ss.getHashCode = function ss$getHashCode(obj) {
+  informDevOfUnsupportedMethod("ss.getHashCode");
+};
+
+ss.defaultHashCode = function ss$defaultHashCode(obj) {
+  informDevOfUnsupportedMethod("ss.defaultHashCode");
+};
+
+ss.equals = function ss$equals(a, b) {
+    if (!ss.isValue(a))
+        throw new ss_NullReferenceException('Object is null');
+    else if (a !== ss && typeof(a.equals) === 'function')
+        return a.equals(b);
+    if (ss.isDate(a) && ss.isDate(b))
+        return a.valueOf() === b.valueOf();
+    else if (typeof(a) === 'function' && typeof(b) === 'function')
+        return ss.delegateEquals(a, b);
+    else if (ss.isNullOrUndefined(a) && ss.isNullOrUndefined(b))
+        return true;
+    else
+        return a === b;
+};
+
+ss.compare = function ss$compare(a, b) {
+  informDevOfUnsupportedMethod("ss.compare");
+};
+
+ss.equalsT = function ss$equalsT(a, b) {
+  informDevOfUnsupportedMethod("ss.equalsT");
+};
+
+ss.staticEquals = function ss$staticEquals(a, b) {
+  if (!ss.isValue(a))
+    return !ss.isValue(b);
+  else
+    return ss.isValue(b) ? ss.equals(a, b) : false;
+};
+
+ss.shallowCopy = function ss$shallowCopy(source, target) {
+  var keys = Object.keys(source);
+  for (var i = 0, l = keys.length; i < l; i++) {
+    var k = keys[i];
+    target[k] = source[k];
+  }
+};
+
+ss.isLower = function ss$isLower(c) {
+  informDevOfUnsupportedMethod("ss.isLower");
+};
+
+ss.isUpper = function ss$isUpper(c) {
+  informDevOfUnsupportedMethod("ss.isUpper");
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Object Extensions
+
+ss.clearKeys = function ss$clearKeys(d) {
+  for (var n in d) {
+    if (d.hasOwnProperty(n))
+      delete d[n];
+  }
+};
+
+ss.keyExists = function ss$keyExists(d, key) {
+  return d[key] !== undefined;
+};
+
+if (!Object.keys) {
+  Object.keys = (function() {
+    'use strict';
+    var hasOwnProperty = Object.prototype.hasOwnProperty,
+      hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+      dontEnums = ['toString','toLocaleString','valueOf','hasOwnProperty','isPrototypeOf','propertyIsEnumerable','constructor'],
+      dontEnumsLength = dontEnums.length;
+
+    return function (obj) {
+      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+        throw new TypeError('Object.keys called on non-object');
+      }
+
+      var result = [], prop, i;
+
+      for (prop in obj) {
+        if (hasOwnProperty.call(obj, prop)) {
+          result.push(prop);
+        }
+      }
+
+      if (hasDontEnumBug) {
+        for (i = 0; i < dontEnumsLength; i++) {
+          if (hasOwnProperty.call(obj, dontEnums[i])) {
+            result.push(dontEnums[i]);
+          }
+        }
+      }
+      return result;
+    };
+  }());
+}
+
+ss.getKeyCount = function ss$getKeyCount(d) {
+  return Object.keys(d).length;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Type System Implementation
+////////////////////////////////////////////////////////////////////////////////
+
+// When FULL_TYPE_SYSTEM is not defined, then the code is not the full-blown
+// type system. It's Just enough to allow us to call base class methods.
+
+ss.makeGenericType = function ss$makeGenericType(genericType, typeArguments) {
+  informDevOfUnsupportedMethod("ss.makeGenericType");
+};
+
+ss.registerGenericClassInstance = function ss$registerGenericClassInstance(instance, genericType, typeArguments, members, baseType, interfaceTypes) {
+  informDevOfUnsupportedMethod("ss.registerGenericClassInstance");
+};
+
+ss.registerGenericInterfaceInstance = function ss$registerGenericInterfaceInstance(instance, genericType, typeArguments, members, baseInterfaces) {
+  informDevOfUnsupportedMethod("ss.registerGenericInterfaceInstance");
+};
+
+ss.isGenericTypeDefinition = function ss$isGenericTypeDefinition(type) {
+  informDevOfUnsupportedMethod("ss.isGenericTypeDefinition");
+};
+
+ss.getGenericTypeDefinition = function ss$getGenericTypeDefinition(type) {
+  informDevOfUnsupportedMethod("ss.getGenericTypeDefinition");
+};
+
+ss.getGenericParameterCount = function ss$getGenericParameterCount(type) {
+  informDevOfUnsupportedMethod("ss.getGenericParameterCount");
+};
+
+ss.getGenericArguments = function ss$getGenericArguments(type) {
+  informDevOfUnsupportedMethod("ss.getGenericArguments");
+};
+
+ss.setMetadata = function ss$_setMetadata(type, metadata) {
+  if (metadata.members || metadata.variance) {
+    informDevOfUnsupportedMethod("ss.setMetadata", "metadata.members and metadata.variance aren't supported");
+  }
+};
+
+ss.initClass = function ss$initClass(ctor, asm, members, baseType, interfaces) {
+  if (baseType && baseType !== Object) {
+    var f = function(){};
+    f.prototype = baseType.prototype;
+    ctor.prototype = new f();
+    ctor.prototype.constructor = ctor;
+  }
+  ss.shallowCopy(members, ctor.prototype);
+};
+
+ss.initGenericClass = function ss$initGenericClass(ctor, asm, typeArgumentCount) {
+  informDevOfUnsupportedMethod("ss.initGenericClass");
+};
+
+ss.initInterface = function ss$initInterface(ctor, asm, members, baseInterfaces) {
+  informDevOfUnsupportedMethod("ss.initInterface", "Interfaces should be marked as [Imported]");
+};
+
+ss.initGenericInterface = function ss$initGenericClass(ctor, asm, typeArgumentCount) {
+  informDevOfUnsupportedMethod("ss.initGenericInterface");
+};
+
+ss.initEnum = function ss$initEnum(ctor, asm, members, namedValues) {
+  ss.shallowCopy(members, ctor.prototype);
+  ctor.getDefaultValue = ctor.createInstance = function() { return namedValues ? null : 0; };
+  ctor.isInstanceOfType = function(instance) { return typeof(instance) == (namedValues ? 'string' : 'number'); };
+};
+
+ss.getBaseType = function ss$getBaseType(type) {
+  throw new Error("Not implemented yet");
+};
+
+ss.getTypeFullName = function ss$getTypeFullName(type) {
+  informDevOfUnsupportedMethod("ss.getTypeFullName");
+};
+
+ss.getTypeQName = function ss$getTypeFullName(type) {
+  informDevOfUnsupportedMethod("ss.getTypeQName");
+};
+
+ss.getTypeName = function ss$getTypeName(type) {
+  informDevOfUnsupportedMethod("ss.getTypeName");
+};
+
+ss.getTypeNamespace = function ss$getTypeNamespace(type) {
+  informDevOfUnsupportedMethod("ss.getTypeNamespace");
+};
+
+ss.getTypeAssembly = function ss$getTypeAssembly(type) {
+  informDevOfUnsupportedMethod("ss.getTypeAssembly");
+};
+
+ss.getAssemblyType = function ss$getAssemblyTypes(asm, name) {
+  informDevOfUnsupportedMethod("ss.getAssemblyType");
+};
+
+ss.getAssemblyTypes = function ss$getAssemblyTypes(asm) {
+  informDevOfUnsupportedMethod("ss.getAssemblyTypes");
+};
+
+ss.createAssemblyInstance = function ss$createAssemblyInstance(asm, typeName) {
+  informDevOfUnsupportedMethod("ss.createAssemblyInstance");
+};
+
+ss.getInterfaces = function ss$getInterfaces(type) {
+  informDevOfUnsupportedMethod("ss.getInterfaces");
+};
+
+ss.isInstanceOfType = function ss$isInstanceOfType(instance, type) {
+  if (ss.isNullOrUndefined(instance))
+    return false;
+
+  if (typeof(type.isInstanceOfType) === 'function')
+    return type.isInstanceOfType(instance);
+
+  return ss.isAssignableFrom(type, ss.getInstanceType(instance));
+};
+
+ss.isAssignableFrom = function ss$isAssignableFrom(target, type) {
+  return target === type || (typeof(target.isAssignableFrom) === 'function' && target.isAssignableFrom(type)) || type.prototype instanceof target;
+};
+
+ss.isClass = function Type$isClass(type) {
+  informDevOfUnsupportedMethod("ss.isClass");
+};
+
+ss.isEnum = function Type$isEnum(type) {
+  informDevOfUnsupportedMethod("ss.isEnum");
+};
+
+ss.isFlags = function Type$isFlags(type) {
+  informDevOfUnsupportedMethod("ss.isFlags");
+};
+
+ss.isInterface = function Type$isInterface(type) {
+  informDevOfUnsupportedMethod("ss.isInterface");
+};
+
+ss.safeCast = function ss$safeCast(instance, type) {
+  if (type === true)
+    return instance;
+  else if (type === false)
+    return null;
+  else
+    return ss.isInstanceOfType(instance, type) ? instance : null;
+};
+
+ss.cast = function ss$cast(instance, type) {
+  if (instance === null || typeof(instance) === 'undefined')
+    return instance;
+  else if (type === true || (type !== false && ss.isInstanceOfType(instance, type)))
+    return instance;
+  throw new ss_InvalidCastException('Cannot cast object to requested type');
+};
+
+ss.getInstanceType = function ss$getInstanceType(instance) {
+  if (!ss.isValue(instance))
+    throw new ss_NullReferenceException('Cannot get type of null');
+
+  // NOTE: We have to catch exceptions because the constructor
+  //       cannot be looked up on native COM objects
+  try {
+    return instance.constructor;
+  }
+  catch (ex) {
+    return Object;
+  }
+};
+
+ss.getType = function ss$getType(typeName) {
+  informDevOfUnsupportedMethod("ss.getType");
+};
+
+ss.getDefaultValue = function ss$getDefaultValue(type) {
+  if (typeof(type.getDefaultValue) === 'function')
+    return type.getDefaultValue();
+  else if (type === Boolean)
+    return false;
+  else if (type === Date)
+    return new Date(0);
+  else if (type === Number)
+    return 0;
+  return null;
+};
+
+ss.createInstance = function ss$createInstance(type) {
+  informDevOfUnsupportedMethod("ss.createInstance");
+};
+
+ss.applyConstructor = function ss$applyConstructor(constructor, args) {
+  informDevOfUnsupportedMethod("ss.applyConstructor");
+};
+
+ss.getAttributes = function ss$getAttributes(type, attrType, inherit) {
+  informDevOfUnsupportedMethod("ss.getAttributes");
+};
+
+ss.getMembers = function ss$getMembers(type, memberTypes, bindingAttr, name, params) {
+  informDevOfUnsupportedMethod("ss.getMembers");
+};
+
+ss.midel = function ss$midel(mi, target, typeArguments) {
+  informDevOfUnsupportedMethod("ss.midel");
+};
+
+ss.invokeCI = function ss$invokeCI(ci, args) {
+  informDevOfUnsupportedMethod("ss.invokeCI");
+};
+
+ss.fieldAccess = function ss$fieldAccess(fi, obj) {
+  informDevOfUnsupportedMethod("ss.fieldAccess");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// IFormattable
+
+var ss_IFormattable = null;
+
+ss.format = function ss$format(obj, fmt) {
+  informDevOfUnsupportedMethod("ss.format");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// IComparable
+
+var ss_IComparable = null;
+
+///////////////////////////////////////////////////////////////////////////////
+// IEquatable
+
+var ss_IEquatable = null;
+
+///////////////////////////////////////////////////////////////////////////////
+// Number Extensions
+
+ss.formatNumber = function ss$formatNumber(num, format) {
+  informDevOfUnsupportedMethod("ss.formatNumber");
+};
+
+ss.localeFormatNumber = function ss$localeFormatNumber(num, format) {
+  informDevOfUnsupportedMethod("ss.localeFormatNumber");
+};
+
+ss.netFormatNumber = function ss$netFormatNumber(num, format, numberFormat) {
+  informDevOfUnsupportedMethod("ss.netFormatNumber");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// String Extensions
+
+ss.netSplit = function ss$netSplit(s, strings, limit, options) {
+  informDevOfUnsupportedMethod("ss.netSplit");
+};
+
+ss.compareStrings = function ss$compareStrings(s1, s2, ignoreCase) {
+  informDevOfUnsupportedMethod("ss.compareStrings");
+};
+
+ss.endsWithString = function ss$endsWithString(s, suffix) {
+  informDevOfUnsupportedMethod("ss.endsWithString");
+};
+
+ss.formatString = function String$format(format) {
+  informDevOfUnsupportedMethod("ss.formatString");
+};
+
+ss.stringFromChar = function ss$stringFromChar(ch, count) {
+  informDevOfUnsupportedMethod("ss.stringFromChar");
+};
+
+ss.htmlDecode = function ss$htmlDecode(s) {
+  informDevOfUnsupportedMethod("ss.htmlDecode");
+};
+
+ss.htmlEncode = function ss$htmlEncode(s) {
+  informDevOfUnsupportedMethod("ss.htmlEncode");
+};
+
+ss.jsEncode = function ss$jsEncode(s, q) {
+  informDevOfUnsupportedMethod("ss.jsEncode");
+};
+
+ss.indexOfAnyString = function ss$indexOfAnyString(s, chars, startIndex, count) {
+  informDevOfUnsupportedMethod("ss.indexOfAnyString");
+};
+
+ss.insertString = function ss$insertString(s, index, value) {
+  informDevOfUnsupportedMethod("ss.insertString");
+};
+
+ss.isNullOrEmptyString = function ss$isNullOrEmptyString(s) {
+  return !s || !s.length;
+};
+
+ss.lastIndexOfAnyString = function ss$lastIndexOfAnyString(s, chars, startIndex, count) {
+  informDevOfUnsupportedMethod("ss.lastIndexOfAnyString");
+};
+
+ss.localeFormatString = function ss$localeFormatString(format) {
+  informDevOfUnsupportedMethod("ss.localeFormatString");
+};
+
+ss.padLeftString = function ss$padLeftString(s, totalWidth, ch) {
+  informDevOfUnsupportedMethod("ss.padLeftString");
+};
+
+ss.padRightString = function ss$padRightString(s, totalWidth, ch) {
+  informDevOfUnsupportedMethod("ss.padRightString");
+};
+
+ss.removeString = function ss$removeString(s, index, count) {
+  informDevOfUnsupportedMethod("ss.removeString");
+};
+
+ss.replaceAllString = function ss$replaceAllString(s, oldValue, newValue) {
+  informDevOfUnsupportedMethod("ss.replaceAllString");
+};
+
+ss.startsWithString = function ss$startsWithString(s, prefix) {
+  informDevOfUnsupportedMethod("ss.startsWithString");
+};
+
+if (!String.prototype.trim) {
+  String.prototype.trim = function String$trim() {
+    return ss.trimStartString(ss.trimEndString(this));
+  };
+}
+
+ss.trimEndString = function ss$trimEndString(s, chars) {
+  return s.replace(chars ? new RegExp('[' + String.fromCharCode.apply(null, chars) + ']+$') : /\s*$/, '');
+};
+
+ss.trimStartString = function ss$trimStartString(s, chars) {
+  return s.replace(chars ? new RegExp('^[' + String.fromCharCode.apply(null, chars) + ']+') : /^\s*/, '');
+};
+
+ss.trimString = function ss$trimString(s, chars) {
+  return ss.trimStartString(ss.trimEndString(s, chars), chars);
+};
+
+ss.lastIndexOfString = function ss$lastIndexOfString(s, search, startIndex, count) {
+  informDevOfUnsupportedMethod("ss.lastIndexOfString");
+};
+
+ss.indexOfString = function ss$indexOfString(s, search, startIndex, count) {
+  informDevOfUnsupportedMethod("ss.indexOfString");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Math Extensions
+
+ss.divRem = function ss$divRem(a, b, result) {
+  informDevOfUnsupportedMethod("ss.divRem");
+};
+
+ss.round = function ss$round(n, d, rounding) {
+  informDevOfUnsupportedMethod("ss.round");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// IFormatProvider
+
+///////////////////////////////////////////////////////////////////////////////
+// NumberFormatInfo
+
+///////////////////////////////////////////////////////////////////////////////
+// DateTimeFormatInfo
+
+///////////////////////////////////////////////////////////////////////////////
+// Array Extensions
+
+ss.arrayGet2 = function ss$arrayGet2(arr, indices) {
+  informDevOfUnsupportedMethod("ss.arrayGet2");
+};
+
+ss.arrayGet = function ss$arrayGet(arr) {
+  informDevOfUnsupportedMethod("ss.arrayGet");
+}
+
+ss.arraySet2 = function ss$arraySet2(arr, value, indices) {
+  informDevOfUnsupportedMethod("ss.arraySet2");
+};
+
+ss.arraySet = function ss$arraySet() {
+  informDevOfUnsupportedMethod("ss.arraySet");
+};
+
+ss.arrayRank = function ss$arrayRank(arr) {
+  informDevOfUnsupportedMethod("ss.arrayRank");
+};
+
+ss.arrayLength = function ss$arrayLength(arr, dimension) {
+  informDevOfUnsupportedMethod("ss.arrayLength");
+};
+
+ss.arrayExtract = function ss$arrayExtract(arr, start, count) {
+  informDevOfUnsupportedMethod("ss.arrayExtract");
+};
+
+ss.arrayAddRange = function ss$arrayAddRange(arr, items) {
+  informDevOfUnsupportedMethod("ss.arrayAddRange");
+};
+
+ss.arrayClone = function ss$arrayClone(arr) {
+    if (arr.length === 1) {
+        return [arr[0]];
+    }
+    else {
+        return Array.apply(null, arr);
+    }
+};
+
+ss.arrayPeekFront = function ss$arrayPeekFront(arr) {
+  informDevOfUnsupportedMethod("ss.arrayPeekFront");
+};
+
+ss.arrayPeekBack = function ss$arrayPeekBack(arr) {
+  informDevOfUnsupportedMethod("ss.arrayPeekBack");
+};
+
+ss.indexOfArray = function ss$indexOfArray(arr, item, startIndex) {
+  informDevOfUnsupportedMethod("ss.indexOfArray");
+}
+
+ss.arrayInsertRange = function ss$arrayInsertRange(arr, index, items) {
+  informDevOfUnsupportedMethod("ss.arrayInsertRange");
+};
+
+
+ss.arrayRemoveRange = function ss$arrayRemoveRange(arr, index, count) {
+  informDevOfUnsupportedMethod("ss.arrayRemoveRange");
+};
+
+
+
+
+ss.arrayFromEnumerable = function ss$arrayFromEnumerable(enm) {
+  informDevOfUnsupportedMethod("ss.arrayFromEnumerable");
+};
+
+ss.multidimArray = function ss$multidimArray(defvalue, sizes) {
+  informDevOfUnsupportedMethod("ss.multidimArray");
+};
+
+ss.repeat = function ss$repeat(value, count) {
+  informDevOfUnsupportedMethod("ss.repeat");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Date Extensions
+
+ss.utcNow = function ss$utcNow() {
+  informDevOfUnsupportedMethod("ss.utcNow");
+};
+
+ss.toUTC = function ss$toUniversalTime(d) {
+  informDevOfUnsupportedMethod("ss.toUTC");
+};
+
+ss.fromUTC = function ss$toLocalTime(d) {
+  informDevOfUnsupportedMethod("ss.fromUTC");
+};
+
+ss.today = function ss$today() {
+  informDevOfUnsupportedMethod("ss.today");
+}
+
+ss.formatDate = function ss$formatDate(date, format) {
+  informDevOfUnsupportedMethod("ss.formatDate");
+};
+
+ss.localeFormatDate = function ss$localeFormatDate(date, format) {
+  informDevOfUnsupportedMethod("ss.localeFormatDate");
+};
+
+ss.parseExactDate = function ss$parseExactDate(val, format, provider) {
+  informDevOfUnsupportedMethod("ss.parseExactDate");
+};
+
+ss.parseExactDateUTC = function ss$parseExactDateUTC(val, format, provider) {
+  informDevOfUnsupportedMethod("ss.parseExactDateUTC");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Function Extensions
+
+ss._delegateContains = function ss$_delegateContains(targets, object, method) {
+  for (var i = 0; i < targets.length; i += 2) {
+    if (targets[i] === object && targets[i + 1] === method) {
+      return true;
+    }
+  }
+  return false;
+};
+
+ss._mkdel = function ss$_mkdel(targets) {
+  var delegate = function() {
+    if (targets.length == 2) {
+      return targets[1].apply(targets[0], arguments);
+    }
+    else {
+      var clone = ss.arrayClone(targets);
+      for (var i = 0; i < clone.length; i += 2) {
+        if (ss._delegateContains(targets, clone[i], clone[i + 1])) {
+          clone[i + 1].apply(clone[i], arguments);
+        }
+      }
+      return null;
+    }
+  };
+  delegate._targets = targets;
+
+  return delegate;
+};
+
+ss.mkdel = function ss$mkdel(object, method) {
+  if (!object) {
+    return method;
+  }
+  return ss._mkdel([object, method]);
+};
+
+ss.delegateCombine = function ss$delegateCombine(delegate1, delegate2) {
+  if (!delegate1) {
+    if (!delegate2._targets) {
+      return ss.mkdel(null, delegate2);
+    }
+    return delegate2;
+  }
+  if (!delegate2) {
+    if (!delegate1._targets) {
+      return ss.mkdel(null, delegate1);
+    }
+    return delegate1;
+  }
+
+  var targets1 = delegate1._targets ? delegate1._targets : [null, delegate1];
+  var targets2 = delegate2._targets ? delegate2._targets : [null, delegate2];
+
+  return ss._mkdel(targets1.concat(targets2));
+};
+
+ss.delegateRemove = function ss$delegateRemove(delegate1, delegate2) {
+  if (!delegate1 || (delegate1 === delegate2)) {
+    return null;
+  }
+  if (!delegate2) {
+    return delegate1;
+  }
+
+  var targets = delegate1._targets;
+  var object = null;
+  var method;
+  if (delegate2._targets) {
+    object = delegate2._targets[0];
+    method = delegate2._targets[1];
+  }
+  else {
+    method = delegate2;
+  }
+
+  for (var i = 0; i < targets.length; i += 2) {
+    if ((targets[i] === object) && (targets[i + 1] === method)) {
+      if (targets.length == 2) {
+        return null;
+      }
+      var t = ss.arrayClone(targets);
+      t.splice(i, 2);
+      return ss._mkdel(t);
+    }
+  }
+
+  return delegate1;
+};
+
+ss.delegateEquals = function ss$delegateEquals(a, b) {
+    if (a === b)
+        return true;
+    if (!a._targets && !b._targets)
+        return false;
+    var ta = a._targets || [null, a], tb = b._targets || [null, b];
+    if (ta.length != tb.length)
+        return false;
+    for (var i = 0; i < ta.length; i++) {
+        if (ta[i] !== tb[i])
+            return false;
+    }
+    return true;
+};
+
+ss.delegateClone = function ss$delegateClone(source) {
+  informDevOfUnsupportedMethod("ss.delegateClone");
+};
+
+ss.thisFix = function ss$thisFix(source) {
+  informDevOfUnsupportedMethod("ss.thisFix");
+};
+
+ss.getInvocationList = function ss$getInvocationList(delegate) {
+  informDevOfUnsupportedMethod("ss.getInvocationList");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// RegExp Extensions
+
+ss.regexpEscape = function ss$regexpEscape(s) {
+  informDevOfUnsupportedMethod("ss.regexpEscape");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Debug Extensions
+
+ss.Debug = global.Debug || function() {};
+
+if (!ss.Debug.writeln) {
+  ss.Debug.writeln = function Debug$writeln(text) {
+    informDevOfUnsupportedMethod("ss.Debug.writeln");
+  }
+};
+
+ss.Debug.assert = function Debug$assert(condition, message) {
+  informDevOfUnsupportedMethod("ss.Debug.assert");
+};
+
+ss.Debug.fail = function Debug$fail(message) {
+  informDevOfUnsupportedMethod("ss.Debug.fail");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Enum
+
+var ss_Enum = function Enum$() {
+};
+ss.Enum = ss_Enum;
+ss.initClass(ss_Enum, ss, {});
+
+ss_Enum.parse = function Enum$parse(enumType, s) {
+  informDevOfUnsupportedMethod("ss.Enum.parse");
+};
+
+ss_Enum.toString = function  Enum$toString(enumType, value) {
+  informDevOfUnsupportedMethod("ss.Enum.toString");
+};
+
+ss_Enum.getValues = function Enum$getValues(enumType) {
+  var parts = [];
+  var values = enumType.prototype;
+  for (var i in values) {
+    if (values.hasOwnProperty(i))
+      parts.push(values[i]);
+  }
+  return parts;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// CultureInfo
+
+var ss_CultureInfo = function CultureInfo$(name, numberFormat, dateTimeFormat) {
+  informDevOfUnsupportedMethod("ss.CultureInfo");
+};
+
+ss.CultureInfo = ss_CultureInfo;
+
+///////////////////////////////////////////////////////////////////////////////
+// IEnumerator
+
+var ss_IEnumerator = null;
+
+///////////////////////////////////////////////////////////////////////////////
+// IEnumerable
+
+var ss_IEnumerable = null;
+
+ss.getEnumerator = function ss$getEnumerator(obj) {
+  return obj.getEnumerator ? obj.getEnumerator() : new ss_ArrayEnumerator(obj);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ICollection
+
+ss.count = function ss$count(obj) {
+  informDevOfUnsupportedMethod("ss.count", "Use JsArray<T> instead.");
+};
+
+ss.add = function ss$add(obj, item) {
+  informDevOfUnsupportedMethod("ss.add", "Use JsArray<T> instead.");
+};
+
+ss.clear = function ss$clear(obj) {
+  informDevOfUnsupportedMethod("ss.clear", "Use JsArray<T> instead.");
+};
+
+ss.remove = function ss$remove(obj, item) {
+  informDevOfUnsupportedMethod("ss.remove", "Use JsArray<T> instead.");
+};
+
+ss.contains = function ss$contains(obj, item) {
+  informDevOfUnsupportedMethod("ss.contains", "Use JsArray<T> instead.");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// TimeSpan
+
+var ss_TimeSpan = function TimeSpan$(ticks) {
+  informDevOfUnsupportedMethod("ss.TimeSpan$");
+};
+
+ss.TimeSpan = ss_TimeSpan;
+
+///////////////////////////////////////////////////////////////////////////////
+// IEqualityComparer
+
+
+///////////////////////////////////////////////////////////////////////////////
+// IComparer
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Nullable
+
+ss.unbox = function ss$unbox(instance) {
+  if (!ss.isValue(instance))
+    throw new ss_InvalidOperationException('Nullable object must have a value.');
+  return instance;
+};
+
+var ss_Nullable$1 = function Nullable$1$(T) {
+};
+ss.Nullable$1 = ss_Nullable$1;
+
+ss_Nullable$1.eq = function Nullable$eq(a, b) {
+  return !ss.isValue(a) ? !ss.isValue(b) : (a === b);
+};
+
+ss_Nullable$1.ne = function Nullable$eq(a, b) {
+  return !ss.isValue(a) ? ss.isValue(b) : (a !== b);
+};
+
+ss_Nullable$1.le = function Nullable$le(a, b) {
+  return ss.isValue(a) && ss.isValue(b) && a <= b;
+};
+
+ss_Nullable$1.ge = function Nullable$ge(a, b) {
+  return ss.isValue(a) && ss.isValue(b) && a >= b;
+};
+
+ss_Nullable$1.lt = function Nullable$lt(a, b) {
+  return ss.isValue(a) && ss.isValue(b) && a < b;
+};
+
+ss_Nullable$1.gt = function Nullable$gt(a, b) {
+  return ss.isValue(a) && ss.isValue(b) && a > b;
+};
+
+ss_Nullable$1.sub = function Nullable$sub(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a - b : null;
+};
+
+ss_Nullable$1.add = function Nullable$add(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a + b : null;
+};
+
+ss_Nullable$1.mod = function Nullable$mod(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a % b : null;
+};
+
+ss_Nullable$1.div = function Nullable$divf(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a / b : null;
+};
+
+ss_Nullable$1.mul = function Nullable$mul(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a * b : null;
+};
+
+ss_Nullable$1.band = function Nullable$band(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a & b : null;
+};
+
+ss_Nullable$1.bor = function Nullable$bor(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a | b : null;
+};
+
+ss_Nullable$1.xor = function Nullable$xor(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a ^ b : null;
+};
+
+ss_Nullable$1.shl = function Nullable$shl(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a << b : null;
+};
+
+ss_Nullable$1.srs = function Nullable$srs(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a >> b : null;
+};
+
+ss_Nullable$1.sru = function Nullable$sru(a, b) {
+  return ss.isValue(a) && ss.isValue(b) ? a >>> b : null;
+};
+
+ss_Nullable$1.and = function Nullable$and(a, b) {
+  if (a === true && b === true)
+    return true;
+  else if (a === false || b === false)
+    return false;
+  else
+    return null;
+};
+
+ss_Nullable$1.or = function Nullable$or(a, b) {
+  if (a === true || b === true)
+    return true;
+  else if (a === false && b === false)
+    return false;
+  else
+    return null;
+};
+
+ss_Nullable$1.not = function Nullable$not(a) {
+  return ss.isValue(a) ? !a : null;
+};
+
+ss_Nullable$1.neg = function Nullable$neg(a) {
+  return ss.isValue(a) ? -a : null;
+};
+
+ss_Nullable$1.pos = function Nullable$pos(a) {
+  return ss.isValue(a) ? +a : null;
+};
+
+ss_Nullable$1.cpl = function Nullable$cpl(a) {
+  return ss.isValue(a) ? ~a : null;
+};
+
+ss_Nullable$1.lift = function Nullable$lift() {
+  for (var i = 0; i < arguments.length; i++) {
+    if (!ss.isValue(arguments[i]))
+      return null;
+  }
+  return arguments[0].apply(null, Array.prototype.slice.call(arguments, 1));
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// IList
+
+ss.getItem = function ss$getItem(obj, index) {
+  informDevOfUnsupportedMethod("ss.getItem", "Use JsArray<T> instead.");
+}
+
+ss.setItem = function ss$setItem(obj, index, value) {
+  informDevOfUnsupportedMethod("ss.setItem", "Use JsArray<T> instead.");
+}
+
+ss.indexOf = function ss$indexOf(obj, item) {
+  informDevOfUnsupportedMethod("ss.indexOf", "Use JsArray<T> instead.");
+};
+
+ss.insert = function ss$insert(obj, index, item) {
+  informDevOfUnsupportedMethod("ss.insert", "Use JsArray<T> instead.");
+};
+
+ss.removeAt = function ss$removeAt(obj, index) {
+  informDevOfUnsupportedMethod("ss.removeAt", "Use JsArray<T> instead.");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// IDictionary
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Int32
+
+var ss_Int32 = function Int32$() { };
+
+ss.Int32 = ss_Int32;
+ss.initClass(ss_Int32, ss, {}, Object, [ ss_IEquatable, ss_IComparable, ss_IFormattable ]);
+
+ss_Int32.isInstanceOfType = function Int32$isInstanceOfType(instance) {
+  informDevOfUnsupportedMethod("ss.Int32.isInstanceOfType");
+};
+
+ss_Int32.getDefaultValue = ss_Int32.createInstance = function Int32$getDefaultValue() {
+  return 0;
+};
+
+ss_Int32.div = function Int32$div(a, b) {
+  if (!ss.isValue(a) || !ss.isValue(b)) return null;
+  if (b === 0) throw new ss_DivideByZeroException();
+  return ss_Int32.trunc(a / b);
+};
+
+ss_Int32.trunc = function Int32$trunc(n) {
+  return ss.isValue(n) ? (n > 0 ? Math.floor(n) : Math.ceil(n)) : null;
+};
+
+ss_Int32.tryParse = function Int32$tryParse(s, result, min, max) {
+  informDevOfUnsupportedMethod("ss.Int32.tryParse");
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// MutableDateTime
+
+var ss_JsDate = function JsDate$() { };
+
+ss_JsDate.__typeName = 'ss.JsDate';
+ss.JsDate = ss_JsDate;
+ss.initClass(ss_JsDate, ss, {}, Object, [ ss_IEquatable, ss_IComparable ]);
+
+ss_JsDate.createInstance = function JsDate$createInstance() {
+    return new Date();
+};
+
+ss_JsDate.isInstanceOfType = function JsDate$isInstanceOfType(instance) {
+   return instance instanceof Date;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ArrayEnumerator
+
+var ss_ArrayEnumerator = function ArrayEnumerator$(array) {
+  this._array = array;
+  this._index = -1;
+};
+ss.ArrayEnumerator = ss_ArrayEnumerator;
+ss.initClass(ss_ArrayEnumerator, ss, {
+  moveNext: function ArrayEnumerator$moveNext() {
+    this._index++;
+    return (this._index < this._array.length);
+  },
+  reset: function ArrayEnumerator$reset() {
+    this._index = -1;
+  },
+  current: function ArrayEnumerator$current() {
+    if (this._index < 0 || this._index >= this._array.length)
+      throw 'Invalid operation';
+    return this._array[this._index];
+  },
+  dispose: function ArrayEnumerator$dispose() {
+  }
+}, null, [ss_IEnumerator, ss_IDisposable]);
+
+///////////////////////////////////////////////////////////////////////////////
+// ObjectEnumerator
+
+var ss_ObjectEnumerator = function ObjectEnumerator$(o) {
+  this._keys = Object.keys(o);
+  this._index = -1;
+  this._object = o;
+};
+
+ss.ObjectEnumerator = ss_ObjectEnumerator;
+ss.initClass(ss_ObjectEnumerator, ss, {
+  moveNext: function ObjectEnumerator$moveNext() {
+    this._index++;
+    return (this._index < this._keys.length);
+  },
+  reset: function ObjectEnumerator$reset() {
+    this._index = -1;
+  },
+  current: function ObjectEnumerator$current() {
+    if (this._index < 0 || this._index >= this._keys.length)
+      throw new ss_InvalidOperationException('Invalid operation');
+    var k = this._keys[this._index];
+    return { key: k, value: this._object[k] };
+  },
+  dispose: function ObjectEnumerator$dispose() {
+  }
+}, null, [ss_IEnumerator, ss_IDisposable]);
+
+///////////////////////////////////////////////////////////////////////////////
+// EqualityComparer
+
+var ss_EqualityComparer = function EqualityComparer$() {
+  informDevOfUnsupportedMethod("ss.EqualityComparer");
+};
+ss.EqualityComparer = ss_EqualityComparer;
+
+///////////////////////////////////////////////////////////////////////////////
+// Comparer
+
+var ss_Comparer = function Comparer$(f) {
+  informDevOfUnsupportedMethod("ss.Comparer");
+};
+
+ss.Comparer = ss_Comparer;
+
+//#include "Dictionary.js"
+
+///////////////////////////////////////////////////////////////////////////////
+// IDisposable
+
+var ss_IDisposable = null;
+
+///////////////////////////////////////////////////////////////////////////////
+// StringBuilder
+
+var ss_StringBuilder = function StringBuilder$(s) {
+  this._parts = (ss.isValue(s) && s != '') ? [s] : [];
+  this.length = ss.isValue(s) ? s.length : 0;
+}
+
+ss.StringBuilder = ss_StringBuilder;
+ss.initClass(ss_StringBuilder, ss, {
+  append: function StringBuilder$append(o) {
+    if (ss.isValue(o)) {
+      var s = o.toString();
+      // ss.add(this._parts, s);
+      this._parts.push(s);
+      this.length += s.length;
+    }
+    return this;
+  },
+
+  appendChar: function StringBuilder$appendChar(c) {
+    return this.append(String.fromCharCode(c));
+  },
+
+  appendLine: function StringBuilder$appendLine(s) {
+    this.append(s);
+    this.append('\r\n');
+    return this;
+  },
+
+  appendLineChar: function StringBuilder$appendLineChar(c) {
+    return this.appendLine(String.fromCharCode(c));
+  },
+
+  clear: function StringBuilder$clear() {
+    this._parts = [];
+    this.length = 0;
+  },
+
+  toString: function StringBuilder$toString() {
+    return this._parts.join('');
+  }
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// Random
+
+var ss_Random = function Random$(seed) {
+  informDevOfUnsupportedMethod("ss.Random");
+};
+
+ss.Random = ss_Random;
+
+///////////////////////////////////////////////////////////////////////////////
+// EventArgs
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Exception
+
+var ss_Exception = function Exception$(message, innerException) {
+  this._message = message || 'An error occurred.';
+  this._innerException = innerException || null;
+  this._error = new Error();
+}
+
+ss.Exception = ss_Exception;
+ss.initClass(ss_Exception, ss, {
+  get_message: function Exception$get_message() {
+    return this._message;
+  },
+  get_innerException: function Exception$get_innerException() {
+    return this._innerException;
+  },
+  get_stack: function Exception$get_stack() {
+    return this._error.stack;
+  },
+  toString: function Exception$toString() {
+    var message = this._message;
+    var exception = this;
+    if (ss.isNullOrEmptyString(message)) {
+      if (ss.isValue(ss.getInstanceType(exception)) && ss.isValue(ss.getTypeFullName(ss.getInstanceType(exception)))) {
+        message = ss.getTypeFullName(ss.getInstanceType(exception));
+      }
+      else {
+        message = '[object Exception]';
+      }
+    }
+    return message;
+  }
+});
+
+ss_Exception.wrap = function Exception$wrap(o) {
+  if (ss.isInstanceOfType(o, ss_Exception)) {
+    return o;
+  }
+  else if (o instanceof TypeError) {
+    // TypeError can either be 'cannot read property blah of null/undefined' (proper NullReferenceException), or it can be eg. accessing a non-existent method of an object.
+    // As long as all code is compiled, they should with a very high probability indicate the use of a null reference.
+    return new ss_NullReferenceException(o.message, new ss_JsErrorException(o));
+  }
+  else if (o instanceof RangeError) {
+    return new ss_ArgumentOutOfRangeException(null, o.message, new ss_JsErrorException(o));
+  }
+  else if (o instanceof Error) {
+    return new ss_JsErrorException(o);
+  }
+  else {
+    return new ss_Exception(o.toString());
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// NotImplementedException
+
+var ss_NotImplementedException = function NotImplementedException$(message, innerException) {
+  ss_Exception.call(this, message || 'The method or operation is not implemented.', innerException);
+};
+ss_NotImplementedException.__typeName = 'ss.NotImplementedException';
+ss.NotImplementedException = ss_NotImplementedException;
+ss.initClass(ss_NotImplementedException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// NotSupportedException
+
+var ss_NotSupportedException = function NotSupportedException$(message, innerException) {
+  ss_Exception.call(this, message || 'Specified method is not supported.', innerException);
+};
+ss_NotSupportedException.__typeName = 'ss.NotSupportedException';
+ss.NotSupportedException = ss_NotSupportedException;
+ss.initClass(ss_NotSupportedException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// AggregateException
+
+var ss_AggregateException = function AggregateException$(message, innerExceptions) {
+  this.innerExceptions = ss.isValue(innerExceptions) ? ss.arrayFromEnumerable(innerExceptions) : [];
+  ss_Exception.call(this, message || 'One or more errors occurred.', this.innerExceptions.length ? this.innerExceptions[0] : null);
+};
+
+ss_AggregateException.__typeName = 'ss.AggregateException';
+ss.AggregateException = ss_AggregateException;
+ss.initClass(ss_AggregateException, ss, {
+  flatten: function  AggregateException$flatten() {
+    var inner = [];
+    for (var i = 0; i < this.innerExceptions.length; i++) {
+      var e = this.innerExceptions[i];
+      if (ss.isInstanceOfType(e, ss_AggregateException)) {
+        inner.push.apply(inner, e.flatten().innerExceptions);
+      }
+      else {
+        inner.push(e);
+      }
+    }
+    return new ss_AggregateException(this._message, inner);
+  }
+}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// PromiseException
+
+var ss_PromiseException = function PromiseException(args, message, innerException) {
+  ss_Exception.call(this, message || (args.length && args[0] ? args[0].toString() : 'An error occurred'), innerException);
+  this.arguments = ss.arrayClone(args);
+};
+
+ss_PromiseException.__typeName = 'ss.PromiseException';
+ss.PromiseException = ss_PromiseException;
+ss.initClass(ss_PromiseException, ss, {
+  get_arguments: function PromiseException$get_arguments() {
+    return this._arguments;
+  }
+}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// JsErrorException
+
+var ss_JsErrorException = function JsErrorException$(error, message, innerException) {
+  ss_Exception.call(this, message || error.message, innerException);
+  this.error = error;
+};
+ss_JsErrorException.__typeName = 'ss.JsErrorException';
+ss.JsErrorException = ss_JsErrorException;
+ss.initClass(ss_JsErrorException, ss, {
+  get_stack: function Exception$get_stack() {
+    return this.error.stack;
+  }
+}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// ArgumentException
+
+var ss_ArgumentException = function ArgumentException$(message, paramName, innerException) {
+  ss_Exception.call(this, message || 'Value does not fall within the expected range.', innerException);
+  this.paramName = paramName || null;
+};
+
+ss_ArgumentException.__typeName = 'ss.ArgumentException';
+ss.ArgumentException = ss_ArgumentException;
+ss.initClass(ss_ArgumentException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// ArgumentNullException
+
+var ss_ArgumentNullException = function ArgumentNullException$(paramName, message, innerException) {
+  if (!message) {
+    message = 'Value cannot be null.';
+    if (paramName)
+      message += '\nParameter name: ' + paramName;
+  }
+
+  ss_ArgumentException.call(this, message, paramName, innerException);
+};
+
+ss_ArgumentNullException.__typeName = 'ss.ArgumentNullException';
+ss.ArgumentNullException = ss_ArgumentNullException;
+ss.initClass(ss_ArgumentNullException, ss, {}, ss_ArgumentException);
+
+////////////////////////////////////////////////////////////////////////////////
+// ArgumentNullException
+
+var ss_ArgumentOutOfRangeException = function ArgumentOutOfRangeException$(paramName, message, innerException, actualValue) {
+  if (!message) {
+    message = 'Value is out of range.';
+    if (paramName)
+      message += '\nParameter name: ' + paramName;
+  }
+
+  ss_ArgumentException.call(this, message, paramName, innerException);
+  this.actualValue = actualValue || null;
+};
+
+ss_ArgumentOutOfRangeException.__typeName = 'ss.ArgumentOutOfRangeException';
+ss.ArgumentOutOfRangeException = ss_ArgumentOutOfRangeException;
+ss.initClass(ss_ArgumentOutOfRangeException, ss, {}, ss_ArgumentException);
+
+////////////////////////////////////////////////////////////////////////////////
+// FormatException
+
+var ss_FormatException = function FormatException$(message, innerException) {
+  ss_Exception.call(this, message || 'Invalid format.', innerException);
+};
+ss_FormatException.__typeName = 'ss.FormatException';
+ss.FormatException = ss_FormatException;
+ss.initClass(ss_FormatException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// DivideByZeroException
+
+var ss_DivideByZeroException = function DivideByZeroException$(message, innerException) {
+  ss_Exception.call(this, message || 'Division by 0.', innerException);
+};
+ss_DivideByZeroException.__typeName = 'ss.DivideByZeroException';
+ss.DivideByZeroException = ss_DivideByZeroException;
+ss.initClass(ss_DivideByZeroException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// InvalidCastException
+
+var ss_InvalidCastException = function InvalidCastException$(message, innerException) {
+  ss_Exception.call(this, message || 'The cast is not valid.', innerException);
+};
+ss_InvalidCastException.__typeName = 'ss.InvalidCastException';
+ss.InvalidCastException = ss_InvalidCastException;
+ss.initClass(ss_InvalidCastException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// InvalidOperationException
+
+var ss_InvalidOperationException = function InvalidOperationException$(message, innerException) {
+  ss_Exception.call(this, message || 'Operation is not valid due to the current state of the object.', innerException);
+};
+ss_InvalidOperationException.__typeName = 'ss.InvalidOperationException';
+ss.InvalidOperationException = ss_InvalidOperationException;
+ss.initClass(ss_InvalidOperationException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// NullReferenceException
+
+var ss_NullReferenceException = function NullReferenceException$(message, innerException) {
+  ss_Exception.call(this, message || 'Object is null.', innerException);
+};
+ss_NullReferenceException.__typeName = 'ss.NullReferenceException';
+ss.NullReferenceException = ss_NullReferenceException;
+ss.initClass(ss_NullReferenceException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// KeyNotFoundException
+
+var ss_KeyNotFoundException = function KeyNotFoundException$(message, innerException) {
+  ss_Exception.call(this, message || 'Key not found.', innerException);
+};
+ss_KeyNotFoundException.__typeName = 'ss.KeyNotFoundException';
+ss.KeyNotFoundException = ss_KeyNotFoundException;
+ss.initClass(ss_KeyNotFoundException, ss, {}, ss_Exception);
+
+////////////////////////////////////////////////////////////////////////////////
+// InvalidOperationException
+
+var ss_AmbiguousMatchException = function AmbiguousMatchException$(message, innerException) {
+  ss_Exception.call(this, message || 'Ambiguous match.', innerException);
+};
+ss_AmbiguousMatchException.__typeName = 'ss.AmbiguousMatchException';
+ss.AmbiguousMatchException = ss_AmbiguousMatchException;
+ss.initClass(ss_AmbiguousMatchException, ss, {}, ss_Exception);
+
+///////////////////////////////////////////////////////////////////////////////
+// IteratorBlockEnumerable
+
+var ss_IteratorBlockEnumerable = function IteratorBlockEnumerable$(getEnumerator, $this) {
+  informDevOfUnsupportedMethod("ss.IteratorBlockEnumerable");
+};
+
+ss.IteratorBlockEnumerable = ss_IteratorBlockEnumerable;
+
+///////////////////////////////////////////////////////////////////////////////
+// IteratorBlockEnumerator
+
+var ss_IteratorBlockEnumerator = function IteratorBlockEnumerator$(moveNext, getCurrent, dispose, $this) {
+  informDevOfUnsupportedMethod("ss.IteratorBlockEnumerator");
+};
+
+ss.IteratorBlockEnumerator = ss_IteratorBlockEnumerator;
+
+///////////////////////////////////////////////////////////////////////////////
+// Lazy
+
+var ss_Lazy = function Lazy$(valueFactory) {
+  informDevOfUnsupportedMethod("ss.Lazy");
+};
+ss.Lazy = ss_Lazy;
+
+///////////////////////////////////////////////////////////////////////////////
+// Task
+
+var ss_Task = function Task$(action, state) {
+  informDevOfUnsupportedMethod("ss.Task");
+};
+ss.Task = ss_Task;
+
+////////////////////////////////////////////////////////////////////////////////
+// TaskStatus
+
+var ss_TaskStatus = function() {
+  informDevOfUnsupportedMethod("ss.TaskStatus");
+};
+ss.TaskStatus = ss_TaskStatus;
+
+///////////////////////////////////////////////////////////////////////////////
+// TaskCompletionSource
+
+var ss_TaskCompletionSource = function TaskCompletionSource$() {
+  informDevOfUnsupportedMethod("ss.TaskCompletionSource");
+};
+
+ss.TaskCompletionSource = ss_TaskCompletionSource;
+
+///////////////////////////////////////////////////////////////////////////////
+// CancelEventArgs
+
+var ss_CancelEventArgs = function CancelEventArgs$() {
+  informDevOfUnsupportedMethod("ss.CancelEventArgs");
+}
+
+ss.CancelEventArgs = ss_CancelEventArgs;
+
+///////////////////////////////////////////////////////////////////////////////
+// Guid
+
+var ss_Guid = function Guid$() {
+};
+ss.Guid = ss_Guid;
+
+ss_Guid.isInstanceOfType = function Guid$isInstanceOfType(instance) {
+  informDevOfUnsupportedMethod("ss.Guid.isInstanceOfType");
+};
+
+ss_Guid.getDefaultValue = ss_Guid.createInstance = function Guid$default() {
+  informDevOfUnsupportedMethod("ss.Guid.getDefaultValue");
+};
+
+ss_Guid.parse = function Guid$parse(uuid, format) {
+  informDevOfUnsupportedMethod("ss.Guid.parse");
+};
+
+ss_Guid.tryParse = function Guid$tryParse(uuid, format, r) {
+  informDevOfUnsupportedMethod("ss.Guid.tryParse");
+};
+
+ss_Guid.format = function Guid$format(uuid, format) {
+  informDevOfUnsupportedMethod("ss.Guid.format");
+}
+
+ss_Guid.fromBytes = function Guid$fromBytes(b) {
+  informDevOfUnsupportedMethod("ss.Guid.fromBytes");
+}
+
+ss_Guid.newGuid = function Guid$newGuid() {
+  informDevOfUnsupportedMethod("ss.Guid.newGuid");
+};
+
+ss_Guid.getBytes = function Guid$getBytes(uuid) {
+  informDevOfUnsupportedMethod("ss.Guid.getBytes");
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// IE8 shims
+////////////////////////////////////////////////////////////////////////////////
+
+if (typeof(global.HTMLElement) === 'undefined') {
+  global.HTMLElement = Element;
+}
+
+if (typeof(global.MessageEvent) === 'undefined') {
+  global.MessageEvent = Event;
+}
+
+// polyfill for IE8 not having Date.now.
+Date.now = Date.now || function() { return +new Date; };
+
+////////////////////////////////////////////////////////////////////////////////
+// Global Registration
+////////////////////////////////////////////////////////////////////////////////
+
+global.ss = ss;
+})(global);
+
+
+/*! BEGIN Bootstrap */
+(function() {
+	'dont use strict';
+	var $asm = {};
+	global.tab = global.tab || {};
+	global.tabBootstrap = global.tabBootstrap || {};
+	ss.initAssembly($asm, 'ViewerBootstrap');
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ApiCommand
+	var $tab__ApiCommand = function(name, commandId, hostId, parameters) {
+		this.$1$NameField = null;
+		this.$1$HostIdField = null;
+		this.$1$CommandIdField = null;
+		this.$1$ParametersField = null;
+		this.set_name(name);
+		this.set_commandId(commandId);
+		this.set_hostId(hostId);
+		this.set_parameters(parameters);
+	};
+	$tab__ApiCommand.__typeName = 'tab._ApiCommand';
+	$tab__ApiCommand.generateNextCommandId = function ApiCommand$GenerateNextCommandId() {
+		var commandId = 'cmd' + $tab__ApiCommand.$nextCommandId;
+		$tab__ApiCommand.$nextCommandId++;
+		return commandId;
+	};
+	$tab__ApiCommand.parse = function ApiCommand$Parse(serialized) {
+		var name;
+		var index = serialized.indexOf(String.fromCharCode(44));
+		if (index < 0) {
+			name = ss.cast(serialized, String);
+			return new $tab__ApiCommand(name, null, null, null);
+		}
+		name = ss.cast(serialized.substr(0, index), String);
+		var sourceId;
+		var secondPart = serialized.substr(index + 1);
+		index = secondPart.indexOf(String.fromCharCode(44));
+		if (index < 0) {
+			sourceId = secondPart;
+			return new $tab__ApiCommand(name, sourceId, null, null);
+		}
+		sourceId = secondPart.substr(0, index);
+		var hostId;
+		var thirdPart = secondPart.substr(index + 1);
+		index = thirdPart.indexOf(String.fromCharCode(44));
+		if (index < 0) {
+			hostId = thirdPart;
+			return new $tab__ApiCommand(name, sourceId, hostId, null);
+		}
+		hostId = thirdPart.substr(0, index);
+		var parameters = thirdPart.substr(index + 1);
+		$tab__ApiCommand.lastResponseMessage = serialized;
+		if (name === 'api.GetClientInfoCommand') {
+			$tab__ApiCommand.lastClientInfoResponseMessage = serialized;
+		}
+		return new $tab__ApiCommand(name, sourceId, hostId, parameters);
+	};
+	global.tab._ApiCommand = $tab__ApiCommand;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ApiServerNotification
+	var $tab__ApiServerNotification = function(workbookName, worksheetName, data) {
+		this.$workbookName = null;
+		this.$worksheetName = null;
+		this.$data = null;
+		this.$workbookName = workbookName;
+		this.$worksheetName = worksheetName;
+		this.$data = data;
+	};
+	$tab__ApiServerNotification.__typeName = 'tab._ApiServerNotification';
+	$tab__ApiServerNotification.deserialize = function ApiServerNotification$Deserialize(json) {
+		var param = JSON.parse(json);
+		var workbookName = ss.cast(param['api.workbookName'], String);
+		var worksheetName = ss.cast(param['api.worksheetName'], String);
+		var data = param['api.commandData'];
+		return new $tab__ApiServerNotification(workbookName, worksheetName, data);
+	};
+	global.tab._ApiServerNotification = $tab__ApiServerNotification;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ApiServerResultParser
+	var $tab__ApiServerResultParser = function(serverResult) {
+		this.$commandResult = null;
+		this.$commandData = null;
+		var param = JSON.parse(serverResult);
+		this.$commandResult = ss.cast(param['api.commandResult'], String);
+		this.$commandData = param['api.commandData'];
+	};
+	$tab__ApiServerResultParser.__typeName = 'tab._ApiServerResultParser';
+	global.tab._ApiServerResultParser = $tab__ApiServerResultParser;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.NonApiCommand
+	var $tab_NonApiCommand = function(name, parameters) {
+		this.$parameters = null;
+		this.$1$NameField = null;
+		this.set_name(name);
+		this.$parameters = parameters;
+	};
+	$tab_NonApiCommand.__typeName = 'tab.NonApiCommand';
+	$tab_NonApiCommand.parse = function NonApiCommand$Parse(serialized) {
+		var args = serialized.split(String.fromCharCode(44));
+		var name = ss.cast(args[0], String);
+		var parameters = args.slice(1);
+		return new $tab_NonApiCommand(name, parameters);
+	};
+	global.tab.NonApiCommand = $tab_NonApiCommand;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.BootstrapRequestBuilder
+	var $tabBootstrap_$BootstrapRequestBuilder = function() {
+	};
+	$tabBootstrap_$BootstrapRequestBuilder.__typeName = 'tabBootstrap.$BootstrapRequestBuilder';
+	$tabBootstrap_$BootstrapRequestBuilder.$createBootstrapParams = function BootstrapRequestBuilder$CreateBootstrapParams(clientDimension, worksheetPortSize, dashboardPortSize) {
+		var bootstrapParamsList = [];
+		bootstrapParamsList.push('worksheetPortSize=' + encodeURIComponent(JSON.stringify(worksheetPortSize)));
+		bootstrapParamsList.push('dashboardPortSize=' + encodeURIComponent(JSON.stringify(dashboardPortSize)));
+		if (!tsConfig.is_authoring) {
+			bootstrapParamsList.push('clientDimension=' + encodeURIComponent(JSON.stringify(clientDimension)));
+		}
+		var renderMapsClientSide = mapboxgl.supported();
+		bootstrapParamsList.push('renderMapsClientSide=' + renderMapsClientSide.toString());
+		bootstrapParamsList.push('isBrowserRendering=' + tsConfig.is_browser_rendering_requested);
+		bootstrapParamsList.push('browserRenderingThreshold=' + tsConfig.browser_rendering_threshold);
+		bootstrapParamsList.push('formatDataValueLocally=' + tsConfig.formatDataValueLocally);
+		bootstrapParamsList.push('clientNum=' + encodeURIComponent($tabBootstrap_UrlLocationHashManager.get_hashClientNumber()));
+		var navInfo = new $tabBootstrap_NavigationInfo();
+		bootstrapParamsList.push('navType=' + encodeURIComponent(navInfo.$navType));
+		bootstrapParamsList.push('navSrc=' + encodeURIComponent(navInfo.$navSrc));
+		var devicePixelRatio = $tabBootstrap_RenderingConstantsAndHelpers.$getDevicePixelRatio();
+		bootstrapParamsList.push('devicePixelRatio=' + encodeURIComponent(devicePixelRatio.toString()));
+		if (ss.isValue(tsConfig.is_mobile) && tsConfig.is_mobile) {
+			bootstrapParamsList.push('imageSizeLimit=' + encodeURIComponent($tabBootstrap_RenderingConstantsAndHelpers.get_imageSizeLimit().toString()));
+			bootstrapParamsList.push('transparentLineMarkLimit=' + $tabBootstrap_RenderingConstantsAndHelpers.transparentLineMarkLimit);
+		}
+		bootstrapParamsList.push('clientRenderPixelLimit=' + encodeURIComponent($tabBootstrap_RenderingConstantsAndHelpers.get_canvasPixelLimit().toString()));
+		if (!ss.isNullOrEmptyString(tsConfig.deviceTypeOverride)) {
+			bootstrapParamsList.push(':device=' + tsConfig.deviceTypeOverride);
+		}
+		if (ss.isValue(tsConfig.sheetId)) {
+			bootstrapParamsList.push('sheet_id=' + encodeURIComponent(tsConfig.sheetId.toString()));
+		}
+		if (ss.isValue(tsConfig.showParams)) {
+			bootstrapParamsList.push('showParams=' + encodeURIComponent(tsConfig.showParams.toString()));
+		}
+		if (ss.isValue(tsConfig.stickySessionKey)) {
+			bootstrapParamsList.push('stickySessionKey=' + encodeURIComponent(tsConfig.stickySessionKey));
+		}
+		if (ss.isValue(tsConfig.filterTileSize)) {
+			bootstrapParamsList.push('filterTileSize=' + encodeURIComponent(tsConfig.filterTileSize.toString()));
+		}
+		if (ss.isValue(tsConfig.workbookLocale)) {
+			bootstrapParamsList.push('workbookLocale=' + encodeURIComponent(tsConfig.workbookLocale));
+		}
+		if (ss.isValue(tsConfig.locale)) {
+			bootstrapParamsList.push('locale=' + encodeURIComponent(tsConfig.locale.toString()));
+		}
+		if (ss.isValue(tsConfig.language)) {
+			bootstrapParamsList.push('language=' + encodeURIComponent(tsConfig.language.toString()));
+		}
+		if (ss.isValue(tsConfig.syncSession) && tsConfig.syncSession.length !== 0 && typeof(tsConfig.syncSession) === 'string') {
+			bootstrapParamsList.push('sync_session_state=' + encodeURIComponent($tabBootstrap_$BootstrapRequestBuilder.getSyncSessionState(tsConfig.syncSession)));
+		}
+		if (ss.isValue(tsConfig.debugMode)) {
+			bootstrapParamsList.push('verboseMode=' + tsConfig.debugMode);
+		}
+		if (ss.isValue(tsConfig.features_json)) {
+			bootstrapParamsList.push(':session_feature_flags=' + encodeURIComponent(tsConfig.features_json.toString()));
+		}
+		if (ss.isValue(tsConfig.keychain_version)) {
+			bootstrapParamsList.push('keychain_version=' + tsConfig.keychain_version);
+		}
+		return bootstrapParamsList;
+	};
+	$tabBootstrap_$BootstrapRequestBuilder.getSyncSessionState = function BootstrapRequestBuilder$GetSyncSessionState(sessionId) {
+		var srcSessionData = sessionId.split(String.fromCharCode(47));
+		var uri = $tabBootstrap_BaseUrlFormatter.formatBootstrapSessionMethod('get_global_filters', srcSessionData[1], '/' + srcSessionData[0]);
+		return $tabBootstrap_Utility.$xhrGetXmlSynchronous(uri, null);
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.BootstrapState
+	var $tabBootstrap_$BootstrapState = function() {
+	};
+	$tabBootstrap_$BootstrapState.__typeName = 'tabBootstrap.$BootstrapState';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.DojoConfigInitializer
+	var $tabBootstrap_$DojoConfigInitializer = function() {
+	};
+	$tabBootstrap_$DojoConfigInitializer.__typeName = 'tabBootstrap.$DojoConfigInitializer';
+	$tabBootstrap_$DojoConfigInitializer.$configureDojo = function DojoConfigInitializer$ConfigureDojo() {
+		var dojoConfig = { parseOnLoad: true, usePlainJson: true, noFirebugLite: true, useXDomain: tsConfig.xdomain_active, locale: $tabBootstrap_$DojoConfigInitializer.$dojoLocale };
+		if (tsConfig.xdomain_active) {
+			var modulePaths = { tableau: tsConfig.external_static_asset_prefix + '/javascripts/built-dojo/tableau' };
+			dojoConfig.modulePaths = modulePaths;
+			dojoConfig.baseUrl = tsConfig.external_static_asset_prefix + '/javascripts/built-dojo/dojo/';
+			dojoConfig.dojoBlankHtmlUrl = tsConfig.local_static_asset_prefix + '/javascripts/blank.html';
+		}
+		if (tsConfig.debugMode) {
+			try {
+				var debugModeRegex = new RegExp('[?&][:]?debug=');
+				if (window.location.search.search(debugModeRegex) !== -1) {
+					dojoConfig.isDebug = true;
+					dojoConfig.debugAtAllCosts = true;
+				}
+			}
+			catch ($t1) {
+			}
+		}
+		window.self['djConfig'] = dojoConfig;
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.LocalMetricsContext
+	var $tabBootstrap_$LocalMetricsContext = function(suite, desc, extraInfo) {
+		this.$metricName = null;
+		$tabBootstrap_MetricsContext.call(this, $tabBootstrap_MetricsController.get_$instance().$getNextContextID(), suite, desc);
+		desc = $tabBootstrap_$LocalWebClientMetricsLogger.$buildDescriptionName(desc, extraInfo);
+		this.open = true;
+		this.$metricName = desc + '#' + $tabBootstrap_$LocalMetricsContext.$eventCount++;
+		$tabBootstrap_$LocalWebClientMetricsLogger.$logLocalMetricStart(this.$metricName);
+	};
+	$tabBootstrap_$LocalMetricsContext.__typeName = 'tabBootstrap.$LocalMetricsContext';
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.LocalWebClientMetricsLogger
+	var $tabBootstrap_$LocalWebClientMetricsLogger = function() {
+	};
+	$tabBootstrap_$LocalWebClientMetricsLogger.__typeName = 'tabBootstrap.$LocalWebClientMetricsLogger';
+	$tabBootstrap_$LocalWebClientMetricsLogger.$logLocalMetricStart = function LocalWebClientMetricsLogger$LogLocalMetricStart(metricName) {
+		var startMarkName = $tabBootstrap_$LocalWebClientMetricsLogger.$buildStartName(metricName);
+		$tabBootstrap_PerformanceReporting.mark(startMarkName);
+		return startMarkName;
+	};
+	$tabBootstrap_$LocalWebClientMetricsLogger.$markAppStart = function LocalWebClientMetricsLogger$MarkAppStart() {
+		$tabBootstrap_PerformanceReporting.mark($tabBootstrap_$LocalWebClientMetricsLogger.$appStartMarker);
+	};
+	$tabBootstrap_$LocalWebClientMetricsLogger.$logLocalMetricEnd = function LocalWebClientMetricsLogger$LogLocalMetricEnd(metricName, startMarkName) {
+		var endMarkName = $tabBootstrap_$LocalWebClientMetricsLogger.$buildEndName(metricName);
+		var $t1 = startMarkName;
+		if (ss.isNullOrUndefined($t1)) {
+			$t1 = $tabBootstrap_$LocalWebClientMetricsLogger.$buildStartName(metricName);
+		}
+		startMarkName = $t1;
+		$tabBootstrap_PerformanceReporting.mark(endMarkName);
+		$tabBootstrap_PerformanceReporting.measure('✚ ' + metricName, startMarkName, endMarkName);
+	};
+	$tabBootstrap_$LocalWebClientMetricsLogger.$buildDescriptionName = function LocalWebClientMetricsLogger$BuildDescriptionName(message, extraInfo) {
+		message = $tabBootstrap_MetricsController.getFriendlyEventDescription(message);
+		if (ss.isValue(extraInfo)) {
+			message += ' ' + extraInfo;
+		}
+		return message;
+	};
+	$tabBootstrap_$LocalWebClientMetricsLogger.$buildStartName = function LocalWebClientMetricsLogger$BuildStartName(desc) {
+		return '__start__' + desc;
+	};
+	$tabBootstrap_$LocalWebClientMetricsLogger.$buildEndName = function LocalWebClientMetricsLogger$BuildEndName(desc) {
+		return '__end__' + desc;
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.NullMetricsContext
+	var $tabBootstrap_$NullMetricsContext = function() {
+		$tabBootstrap_MetricsContext.$ctor1.call(this, -1, 0, '', null);
+		this.open = false;
+		this.start = 0;
+		this.end = 0;
+	};
+	$tabBootstrap_$NullMetricsContext.__typeName = 'tabBootstrap.$NullMetricsContext';
+	$tabBootstrap_$NullMetricsContext.get_$instance = function NullMetricsContext$get_Instance() {
+		if (ss.isNullOrUndefined($tabBootstrap_$NullMetricsContext.$instance)) {
+			$tabBootstrap_$NullMetricsContext.$instance = new $tabBootstrap_$NullMetricsContext();
+		}
+		return $tabBootstrap_$NullMetricsContext.$instance;
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ViewerInitializer
+	var $tabBootstrap_$ViewerInitializer = function() {
+	};
+	$tabBootstrap_$ViewerInitializer.__typeName = 'tabBootstrap.$ViewerInitializer';
+	$tabBootstrap_$ViewerInitializer.$hideElement = function ViewerInitializer$HideElement(id) {
+		var el = document.getElementById(id);
+		if (ss.isValue(el)) {
+			el.style.display = 'none';
+		}
+	};
+	$tabBootstrap_$ViewerInitializer.$parseTsConfig = function ViewerInitializer$ParseTsConfig() {
+		var tsConfigContainer = document.getElementById('tsConfigContainer');
+		var tsConfig = JSON.parse(tsConfigContainer.value);
+		window.self['tsConfig'] = tsConfig;
+	};
+	$tabBootstrap_$ViewerInitializer.$globalErrorHandler = function ViewerInitializer$GlobalErrorHandler(message) {
+		var errEl = document.getElementById('tabBootErr');
+		var messEl = errEl.childNodes[1].lastChild;
+		messEl.textContent += '\n' + message;
+		errEl.style.display = 'block';
+		$tabBootstrap_$ViewerInitializer.$hideElement('loadingGlassPane');
+		$tabBootstrap_$ViewerInitializer.$hideElement('loadingSpinner');
+		try {
+			window.parent.postMessage('tableau.completed', '*');
+		}
+		catch ($t1) {
+		}
+		return false;
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ApiCommandResponder
+	var $tabBootstrap_ApiCommandResponder = function() {
+	};
+	$tabBootstrap_ApiCommandResponder.__typeName = 'tabBootstrap.ApiCommandResponder';
+	$tabBootstrap_ApiCommandResponder.$buildNotification = function ApiCommandResponder$BuildNotification(workbookName, sheetName, data) {
+		var param = {};
+		param['api.workbookName'] = workbookName;
+		param['api.worksheetName'] = sheetName;
+		param['api.commandData'] = data;
+		return JSON.stringify(param);
+	};
+	global.tabBootstrap.ApiCommandResponder = $tabBootstrap_ApiCommandResponder;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ApiCrossDomainResponder
+	var $tabBootstrap_ApiCrossDomainResponder = function() {
+		$tabBootstrap_ApiCommandResponder.call(this);
+	};
+	$tabBootstrap_ApiCrossDomainResponder.__typeName = 'tabBootstrap.ApiCrossDomainResponder';
+	global.tabBootstrap.ApiCrossDomainResponder = $tabBootstrap_ApiCrossDomainResponder;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ApiNativeHostResponder
+	var $tabBootstrap_ApiNativeHostResponder = function(responseAction) {
+		this.$2$ResponseActionField = null;
+		$tabBootstrap_ApiCommandResponder.call(this);
+		this.set_responseAction(responseAction);
+	};
+	$tabBootstrap_ApiNativeHostResponder.__typeName = 'tabBootstrap.ApiNativeHostResponder';
+	global.tabBootstrap.ApiNativeHostResponder = $tabBootstrap_ApiNativeHostResponder;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.BaseUrlFormatter
+	var $tabBootstrap_BaseUrlFormatter = function() {
+	};
+	$tabBootstrap_BaseUrlFormatter.__typeName = 'tabBootstrap.BaseUrlFormatter';
+	$tabBootstrap_BaseUrlFormatter.formatBaseUrl = function BaseUrlFormatter$FormatBaseUrl() {
+		return window.location.protocol + '//' + window.location.host;
+	};
+	$tabBootstrap_BaseUrlFormatter.formatUrlRoot = function BaseUrlFormatter$FormatUrlRoot(baseUrl, prefix) {
+		var urlRoot = baseUrl;
+		if (ss.isValue(prefix)) {
+			urlRoot += prefix;
+		}
+		else if (ss.isValue(tsConfig.vizql_root)) {
+			urlRoot += tsConfig.vizql_root;
+		}
+		else {
+			var pathName = window.location.pathname;
+			pathName = pathName.replace(new RegExp('\\/[^\\/]*$'), '');
+			urlRoot += pathName;
+		}
+		return urlRoot;
+	};
+	$tabBootstrap_BaseUrlFormatter.formatSessionMethod = function BaseUrlFormatter$FormatSessionMethod(method, id, urlRoot) {
+		return urlRoot + '/' + method + '/sessions/' + id;
+	};
+	$tabBootstrap_BaseUrlFormatter.formatBootstrapSessionMethod = function BaseUrlFormatter$FormatBootstrapSessionMethod(method, sessionId, prefix) {
+		return $tabBootstrap_BaseUrlFormatter.formatSessionMethod(method, sessionId, $tabBootstrap_BaseUrlFormatter.formatUrlRoot($tabBootstrap_BaseUrlFormatter.formatBaseUrl(), prefix));
+	};
+	global.tabBootstrap.BaseUrlFormatter = $tabBootstrap_BaseUrlFormatter;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.DeviceDetector
+	var $tabBootstrap_DeviceDetector = function() {
+		this.$deviceType = null;
+		this.$detectedDeviceType = null;
+		this.$clientDimension = null;
+	};
+	$tabBootstrap_DeviceDetector.__typeName = 'tabBootstrap.DeviceDetector';
+	global.tabBootstrap.DeviceDetector = $tabBootstrap_DeviceDetector;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.EmbedAndViewportCalculator
+	var $tabBootstrap_EmbedAndViewportCalculator = function() {
+	};
+	$tabBootstrap_EmbedAndViewportCalculator.__typeName = 'tabBootstrap.EmbedAndViewportCalculator';
+	$tabBootstrap_EmbedAndViewportCalculator.get_embedMode = function EmbedAndViewportCalculator$get_EmbedMode() {
+		return $tabBootstrap_EmbedAndViewportCalculator.$embedModeVar;
+	};
+	$tabBootstrap_EmbedAndViewportCalculator.get_isEmbeddedInsideAnotherPage = function EmbedAndViewportCalculator$get_IsEmbeddedInsideAnotherPage() {
+		return $tabBootstrap_EmbedAndViewportCalculator.get_embedMode() === 'sameDomainEmbedded' || $tabBootstrap_EmbedAndViewportCalculator.get_embedMode() === 'crossDomainEmbedded';
+	};
+	$tabBootstrap_EmbedAndViewportCalculator.get_$inLandscapeMode = function EmbedAndViewportCalculator$get_InLandscapeMode() {
+		try {
+			var win = $tabBootstrap_Utility.$getTopmostWindow();
+			var orientation = win.orientation;
+			return ss.isValue(orientation) && (orientation === 90 || orientation === -90);
+		}
+		catch ($t1) {
+		}
+		return false;
+	};
+	$tabBootstrap_EmbedAndViewportCalculator.$getViewport = function EmbedAndViewportCalculator$GetViewport() {
+		var docElem = window.document.documentElement;
+		return { w: docElem.clientWidth, h: docElem.clientHeight };
+	};
+	$tabBootstrap_EmbedAndViewportCalculator.$getWindowSize = function EmbedAndViewportCalculator$GetWindowSize() {
+		return { w: window.innerWidth, h: window.innerHeight };
+	};
+	$tabBootstrap_EmbedAndViewportCalculator.$getNonEmbeddedMobileViewport = function EmbedAndViewportCalculator$GetNonEmbeddedMobileViewport() {
+		var temp, chromeSpace;
+		var w = window.document.documentElement.clientWidth;
+		var h = window.document.documentElement.clientHeight;
+		var isAndroid = window.navigator.userAgent.indexOf('Android') !== -1;
+		if (isAndroid) {
+			if (w === window.screen.height) {
+				chromeSpace = window.screen.width - h;
+				temp = w - chromeSpace;
+				w = h + chromeSpace;
+				h = temp;
+			}
+		}
+		else if ($tabBootstrap_EmbedAndViewportCalculator.get_$inLandscapeMode()) {
+			if (w === window.screen.width) {
+				chromeSpace = window.screen.height - h;
+				temp = w - chromeSpace;
+				w = h + chromeSpace;
+				h = temp;
+			}
+		}
+		else if (w === window.screen.height) {
+			chromeSpace = window.screen.width - h;
+			temp = w - chromeSpace;
+			w = h + chromeSpace;
+			h = temp;
+		}
+		return { w: w, h: h };
+	};
+	$tabBootstrap_EmbedAndViewportCalculator.$calculateEmbedMode = function EmbedAndViewportCalculator$CalculateEmbedMode() {
+		var parentIsSelf = false;
+		var cannotAccessParentProperties = false;
+		try {
+			parentIsSelf = ss.referenceEquals(window.self, window.parent);
+			cannotAccessParentProperties = ss.isNullOrUndefined(window.parent.outerWidth);
+		}
+		catch ($t1) {
+			cannotAccessParentProperties = true;
+		}
+		if (parentIsSelf) {
+			return 'notEmbedded';
+		}
+		else if (cannotAccessParentProperties) {
+			return 'crossDomainEmbedded';
+		}
+		else {
+			return 'sameDomainEmbedded';
+		}
+	};
+	global.tabBootstrap.EmbedAndViewportCalculator = $tabBootstrap_EmbedAndViewportCalculator;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.EmbedMode
+	var $tabBootstrap_EmbedMode = function() {
+	};
+	$tabBootstrap_EmbedMode.__typeName = 'tabBootstrap.EmbedMode';
+	global.tabBootstrap.EmbedMode = $tabBootstrap_EmbedMode;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.Metric
+	var $tabBootstrap_Metric = function() {
+	};
+	$tabBootstrap_Metric.__typeName = 'tabBootstrap.Metric';
+	$tabBootstrap_Metric.isEqual = function Metric$IsEqual($this, metric) {
+		return $this.w === metric.w && $this.h === metric.h;
+	};
+	$tabBootstrap_Metric.isInstanceOfType = function() {
+		return true;
+	};
+	global.tabBootstrap.Metric = $tabBootstrap_Metric;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.MetricsContext
+	var $tabBootstrap_MetricsContext = function(contextID, suite, desc) {
+		this.$id = 0;
+		this.$metricSuite = 0;
+		this.$description = null;
+		this.$extraInfo = null;
+		this.start = 0;
+		this.end = 0;
+		this.open = false;
+		this.$localReporter = null;
+		this.$id = contextID;
+		this.$metricSuite = suite;
+		this.$description = desc;
+		this.start = $tabBootstrap_MetricsController.getTiming();
+		this.open = true;
+	};
+	$tabBootstrap_MetricsContext.__typeName = 'tabBootstrap.MetricsContext';
+	$tabBootstrap_MetricsContext.$ctor1 = function(contextID, suite, desc, extraInfo) {
+		$tabBootstrap_MetricsContext.call(this, contextID, suite, desc);
+		this.$extraInfo = extraInfo;
+		if ($tabBootstrap_MetricsController.$reportLocalMetrics) {
+			this.$localReporter = new $tabBootstrap_$LocalMetricsContext(suite, desc, extraInfo);
+		}
+	};
+	global.tabBootstrap.MetricsContext = $tabBootstrap_MetricsContext;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.MetricsController
+	var $tabBootstrap_MetricsController = function() {
+		this.$nextContextID = 0;
+		this.$contextStack = [];
+		this.$eventBuffer = [];
+		this.$eventLoggers = [];
+		this.$sessionId = '';
+		this.$workbookName = '';
+		this.$sheetName = '';
+		this.$metricSessionId = '';
+		this.$metricsFilter = 0;
+		if (ss.isValue(tsConfig.metricsFilter) && tsConfig.metricsFilter !== '') {
+			var filter = 0;
+			var filters = tsConfig.metricsFilter.split(String.fromCharCode(124));
+			for (var $t1 = 0; $t1 < filters.length; $t1++) {
+				var suite = filters[$t1];
+				var trimmedSuite = ((typeof(suite['trim']) === 'function') ? suite.trim() : suite);
+				trimmedSuite = trimmedSuite.toLowerCase();
+				if (ss.keyExists($tabBootstrap_MetricsController.$suiteNameLookup, trimmedSuite)) {
+					filter |= $tabBootstrap_MetricsController.$suiteNameLookup[trimmedSuite];
+				}
+			}
+			this.$metricsFilter = filter;
+		}
+	};
+	$tabBootstrap_MetricsController.__typeName = 'tabBootstrap.MetricsController';
+	$tabBootstrap_MetricsController.get_$instance = function MetricsController$get_Instance() {
+		if (ss.isNullOrUndefined($tabBootstrap_MetricsController.$instance)) {
+			$tabBootstrap_MetricsController.$instance = new $tabBootstrap_MetricsController();
+		}
+		return $tabBootstrap_MetricsController.$instance;
+	};
+	$tabBootstrap_MetricsController.createContext = function MetricsController$CreateContext(description, suite, extraInfo) {
+		if (ss.isNullOrUndefined(suite)) {
+			suite = 32;
+		}
+		var filteredMetric = suite === 0 || (suite & $tabBootstrap_MetricsController.get_$instance().$metricsFilter) !== suite;
+		var newContext;
+		if (filteredMetric) {
+			if ($tabBootstrap_MetricsController.$reportLocalMetrics) {
+				newContext = new $tabBootstrap_$LocalMetricsContext(suite, description, extraInfo);
+			}
+			else {
+				newContext = $tabBootstrap_$NullMetricsContext.get_$instance();
+			}
+		}
+		else {
+			newContext = new $tabBootstrap_MetricsContext.$ctor1($tabBootstrap_MetricsController.get_$instance().$getNextContextID(), suite, description, extraInfo);
+			$tabBootstrap_MetricsController.get_$instance().$contextStack.push(newContext);
+		}
+		return newContext;
+	};
+	$tabBootstrap_MetricsController.logMetricsEvent = function MetricsController$LogMetricsEvent(description, metricsSuite) {
+		var parameters = { t: $tabBootstrap_MetricsController.getTiming(), d: description };
+		if (metricsSuite === 2) {
+			parameters.e = parameters.t - $tabBootstrap_MetricsController.$appStartEpoch;
+		}
+		$tabBootstrap_MetricsController.logEventInternalUse(new $tabBootstrap_MetricsEvent('gen', metricsSuite, parameters));
+	};
+	$tabBootstrap_MetricsController.logEventInternalUse = function MetricsController$LogEventInternalUse(evt) {
+		if ($tabBootstrap_MetricsController.$reportLocalMetrics && evt.eventType !== 'init') {
+			$tabBootstrap_MetricsController.$localEventLogger.logEvent(evt);
+		}
+		if (evt.metricSuite === 0 || (evt.metricSuite & $tabBootstrap_MetricsController.get_$instance().$metricsFilter) !== evt.metricSuite) {
+			return;
+		}
+		if ($tabBootstrap_MetricsController.get_$instance().$eventLoggers.length > 0) {
+			$tabBootstrap_MetricsController.$sendMetricToAllLoggers(evt);
+		}
+		else {
+			$tabBootstrap_MetricsController.get_$instance().$eventBuffer.push(evt);
+		}
+	};
+	$tabBootstrap_MetricsController.$sendMetricToAllLoggers = function MetricsController$SendMetricToAllLoggers(evt) {
+		evt.parameters.sid = $tabBootstrap_MetricsController.get_$instance().$metricSessionId;
+		var $t1 = $tabBootstrap_MetricsController.get_$instance().$eventLoggers;
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var logger = $t1[$t2];
+			logger.logEvent(evt);
+		}
+	};
+	$tabBootstrap_MetricsController.setEventLoggers = function MetricsController$SetEventLoggers(loggers) {
+		ss.Debug.assert(ss.isValue(loggers), "Don't pass in a null set of loggers");
+		$tabBootstrap_MetricsController.get_$instance().$eventLoggers = loggers;
+		if (ss.isValue(loggers) && $tabBootstrap_MetricsController.$instance.$eventBuffer.length > 0) {
+			for (var $t1 = 0; $t1 < $tabBootstrap_MetricsController.$instance.$eventBuffer.length; $t1++) {
+				var bufferedEvt = $tabBootstrap_MetricsController.$instance.$eventBuffer[$t1];
+				$tabBootstrap_MetricsController.$sendMetricToAllLoggers(bufferedEvt);
+			}
+			$tabBootstrap_MetricsController.$instance.$eventBuffer = [];
+		}
+	};
+	$tabBootstrap_MetricsController.initSessionInfo = function MetricsController$InitSessionInfo() {
+		var localInstance = $tabBootstrap_MetricsController.get_$instance();
+		var currentSheet = (ss.isNullOrEmptyString(tsConfig.current_sheet_name) ? tsConfig.sheetId : tsConfig.current_sheet_name);
+		if (ss.referenceEquals(localInstance.$sessionId, tsConfig.sessionid) && ss.referenceEquals(localInstance.$workbookName, tsConfig.workbookName) && ss.referenceEquals(localInstance.$sheetName, currentSheet)) {
+			return;
+		}
+		localInstance.$sessionId = tsConfig.sessionid;
+		localInstance.$workbookName = tsConfig.workbookName;
+		localInstance.$sheetName = currentSheet;
+		var now = new Date();
+		localInstance.$metricSessionId = now.getTime().toString(36);
+		localInstance.$metricSessionId = localInstance.$metricSessionId.substr(localInstance.$metricSessionId.length - 6);
+		if (localInstance.$sessionId.length >= 5) {
+			localInstance.$metricSessionId = localInstance.$metricSessionId + localInstance.$sessionId.substr(1, 1);
+			localInstance.$metricSessionId = localInstance.$metricSessionId + localInstance.$sessionId.substr(4, 1);
+		}
+		localInstance.$logSessionInfo();
+	};
+	$tabBootstrap_MetricsController.getFriendlyEventDescription = function MetricsController$GetFriendlyEventDescription(desc) {
+		return ss.coalesce($tabBootstrap_MetricsController.$fullMetricNameLookup[desc], desc);
+	};
+	$tabBootstrap_MetricsController.$closeContext = function MetricsController$CloseContext(context) {
+		var id = context.$id;
+		var pos = -1;
+		for (var i = $tabBootstrap_MetricsController.get_$instance().$contextStack.length - 1; i >= 0; i--) {
+			if ($tabBootstrap_MetricsController.$instance.$contextStack[i].$id === id) {
+				pos = i;
+				break;
+			}
+		}
+		if (pos !== -1) {
+			var cnt = $tabBootstrap_MetricsController.$instance.$contextStack.length - pos;
+			for (var i1 = 0; i1 < cnt; i1++) {
+				$tabBootstrap_MetricsController.$instance.$contextStack.pop();
+			}
+		}
+		$tabBootstrap_MetricsController.$instance.$logContextEnd(context);
+	};
+	$tabBootstrap_MetricsController.$buildMetricsEventCommonParameters = function MetricsController$BuildMetricsEventCommonParameters(context) {
+		var parameters = { id: context.$id.toString(), d: context.$description };
+		if (ss.isValue(context.$extraInfo)) {
+			parameters.ei = context.$extraInfo;
+		}
+		return parameters;
+	};
+	global.tabBootstrap.MetricsController = $tabBootstrap_MetricsController;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.MetricsEvent
+	var $tabBootstrap_MetricsEvent = function(evtType, suite, eventParams) {
+		this.eventType = null;
+		this.metricSuite = 0;
+		this.parameters = null;
+		this.eventType = evtType;
+		this.metricSuite = suite;
+		this.parameters = eventParams;
+	};
+	$tabBootstrap_MetricsEvent.__typeName = 'tabBootstrap.MetricsEvent';
+	global.tabBootstrap.MetricsEvent = $tabBootstrap_MetricsEvent;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.MetricsSuites
+	var $tabBootstrap_MetricsSuites = function() {
+	};
+	$tabBootstrap_MetricsSuites.__typeName = 'tabBootstrap.MetricsSuites';
+	global.tabBootstrap.MetricsSuites = $tabBootstrap_MetricsSuites;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.NavigationInfo
+	var $tabBootstrap_NavigationInfo = function() {
+		this.$navType = null;
+		this.$navSrc = null;
+		if ($tabBootstrap_EmbedAndViewportCalculator.get_isEmbeddedInsideAnotherPage()) {
+			var navType = parseInt($tabBootstrap_NavigationInfo.get_$hashNavType());
+			this.$navType = this.$navigationTypeFromNumber(navType);
+		}
+		if (ss.isValue(this.$navType)) {
+			this.$navSrc = $tabBootstrap_NavigationInfo.get_$hashNavSrc();
+		}
+		else {
+			this.$navSrc = ($tabBootstrap_EmbedAndViewportCalculator.get_isEmbeddedInsideAnotherPage() ? 'Boot'.toString() : 'Top'.toString());
+			this.$navType = this.$navigationTypeFromNumber($tabBootstrap_NavigationInfo.get_navigationType());
+		}
+	};
+	$tabBootstrap_NavigationInfo.__typeName = 'tabBootstrap.NavigationInfo';
+	$tabBootstrap_NavigationInfo.get_navigationType = function NavigationInfo$get_NavigationType() {
+		return window.performance.navigation.type;
+	};
+	$tabBootstrap_NavigationInfo.get_$hashNavType = function NavigationInfo$get_HashNavType() {
+		var info = $tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData();
+		return ((ss.isValue(info) && ss.isValue(info[$tabBootstrap_NavigationInfo.$navTypeKey])) ? info[$tabBootstrap_NavigationInfo.$navTypeKey] : '');
+	};
+	$tabBootstrap_NavigationInfo.get_$hashNavSrc = function NavigationInfo$get_HashNavSrc() {
+		var info = $tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData();
+		return ((ss.isValue(info) && ss.isValue(info[$tabBootstrap_NavigationInfo.$navSrcKey])) ? info[$tabBootstrap_NavigationInfo.$navSrcKey] : '');
+	};
+	global.tabBootstrap.NavigationInfo = $tabBootstrap_NavigationInfo;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.PerformanceReporting
+	var $tabBootstrap_PerformanceReporting = function() {
+	};
+	$tabBootstrap_PerformanceReporting.__typeName = 'tabBootstrap.PerformanceReporting';
+	$tabBootstrap_PerformanceReporting.mark = function PerformanceReporting$Mark(markName) {
+		if ($tabBootstrap_PerformanceReporting.supportsPerfApi) {
+			performance.mark(markName);
+		}
+	};
+	$tabBootstrap_PerformanceReporting.measure = function PerformanceReporting$Measure(measureName, startMarkName, endMarkName) {
+		if ($tabBootstrap_PerformanceReporting.supportsPerfApi) {
+			try {
+				performance.measure(measureName, startMarkName, endMarkName);
+			}
+			catch ($t1) {
+				var e = ss.Exception.wrap($t1);
+				console.error('Missing a performance mark', e);
+			}
+		}
+	};
+	global.tabBootstrap.PerformanceReporting = $tabBootstrap_PerformanceReporting;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.RenderingConstantsAndHelpers
+	var $tabBootstrap_RenderingConstantsAndHelpers = function() {
+	};
+	$tabBootstrap_RenderingConstantsAndHelpers.__typeName = 'tabBootstrap.RenderingConstantsAndHelpers';
+	$tabBootstrap_RenderingConstantsAndHelpers.get_canvasPixelLimit = function RenderingConstantsAndHelpers$get_CanvasPixelLimit() {
+		var canvasPixelLimit = 25000000;
+		if (ss.isValue(tsConfig.is_mobile) && tsConfig.is_mobile) {
+			var canvasLimitInMegapixels = (tsConfig.features['LargerImageLimits'] ? 6 : 3);
+			canvasPixelLimit = canvasLimitInMegapixels * 1024 * 1024;
+		}
+		return canvasPixelLimit;
+	};
+	$tabBootstrap_RenderingConstantsAndHelpers.get_imageSizeLimit = function RenderingConstantsAndHelpers$get_ImageSizeLimit() {
+		var imageSizeLimitInMegapixels = (tsConfig.features['LargerImageLimits'] ? 10 : 5);
+		return imageSizeLimitInMegapixels * 1024 * 1024;
+	};
+	$tabBootstrap_RenderingConstantsAndHelpers.$getDevicePixelRatio = function RenderingConstantsAndHelpers$GetDevicePixelRatio() {
+		var devicePixelRatio = 1;
+		if (ss.isValue(tsConfig.highDpi) && tsConfig.highDpi) {
+			if (ss.isValue(tsConfig.pixelRatio)) {
+				devicePixelRatio = tsConfig.pixelRatio;
+			}
+			else {
+				devicePixelRatio = ss.coalesce(window.self['devicePixelRatio'], 1);
+			}
+		}
+		return devicePixelRatio;
+	};
+	global.tabBootstrap.RenderingConstantsAndHelpers = $tabBootstrap_RenderingConstantsAndHelpers;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.UrlLocationHashManager
+	var $tabBootstrap_UrlLocationHashManager = function() {
+	};
+	$tabBootstrap_UrlLocationHashManager.__typeName = 'tabBootstrap.UrlLocationHashManager';
+	$tabBootstrap_UrlLocationHashManager.get_urlLocationSearchParams = function UrlLocationHashManager$get_UrlLocationSearchParams() {
+		return $tabBootstrap_UrlLocationHashManager.$parseQueryParamString($tabBootstrap_UrlLocationHashManager.get_$urlLocationSearch().substring(1));
+	};
+	$tabBootstrap_UrlLocationHashManager.get_hashClientNumber = function UrlLocationHashManager$get_HashClientNumber() {
+		var info = $tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData();
+		return ((ss.isValue(info) && ss.isValue(info[$tabBootstrap_UrlLocationHashManager.CLIENTNO])) ? info[$tabBootstrap_UrlLocationHashManager.CLIENTNO] : '');
+	};
+	$tabBootstrap_UrlLocationHashManager.get_historyApiSupported = function UrlLocationHashManager$get_HistoryApiSupported() {
+		return typeof(window.history['pushState']) === 'function' && typeof(window.history['replaceState']) === 'function';
+	};
+	$tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData = function UrlLocationHashManager$get_UrlLocationHashData() {
+		var urlHashData = {};
+		var fragmentId = $tabBootstrap_UrlLocationHashManager.get_urlLocationHash();
+		if (fragmentId.length < 2) {
+			return {};
+		}
+		fragmentId = fragmentId.substr(1);
+		var pairs = fragmentId.split('&');
+		for (var $t1 = 0; $t1 < pairs.length; $t1++) {
+			var pair = pairs[$t1];
+			var keyVal = pair.split('=');
+			if (keyVal.length === 1) {
+				urlHashData[$tabBootstrap_UrlLocationHashManager.CLIENTNO] = keyVal[0];
+			}
+			else if (keyVal.length === 2) {
+				var key = decodeURIComponent(keyVal[0]);
+				var value = decodeURIComponent(keyVal[1]);
+				urlHashData[key] = value;
+			}
+		}
+		return urlHashData;
+	};
+	$tabBootstrap_UrlLocationHashManager.set_$urlLocationHashData = function UrlLocationHashManager$set_UrlLocationHashData(value) {
+		var newFragmentId = new ss.StringBuilder();
+		var first = true;
+		var appendSeparator = function() {
+			newFragmentId.append((first ? '#' : '&'));
+			first = false;
+		};
+		var $t1 = new ss.ObjectEnumerator(value);
+		try {
+			while ($t1.moveNext()) {
+				var pairs = $t1.current();
+				var keyEncoded = encodeURIComponent(pairs.key);
+				appendSeparator();
+				if (ss.referenceEquals(keyEncoded, $tabBootstrap_UrlLocationHashManager.CLIENTNO)) {
+					newFragmentId.append(pairs.value);
+				}
+				else if (ss.isNullOrUndefined(pairs.value)) {
+					newFragmentId.append(keyEncoded);
+				}
+				else {
+					newFragmentId.append(keyEncoded).append('=').append(encodeURIComponent(pairs.value));
+				}
+			}
+		}
+		finally {
+			$t1.dispose();
+		}
+		if (ss.isValue(newFragmentId)) {
+			var window = $tabBootstrap_Utility.get_locationWindow();
+			if ($tabBootstrap_UrlLocationHashManager.get_historyApiSupported()) {
+				$tabBootstrap_UrlLocationHashManager.$replaceState(window, null, null, newFragmentId.toString());
+			}
+			else {
+				window.location.hash = newFragmentId.toString();
+			}
+		}
+	};
+	$tabBootstrap_UrlLocationHashManager.get_urlLocationHash = function UrlLocationHashManager$get_UrlLocationHash() {
+		var window = $tabBootstrap_Utility.get_locationWindow();
+		return window.location.hash;
+	};
+	$tabBootstrap_UrlLocationHashManager.get_$urlLocationSearch = function UrlLocationHashManager$get_UrlLocationSearch() {
+		var window = $tabBootstrap_Utility.get_locationWindow();
+		return window.location.search;
+	};
+	$tabBootstrap_UrlLocationHashManager.$parseQueryParamString = function UrlLocationHashManager$ParseQueryParamString(urlStr) {
+		var urlData = {};
+		var pairs = urlStr.split('&');
+		for (var $t1 = 0; $t1 < pairs.length; $t1++) {
+			var pair = pairs[$t1];
+			var keyVal = pair.split('=');
+			if (keyVal.length === 2) {
+				var key = decodeURIComponent(keyVal[0]);
+				var value = decodeURIComponent(keyVal[1]);
+				urlData[key] = value;
+			}
+		}
+		return urlData;
+	};
+	$tabBootstrap_UrlLocationHashManager.addToUrlHash = function UrlLocationHashManager$AddToUrlHash(key, value) {
+		var urlHash = $tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData();
+		urlHash[key] = value;
+		$tabBootstrap_UrlLocationHashManager.set_$urlLocationHashData(urlHash);
+	};
+	$tabBootstrap_UrlLocationHashManager.$replaceState = function UrlLocationHashManager$ReplaceState(window, state, title, url) {
+		try {
+			window.history.replaceState(state, title, url);
+		}
+		catch ($t1) {
+		}
+	};
+	$tabBootstrap_UrlLocationHashManager.getValueFromUrlHash = function UrlLocationHashManager$GetValueFromUrlHash(key) {
+		var urlHash = $tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData();
+		return (ss.keyExists(urlHash, key) ? urlHash[key] : '');
+	};
+	$tabBootstrap_UrlLocationHashManager.removeEntryFromUrlHash = function UrlLocationHashManager$RemoveEntryFromUrlHash(key) {
+		var fragInfo = $tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData();
+		delete fragInfo[key];
+		$tabBootstrap_UrlLocationHashManager.set_$urlLocationHashData(fragInfo);
+	};
+	global.tabBootstrap.UrlLocationHashManager = $tabBootstrap_UrlLocationHashManager;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.Utility
+	var $tabBootstrap_Utility = function() {
+	};
+	$tabBootstrap_Utility.__typeName = 'tabBootstrap.Utility';
+	$tabBootstrap_Utility.get_locationWindow = function Utility$get_LocationWindow() {
+		return window.self;
+	};
+	$tabBootstrap_Utility.xhrPostJsonChunked = function Utility$XhrPostJsonChunked(uri, param, firstChunkCallback, secondaryChunkCallback, errBack, asynchronous) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', uri, asynchronous);
+		xhr.setRequestHeader('Accept', 'text/javascript');
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		if (!ss.isNullOrUndefined(tsConfig.sheetId)) {
+			xhr.setRequestHeader('X-Tsi-Active-Tab', tsConfig.sheetId);
+		}
+		var invokeError = $tabBootstrap_Utility.$getInvokeErrorDelegate(xhr, errBack);
+		var byteOffset = 0;
+		var consumeJSONChunks = function() {
+			var buffer = '';
+			try {
+				buffer = xhr.responseText;
+			}
+			catch ($t1) {
+			}
+			var bufferLength = buffer.length;
+			while (byteOffset < bufferLength) {
+				var newData = buffer.substr(byteOffset);
+				var regex = new RegExp('^(\\d+);');
+				var match = newData.match(regex);
+				if (!ss.isValue(match)) {
+					return;
+				}
+				var chunkStart = match[0].length;
+				var chunkLength = parseInt(match[1]);
+				if (chunkStart + chunkLength > newData.length) {
+					return;
+				}
+				newData = newData.substr(chunkStart, chunkLength);
+				var json = null;
+				try {
+					var contextStr = 'Parse ' + ((byteOffset === 0) ? 'Primary' : 'Secondary') + ' JSON';
+					{
+						var mc = $tabBootstrap_MetricsController.createContext(contextStr, 32, null);
+						try {
+							json = $tabBootstrap_Utility.$parseJson(Object).call(null, newData);
+						}
+						finally {
+							if (ss.isValue(mc)) {
+								mc.dispose();
+							}
+						}
+					}
+				}
+				catch ($t2) {
+					invokeError(new ss.Exception('Invalid JSON'));
+				}
+				if (byteOffset === 0) {
+					firstChunkCallback(json);
+				}
+				else {
+					secondaryChunkCallback(json);
+				}
+				byteOffset += chunkStart + chunkLength;
+			}
+		};
+		var intervalID = -1;
+		var isReceiving = false;
+		var cannotTouchXhrWhileDownloading = window.navigator.userAgent.indexOf('MSIE') >= 0 && parseFloat(window.navigator.appVersion.split('MSIE ')[1]) < 10;
+		xhr.onreadystatechange = function() {
+			try {
+				if (!cannotTouchXhrWhileDownloading && xhr.readyState === 3 && xhr.status === 200 && !isReceiving) {
+					consumeJSONChunks();
+					if (intervalID === -1) {
+						intervalID = window.setInterval(consumeJSONChunks, 10);
+					}
+					isReceiving = true;
+					return;
+				}
+				if (xhr.readyState !== 4) {
+					return;
+				}
+				if (intervalID !== -1) {
+					window.clearInterval(intervalID);
+					intervalID = -1;
+				}
+				if ($tabBootstrap_Utility.$isSuccessStatus(xhr)) {
+					consumeJSONChunks();
+				}
+				else {
+					invokeError(new ss.Exception('Unable to load ' + uri + '; status: ' + xhr.status));
+				}
+			}
+			catch ($t3) {
+				var ex = ss.Exception.wrap($t3);
+				if (typeof(ss.getType('ss')) === 'undefined') {
+					xhr.abort();
+				}
+				else {
+					throw ex;
+				}
+			}
+		};
+		try {
+			xhr.send(param);
+		}
+		catch ($t4) {
+			var e = ss.Exception.wrap($t4);
+			invokeError(e);
+		}
+	};
+	$tabBootstrap_Utility.$xhrGetXmlSynchronous = function Utility$XhrGetXmlSynchronous(uri, errBack) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', uri, false);
+		xhr.setRequestHeader('Accept', 'text/xml');
+		try {
+			xhr.send();
+		}
+		catch ($t1) {
+			var e = ss.Exception.wrap($t1);
+			$tabBootstrap_Utility.$invokeErrorDelegate(xhr, errBack, e);
+			return null;
+		}
+		return xhr.responseText;
+	};
+	$tabBootstrap_Utility.$xhrPostJson = function Utility$XhrPostJson(uri, param, callback, errBack, asynchronous) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', uri, asynchronous);
+		xhr.setRequestHeader('Accept', 'text/javascript');
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		if (ss.isValue(tsConfig.sheetId)) {
+			xhr.setRequestHeader('X-Tsi-Active-Tab', tsConfig.sheetId);
+		}
+		var invokeError = $tabBootstrap_Utility.$getInvokeErrorDelegate(xhr, errBack);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState !== 4) {
+				return;
+			}
+			if ($tabBootstrap_Utility.$isSuccessStatus(xhr)) {
+				try {
+					var json = $tabBootstrap_Utility.$parseJson(Object).call(null, xhr.responseText);
+					callback(json);
+				}
+				catch ($t1) {
+					var x = ss.Exception.wrap($t1);
+					invokeError(x);
+				}
+			}
+			else {
+				invokeError(new ss.Exception('Unable to load ' + uri + '; status: ' + xhr.status));
+			}
+		};
+		try {
+			xhr.send(param);
+		}
+		catch ($t2) {
+			var e = ss.Exception.wrap($t2);
+			invokeError(e);
+		}
+	};
+	$tabBootstrap_Utility.$attachOneTimeMessageHandler = function Utility$AttachOneTimeMessageHandler(eventHandler) {
+		var messageListener = null;
+		messageListener = function(ev) {
+			var e = ss.cast(ev, MessageEvent);
+			if (eventHandler(e)) {
+				if (!!ss.isValue(window.self.removeEventListener)) {
+					window.removeEventListener('message', messageListener, false);
+				}
+				else {
+					window.self.detachEvent('onmessage', messageListener);
+				}
+			}
+		};
+		if (!!ss.isValue(window.self.addEventListener)) {
+			window.addEventListener('message', messageListener, false);
+		}
+		else {
+			window.self.attachEvent('onmessage', messageListener);
+		}
+	};
+	$tabBootstrap_Utility.sendCommandWithContext = function Utility$SendCommandWithContext(commandName) {
+		var success = false;
+		var parameters = [];
+		if (tsConfig.loadOrderID >= 0) {
+			parameters.push(tsConfig.loadOrderID);
+		}
+		if (!ss.isNullOrEmptyString(tsConfig.apiID)) {
+			if (tsConfig.loadOrderID < 0) {
+				parameters.push(tsConfig.loadOrderID);
+			}
+			parameters.push(tsConfig.apiID);
+		}
+		var command = new $tab_NonApiCommand(commandName, parameters);
+		success = $tabBootstrap_Utility.doPostMessage(command.serialize());
+		return success;
+	};
+	$tabBootstrap_Utility.doPostMessage = function Utility$DoPostMessage(message) {
+		var success = false;
+		if ('postMessage' in window) {
+			try {
+				window.parent.postMessage(message, '*');
+				success = true;
+			}
+			catch ($t1) {
+			}
+		}
+		return success;
+	};
+	$tabBootstrap_Utility.$parseJson = function(T) {
+		return function Utility$ParseJson(data) {
+			if (ss.isNullOrUndefined(data) || typeof(data) !== 'string') {
+				return ss.getDefaultValue(T);
+			}
+			data = data.trim();
+			return JSON.parse(data);
+		};
+	};
+	$tabBootstrap_Utility.$getTopmostWindow = function Utility$GetTopmostWindow() {
+		var win = window.self;
+		while (ss.isValue(win.parent) && !ss.referenceEquals(win.parent, win)) {
+			win = win.parent;
+		}
+		return win;
+	};
+	$tabBootstrap_Utility.$isSuccessStatus = function Utility$IsSuccessStatus(xhr) {
+		var status = (ss.isValue(xhr.status) ? xhr.status : 0);
+		if (status >= 200 && status < 300 || status === 304 || status === 1223 || status === 0 && (window.location.protocol === 'file:' || window.location.protocol === 'chrome:')) {
+			return true;
+		}
+		return false;
+	};
+	$tabBootstrap_Utility.$invokeErrorDelegate = function Utility$InvokeErrorDelegate(xhr, errBack, e) {
+		if (ss.staticEquals(errBack, null)) {
+			return;
+		}
+		var invokeError = $tabBootstrap_Utility.$getInvokeErrorDelegate(xhr, errBack);
+		invokeError(e);
+	};
+	$tabBootstrap_Utility.$getInvokeErrorDelegate = function Utility$GetInvokeErrorDelegate(xhr, errBack) {
+		return function(err) {
+			err.status = xhr.status;
+			err.responseText = xhr.responseText;
+			errBack(err);
+		};
+	};
+	global.tabBootstrap.Utility = $tabBootstrap_Utility;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.ViewerBootstrap
+	var $tabBootstrap_ViewerBootstrap = function(apiResponder) {
+		this.location = null;
+		this.toolbarDisplayed = false;
+		this.rid = 0;
+		this.ts = 0;
+		this.isVisibleRectCommunicationEnabled = false;
+		this.apiResponder = null;
+		this.authoringLeftAreaWidth = 0;
+		this.rightAreaDrawerWidth = 0;
+		this.clearSessionOnUnload = false;
+		this.initialLayoutModel = null;
+		this.initialLayoutError = null;
+		this.secondaryResponses = null;
+		this.bootstrapState = 1;
+		this._onSuccess = null;
+		this._onError = null;
+		this.$sessionBeingCleared = false;
+		this.$deviceDetector = new $tabBootstrap_DeviceDetector();
+		if (!tsConfig.isPublic && !tsConfig.toolbarvis) {
+			tsConfig.blogURI = '';
+			tsConfig.downloadURI = '';
+		}
+		this.toolbarDisplayed = tsConfig.toolbarContainerVis;
+		this.ts = (new Date()).getTime();
+		this.rid = 0;
+		this.location = window.location;
+		tsConfig.showLytebox = ss.referenceEquals(window.self, window.top) && !ss.isNullOrEmptyString(tsConfig.primaryContentUrl) && !tsConfig.is_authoring;
+		this.apiResponder = apiResponder || $tabBootstrap_ViewerBootstrap.$createApiResponder();
+		this.$setupClearSessionOnBrowserUnload();
+		this.$sessionBeingCleared = false;
+		if (tsConfig.features['BE_Hosting']) {
+			tsConfig.is_desktop = ss.keyExists($tabBootstrap_UrlLocationHashManager.get_$urlLocationHashData(), ':desktop');
+		}
+		this.authoringLeftAreaWidth = ((tsConfig.is_authoring && !tsConfig.is_mobile) ? 200 : 0);
+		if ($tabBootstrap_EmbedAndViewportCalculator.get_isEmbeddedInsideAnotherPage()) {
+			$tabBootstrap_Utility.$attachOneTimeMessageHandler(ss.mkdel(this, function(e) {
+				var command = $tab_NonApiCommand.parse(e.data.toString());
+				if (command.get_name() === 'tableau.enableVisibleRectCommunication') {
+					this.isVisibleRectCommunicationEnabled = true;
+					return true;
+				}
+				return false;
+			}));
+			$tabBootstrap_Utility.sendCommandWithContext('tableau.listening');
+		}
+		if (tsConfig.allow_commenting && $tabBootstrap_UrlLocationHashManager.get_urlLocationSearchParams()[':showComments'] === 'true' && tsConfig.commentingEnabled) {
+			this.set_rightAreaDrawerWidth($tabBootstrap_VizLayoutConstants.rightAreaDrawerWidth);
+		}
+	};
+	$tabBootstrap_ViewerBootstrap.__typeName = 'tabBootstrap.ViewerBootstrap';
+	$tabBootstrap_ViewerBootstrap.get_instance = function ViewerBootstrap$get_Instance() {
+		return $tabBootstrap_ViewerBootstrap._instance = $tabBootstrap_ViewerBootstrap._instance || new $tabBootstrap_ViewerBootstrap($tabBootstrap_ViewerBootstrap.$createApiResponder());
+	};
+	$tabBootstrap_ViewerBootstrap.resetInstance = function ViewerBootstrap$ResetInstance() {
+		$tabBootstrap_ViewerBootstrap._instance = null;
+	};
+	$tabBootstrap_ViewerBootstrap.makeOneTimeListener = function ViewerBootstrap$MakeOneTimeListener(f) {
+		var called = false;
+		return function(e) {
+			if (called) {
+				return;
+			}
+			called = true;
+			f(e);
+		};
+	};
+	$tabBootstrap_ViewerBootstrap.makeOneTimeHandler = function ViewerBootstrap$MakeOneTimeHandler(f) {
+		var called = false;
+		return function() {
+			if (called) {
+				return;
+			}
+			called = true;
+			f(null);
+		};
+	};
+	$tabBootstrap_ViewerBootstrap.$createApiResponder = function ViewerBootstrap$CreateApiResponder() {
+		if (tsConfig.is_mobile_app) {
+			return new $tabBootstrap_ApiNativeHostResponder(null);
+		}
+		else {
+			return new $tabBootstrap_ApiCrossDomainResponder();
+		}
+	};
+	global.tabBootstrap.ViewerBootstrap = $tabBootstrap_ViewerBootstrap;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.VizLayoutConstants
+	var $tabBootstrap_VizLayoutConstants = function() {
+	};
+	$tabBootstrap_VizLayoutConstants.__typeName = 'tabBootstrap.VizLayoutConstants';
+	$tabBootstrap_VizLayoutConstants.get_vizToolbarHeight = function VizLayoutConstants$get_VizToolbarHeight() {
+		return (tsConfig.is_mobile_app ? $tabBootstrap_VizLayoutConstants.largeToolbarHeight : $tabBootstrap_VizLayoutConstants.toolbarHeight);
+	};
+	$tabBootstrap_VizLayoutConstants.get_displayToolbarHeight = function VizLayoutConstants$get_DisplayToolbarHeight() {
+		return ($tabBootstrap_ViewerBootstrap.get_instance().toolbarDisplayed ? $tabBootstrap_VizLayoutConstants.get_vizToolbarHeight() : 0);
+	};
+	$tabBootstrap_VizLayoutConstants.get_shouldShowTabs = function VizLayoutConstants$get_ShouldShowTabs() {
+		return tsConfig.showTabs;
+	};
+	$tabBootstrap_VizLayoutConstants.get_tabsHeight = function VizLayoutConstants$get_TabsHeight() {
+		if (tsConfig.is_authoring) {
+			return 0;
+		}
+		return ($tabBootstrap_VizLayoutConstants.get_shouldShowTabs() ? $tabBootstrap_VizLayoutConstants.tabsHeightPx : 0);
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringToolbarHeight = function VizLayoutConstants$get_AuthoringToolbarHeight() {
+		if (!tsConfig.is_authoring) {
+			return 0;
+		}
+		return (tsConfig.is_mobile ? 44 : 40);
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringMenuBarHeight = function VizLayoutConstants$get_AuthoringMenuBarHeight() {
+		if (!tsConfig.is_authoring) {
+			return 0;
+		}
+		else {
+			return (tsConfig.is_mobile_app ? $tabBootstrap_VizLayoutConstants.$authoringMenuHeightMobileApp : $tabBootstrap_VizLayoutConstants.$authoringMenuHeight);
+		}
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringTabsHeight = function VizLayoutConstants$get_AuthoringTabsHeight() {
+		var tabAreaHeight = (tsConfig.features['WebAddStatusBar'] ? 48 : 30);
+		return (tsConfig.is_authoring ? tabAreaHeight : 0);
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringVizBorderWidth = function VizLayoutConstants$get_AuthoringVizBorderWidth() {
+		return ((tsConfig.is_authoring && tsConfig.current_sheet_type !== 'worksheet') ? 1 : 0);
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringShelfWidth = function VizLayoutConstants$get_AuthoringShelfWidth() {
+		return (tsConfig.is_authoring ? (tsConfig.is_mobile ? 50 : 190) : 0);
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringShelfHeight = function VizLayoutConstants$get_AuthoringShelfHeight() {
+		if (tsConfig.is_metrics_authoring) {
+			return 0;
+		}
+		return (tsConfig.is_authoring ? (tsConfig.is_mobile ? 0 : 68) : 0);
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringVizMargin = function VizLayoutConstants$get_AuthoringVizMargin() {
+		return (tsConfig.is_authoring ? 6 : 0);
+	};
+	$tabBootstrap_VizLayoutConstants.get_authoringGutter = function VizLayoutConstants$get_AuthoringGutter() {
+		return { top: 0, left: 6, bottom: 6, right: 15 };
+	};
+	global.tabBootstrap.VizLayoutConstants = $tabBootstrap_VizLayoutConstants;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Vql.Bootstrap.VizSizeConstraints
+	var $tabBootstrap_VizSizeConstraints = function() {
+	};
+	$tabBootstrap_VizSizeConstraints.__typeName = 'tabBootstrap.VizSizeConstraints';
+	$tabBootstrap_VizSizeConstraints.getSizeConstraints = function VizSizeConstraints$GetSizeConstraints(layout) {
+		if (tsConfig.is_authoring) {
+			var $t1 = new Object();
+			$t1.minWidth = 0;
+			$t1.minHeight = 0;
+			$t1.maxWidth = 0;
+			$t1.maxHeight = 0;
+			return $t1;
+		}
+		else if (tsConfig.showTabs || tsConfig.showLytebox) {
+			return tsConfig.composite_sizes[layout.toString()];
+		}
+		else {
+			var sheetName = (ss.isNullOrEmptyString(tsConfig.current_sheet_name) ? decodeURIComponent(tsConfig.sheetId) : tsConfig.current_sheet_name.toString());
+			if (ss.keyExists(tsConfig.view_sizes, sheetName)) {
+				return tsConfig.view_sizes[sheetName][layout.toString()];
+			}
+		}
+		var $t2 = new Object();
+		$t2.minWidth = 0;
+		$t2.minHeight = 0;
+		$t2.maxWidth = 0;
+		$t2.maxHeight = 0;
+		return $t2;
+	};
+	global.tabBootstrap.VizSizeConstraints = $tabBootstrap_VizSizeConstraints;
+	ss.initClass($tab__ApiCommand, $asm, {
+		get_name: function ApiCommand$get_Name() {
+			return this.$1$NameField;
+		},
+		set_name: function ApiCommand$set_Name(value) {
+			this.$1$NameField = value;
+		},
+		get_hostId: function ApiCommand$get_HostId() {
+			return this.$1$HostIdField;
+		},
+		set_hostId: function ApiCommand$set_HostId(value) {
+			this.$1$HostIdField = value;
+		},
+		get_commandId: function ApiCommand$get_CommandId() {
+			return this.$1$CommandIdField;
+		},
+		set_commandId: function ApiCommand$set_CommandId(value) {
+			this.$1$CommandIdField = value;
+		},
+		get_parameters: function ApiCommand$get_Parameters() {
+			return this.$1$ParametersField;
+		},
+		set_parameters: function ApiCommand$set_Parameters(value) {
+			this.$1$ParametersField = value;
+		},
+		get_isApiCommandName: function ApiCommand$get_IsApiCommandName() {
+			return this.get_rawName().indexOf('api.', 0) === 0;
+		},
+		get_rawName: function ApiCommand$get_RawName() {
+			return this.get_name().toString();
+		},
+		serialize: function ApiCommand$Serialize() {
+			var message = [];
+			message.push(this.get_name());
+			message.push(this.get_commandId());
+			message.push(this.get_hostId());
+			if (ss.isValue(this.get_parameters())) {
+				message.push(this.get_parameters());
+			}
+			var serializedMessage = message.join(',');
+			$tab__ApiCommand.lastRequestMessage = serializedMessage;
+			return serializedMessage;
+		}
+	});
+	ss.initClass($tab__ApiServerNotification, $asm, {
+		get_workbookName: function ApiServerNotification$get_WorkbookName() {
+			return this.$workbookName;
+		},
+		get_worksheetName: function ApiServerNotification$get_WorksheetName() {
+			return this.$worksheetName;
+		},
+		get_data: function ApiServerNotification$get_Data() {
+			return this.$data;
+		},
+		serialize: function ApiServerNotification$Serialize() {
+			var serialized = {};
+			serialized['api.workbookName'] = this.$workbookName;
+			serialized['api.worksheetName'] = this.$worksheetName;
+			serialized['api.commandData'] = this.$data;
+			return JSON.stringify(serialized);
+		}
+	});
+	ss.initClass($tab__ApiServerResultParser, $asm, {
+		get_result: function ApiServerResultParser$get_Result() {
+			return this.$commandResult;
+		},
+		get_data: function ApiServerResultParser$get_Data() {
+			return this.$commandData;
+		}
+	});
+	ss.initClass($tab_NonApiCommand, $asm, {
+		get_name: function NonApiCommand$get_Name() {
+			return this.$1$NameField;
+		},
+		set_name: function NonApiCommand$set_Name(value) {
+			this.$1$NameField = value;
+		},
+		get_parameters: function NonApiCommand$get_Parameters() {
+			return this.$parameters;
+		},
+		serialize: function NonApiCommand$Serialize() {
+			var message = [];
+			message.push(this.get_name().toString());
+			message = message.concat.apply(message, this.$parameters);
+			return message.join(',');
+		}
+	});
+	ss.initClass($tabBootstrap_$BootstrapRequestBuilder, $asm, {});
+	ss.initEnum($tabBootstrap_$BootstrapState, $asm, { $uninitialized: 1, $requestingBootstrapData: 2, $readyToBootstrap: 3, $bootstrapSucceeded: 4, $bootstrapFailed: 5 });
+	ss.initClass($tabBootstrap_$DojoConfigInitializer, $asm, {});
+	ss.initClass($tabBootstrap_MetricsContext, $asm, {
+		get_$endTime: function MetricsContext$get_EndTime() {
+			return this.end;
+		},
+		dispose: function MetricsContext$Dispose() {
+			this.close();
+		},
+		close: function MetricsContext$Close() {
+			if (this.open) {
+				this.end = $tabBootstrap_MetricsController.getTiming();
+				$tabBootstrap_MetricsController.$closeContext(this);
+				this.open = false;
+				if (ss.isValue(this.$localReporter)) {
+					this.$localReporter.close();
+				}
+			}
+		},
+		elapsedMS: function MetricsContext$ElapsedMS() {
+			if (!this.open) {
+				return this.end - this.start;
+			}
+			return $tabBootstrap_MetricsController.getTiming() - this.start;
+		}
+	}, null, [ss.IDisposable]);
+	$tabBootstrap_MetricsContext.$ctor1.prototype = $tabBootstrap_MetricsContext.prototype;
+	ss.initClass($tabBootstrap_$LocalMetricsContext, $asm, {
+		close: function LocalMetricsContext$Close() {
+			if (this.open) {
+				this.open = false;
+				$tabBootstrap_$LocalWebClientMetricsLogger.$logLocalMetricEnd(this.$metricName, null);
+			}
+		}
+	}, $tabBootstrap_MetricsContext, [ss.IDisposable]);
+	ss.initClass($tabBootstrap_$LocalWebClientMetricsLogger, $asm, {
+		logEvent: function LocalWebClientMetricsLogger$LogEvent(evt) {
+			var desc = $tabBootstrap_$LocalWebClientMetricsLogger.$buildDescriptionName(evt.parameters.d, evt.parameters.ei);
+			var startMarkName;
+			if (evt.metricSuite === 2 && ss.isValue(evt.parameters.e)) {
+				startMarkName = $tabBootstrap_$LocalWebClientMetricsLogger.$appStartMarker;
+			}
+			else {
+				startMarkName = $tabBootstrap_$LocalWebClientMetricsLogger.$logLocalMetricStart(desc);
+			}
+			$tabBootstrap_$LocalWebClientMetricsLogger.$logLocalMetricEnd(desc, startMarkName);
+		}
+	});
+	ss.initClass($tabBootstrap_$NullMetricsContext, $asm, {
+		close: function NullMetricsContext$Close() {
+		}
+	}, $tabBootstrap_MetricsContext, [ss.IDisposable]);
+	ss.initClass($tabBootstrap_$ViewerInitializer, $asm, {});
+	ss.initClass($tabBootstrap_ApiCommandResponder, $asm, {
+		sendResponse: null,
+		sendEventNotification: function ApiCommandResponder$SendEventNotification(eventName, sheetName, data) {
+			var jsonResult = $tabBootstrap_ApiCommandResponder.$buildNotification(tsConfig.workbookName, ss.coalesce(sheetName, ''), ss.coalesce(data, ''));
+			var command = new $tab__ApiCommand(eventName, $tab__ApiCommand.crossDomainEventNotificationId, tsConfig.apiID, jsonResult);
+			this.sendResponse(command, jsonResult);
+		}
+	});
+	ss.initClass($tabBootstrap_ApiCrossDomainResponder, $asm, {
+		get_$isInIframe: function ApiCrossDomainResponder$get_IsInIframe() {
+			return !ss.referenceEquals(window.window, window.parent);
+		},
+		sendResponse: function ApiCrossDomainResponder$SendResponse(requestCommand, result) {
+			if (!('postMessage' in window) || !this.get_$isInIframe()) {
+				return;
+			}
+			var commandName = requestCommand.get_name();
+			var response = new $tab__ApiCommand(commandName, requestCommand.get_commandId(), requestCommand.get_hostId(), result);
+			var message = response.serialize();
+			window.parent.postMessage(message, '*');
+		}
+	}, $tabBootstrap_ApiCommandResponder);
+	ss.initClass($tabBootstrap_ApiNativeHostResponder, $asm, {
+		get_responseAction: function ApiNativeHostResponder$get_ResponseAction() {
+			return this.$2$ResponseActionField;
+		},
+		set_responseAction: function ApiNativeHostResponder$set_ResponseAction(value) {
+			this.$2$ResponseActionField = value;
+		},
+		sendResponse: function ApiNativeHostResponder$SendResponse(requestCommand, result) {
+			if (!ss.staticEquals(this.get_responseAction(), null)) {
+				this.get_responseAction()(requestCommand, result);
+			}
+		}
+	}, $tabBootstrap_ApiCommandResponder);
+	ss.initClass($tabBootstrap_BaseUrlFormatter, $asm, {});
+	ss.initClass($tabBootstrap_DeviceDetector, $asm, {
+		get_deviceType: function DeviceDetector$get_DeviceType() {
+			return this.$deviceType;
+		},
+		get_detectedDeviceType: function DeviceDetector$get_DetectedDeviceType() {
+			return this.$detectedDeviceType;
+		},
+		get_clientDimension: function DeviceDetector$get_ClientDimension() {
+			if (ss.isValue(this.$clientDimension)) {
+				return this.$clientDimension;
+			}
+			var availableSize = $tabBootstrap_UrlLocationHashManager.get_urlLocationSearchParams()[':size'];
+			var sizes = (ss.isValue(availableSize) ? availableSize.split(String.fromCharCode(44)).map(function($t1) {
+				return parseInt($t1);
+			}) : null);
+			this.$clientDimension = ((ss.isNullOrUndefined(sizes) || isNaN(sizes[0]) || isNaN(sizes[1])) ? { w: document.documentElement.clientWidth, h: document.documentElement.clientHeight } : { w: sizes[0], h: sizes[1] });
+			return this.$clientDimension;
+		},
+		$detectDeviceType: function DeviceDetector$DetectDeviceType() {
+			var di = Math.min(this.get_clientDimension().w, this.get_clientDimension().h);
+			this.$detectedDeviceType = ((di <= tsConfig.dsd_phone_max_size) ? 'phone' : ((di <= tsConfig.dsd_tablet_max_size) ? 'tablet' : 'desktop'));
+			var deviceStr = (tsConfig.features['SelectDeviceLayoutOnWeb'] ? tsConfig.deviceTypeOverride : $tabBootstrap_UrlLocationHashManager.get_urlLocationSearchParams()[':device']);
+			if (!ss.isNullOrEmptyString(deviceStr)) {
+				var $t1 = ss.getEnumerator(Object.keys($tabBootstrap_DeviceDetector.$deviceTypeLookup));
+				try {
+					while ($t1.moveNext()) {
+						var dt = $t1.current();
+						if (ss.referenceEquals($tabBootstrap_DeviceDetector.$deviceTypeLookup[dt], deviceStr) && dt !== 'default') {
+							this.$deviceType = dt;
+							return;
+						}
+					}
+				}
+				finally {
+					$t1.dispose();
+				}
+			}
+			this.$deviceType = this.$detectedDeviceType;
+		}
+	});
+	ss.initClass($tabBootstrap_EmbedAndViewportCalculator, $asm, {});
+	ss.initEnum($tabBootstrap_EmbedMode, $asm, { notEmbedded: 'notEmbedded', sameDomainEmbedded: 'sameDomainEmbedded', crossDomainEmbedded: 'crossDomainEmbedded' }, true);
+	ss.initClass($tabBootstrap_Metric, $asm, {}, Object);
+	ss.initClass($tabBootstrap_MetricsController, $asm, {
+		$getNextContextID: function MetricsController$GetNextContextID() {
+			var id = this.$nextContextID;
+			++this.$nextContextID;
+			return id;
+		},
+		$logSessionInfo: function MetricsController$LogSessionInfo() {
+			var parameters = { id: this.$sessionId, sid: this.$metricSessionId, wb: this.$workbookName, s: this.$sheetName, m: tsConfig.is_mobile };
+			$tabBootstrap_MetricsController.logEventInternalUse(new $tabBootstrap_MetricsEvent('init', 2, parameters));
+		},
+		$logContextEnd: function MetricsController$LogContextEnd(context) {
+			var parameters = $tabBootstrap_MetricsController.$buildMetricsEventCommonParameters(context);
+			parameters.t = context.get_$endTime();
+			parameters.e = context.elapsedMS();
+			$tabBootstrap_MetricsController.logEventInternalUse(new $tabBootstrap_MetricsEvent('wp', context.$metricSuite, parameters));
+		}
+	});
+	ss.initClass($tabBootstrap_MetricsEvent, $asm, {});
+	ss.initEnum($tabBootstrap_MetricsSuites, $asm, { none: 0, navigation: 1, bootstrap: 2, commands: 4, rendering: 16, debug: 32, toolbar: 64, fonts: 128, hitTest: 256, min: 3, core: 15, all: 65535 });
+	ss.initClass($tabBootstrap_NavigationInfo, $asm, {
+		$navigationTypeFromNumber: function NavigationInfo$NavigationTypeFromNumber(navType) {
+			switch (navType) {
+				case 0: {
+					return 'Nav';
+				}
+				case 1: {
+					return 'Reload';
+				}
+				case 2: {
+					return 'BackFwd';
+				}
+				case 255: {
+					return 'Reserved';
+				}
+				default: {
+					return null;
+				}
+			}
+		}
+	});
+	ss.initClass($tabBootstrap_PerformanceReporting, $asm, {});
+	ss.initClass($tabBootstrap_RenderingConstantsAndHelpers, $asm, {});
+	ss.initClass($tabBootstrap_UrlLocationHashManager, $asm, {});
+	ss.initClass($tabBootstrap_Utility, $asm, {});
+	ss.initClass($tabBootstrap_ViewerBootstrap, $asm, {
+		get_hasBootstrapCompleted: function ViewerBootstrap$get_HasBootstrapCompleted() {
+			return this.bootstrapState === 4 || this.bootstrapState === 5;
+		},
+		get_hasBootstrapSucceeded: function ViewerBootstrap$get_HasBootstrapSucceeded() {
+			return this.bootstrapState === 4;
+		},
+		get_hasBootstrapFailed: function ViewerBootstrap$get_HasBootstrapFailed() {
+			return this.bootstrapState === 5;
+		},
+		get_authoringLeftAreaWidth: function ViewerBootstrap$get_AuthoringLeftAreaWidth() {
+			return this.authoringLeftAreaWidth;
+		},
+		set_authoringLeftAreaWidth: function ViewerBootstrap$set_AuthoringLeftAreaWidth(value) {
+			this.authoringLeftAreaWidth = value;
+		},
+		get_rightAreaDrawerWidth: function ViewerBootstrap$get_RightAreaDrawerWidth() {
+			return this.rightAreaDrawerWidth;
+		},
+		set_rightAreaDrawerWidth: function ViewerBootstrap$set_RightAreaDrawerWidth(value) {
+			this.rightAreaDrawerWidth = value;
+		},
+		get_sessionBeingCleared: function ViewerBootstrap$get_SessionBeingCleared() {
+			return this.$sessionBeingCleared;
+		},
+		get_sizeConstraints: function ViewerBootstrap$get_SizeConstraints() {
+			return $tabBootstrap_VizSizeConstraints.getSizeConstraints(this.get_deviceDetector().get_deviceType());
+		},
+		get_deviceDetector: function ViewerBootstrap$get_DeviceDetector() {
+			return this.$deviceDetector;
+		},
+		get_compositeSize: function ViewerBootstrap$get_CompositeSize() {
+			return this.get_sizeConstraints();
+		},
+		$setupClearSessionOnBrowserUnload: function ViewerBootstrap$SetupClearSessionOnBrowserUnload() {
+			this.clearSessionOnUnload = tsConfig.clear_session_on_unload && !tsConfig.is_mobile_app;
+			if (!this.clearSessionOnUnload) {
+				return;
+			}
+			if (!!ss.isValue(window.self['addEventListener'])) {
+				window.addEventListener('beforeunload', ss.mkdel(this, function() {
+					this.$sessionBeingCleared = true;
+					this.clearSession();
+				}), false);
+			}
+			else if (!!ss.isValue(window.self['attachEvent'])) {
+				window.attachEvent('onbeforeunload', ss.mkdel(this, function() {
+					this.$sessionBeingCleared = true;
+					this.clearSession();
+				}));
+			}
+		},
+		disableClearSessionOnBrowserUnload: function ViewerBootstrap$DisableClearSessionOnBrowserUnload() {
+			this.clearSessionOnUnload = false;
+		},
+		waitOnInitialLayoutModel: function ViewerBootstrap$WaitOnInitialLayoutModel(successCallback, errorCallback, onSecondaryResponse) {
+			if (this.get_hasBootstrapCompleted()) {
+				errorCallback(null);
+				return;
+			}
+			if (this.bootstrapState !== 3) {
+				this._onSuccess = successCallback;
+				this._onError = errorCallback;
+				this['_onSecondary'] = onSecondaryResponse;
+			}
+			else {
+				this._onError = errorCallback;
+				this['_onSecondary'] = onSecondaryResponse;
+				var model = this.initialLayoutModel;
+				var err = this.initialLayoutError;
+				if (ss.isValue(err) || ss.isNullOrUndefined(model)) {
+					this.bootstrapState = 5;
+					errorCallback(err);
+				}
+				else {
+					successCallback(model);
+					this.bootstrapState = 4;
+					if (ss.isValue(onSecondaryResponse) && ss.isValue(this.secondaryResponses)) {
+						for (var i = 0; i < this.secondaryResponses.length; i++) {
+							onSecondaryResponse(this.secondaryResponses[i]);
+						}
+					}
+				}
+			}
+		},
+		$setPortSizeAndRequestInitialLayoutModelWhenNotified: function ViewerBootstrap$SetPortSizeAndRequestInitialLayoutModelWhenNotified() {
+			var messageListener = null;
+			messageListener = ss.mkdel(this, function(ev) {
+				var e = ss.cast(ev, MessageEvent);
+				var command = $tab_NonApiCommand.parse(e.data.toString());
+				if (command.get_name() === 'tableau.bootstrap') {
+					var bootstrapParams = this.$getBootstrapParams();
+					this.$setPortSizeAndRequestInitialLayoutModel(bootstrapParams);
+					if (!!ss.isValue(window.self.removeEventListener)) {
+						window.removeEventListener('message', messageListener, false);
+					}
+					else {
+						window.self.detachEvent('onmessage', messageListener);
+					}
+				}
+			});
+			if (!!ss.isValue(window.self.addEventListener)) {
+				window.addEventListener('message', messageListener, false);
+			}
+			else {
+				window.self.attachEvent('onmessage', messageListener);
+			}
+		},
+		$getBootstrapParams: function ViewerBootstrap$GetBootstrapParams() {
+			var worksheetPortSize = this.getWebClientPortSize('worksheet');
+			var dashboardPortSize = this.getWebClientPortSize('dashboard');
+			var bootstrapParams = $tabBootstrap_$BootstrapRequestBuilder.$createBootstrapParams(this.get_deviceDetector().get_clientDimension(), worksheetPortSize, dashboardPortSize);
+			return bootstrapParams;
+		},
+		bootstrapRecoverSession: function ViewerBootstrap$BootstrapRecoverSession(sessionId, sessionStateIds) {
+			this.get_deviceDetector().$detectDeviceType();
+			var bootstrapParams = this.$getBootstrapParams();
+			bootstrapParams.push(':recover_old_session_id=' + encodeURIComponent(sessionId));
+			var uriEncodedIds = encodeURIComponent(ss.arrayFromEnumerable(sessionStateIds).join(','));
+			bootstrapParams.push(':recover_session_state_tickets=' + uriEncodedIds);
+			this.$setPortSizeAndRequestInitialLayoutModel(bootstrapParams);
+		},
+		bootstrap: function ViewerBootstrap$Bootstrap() {
+			this.get_deviceDetector().$detectDeviceType();
+			if (tsConfig.bootstrapWhenNotified && $tabBootstrap_EmbedAndViewportCalculator.get_isEmbeddedInsideAnotherPage()) {
+				this.$setPortSizeAndRequestInitialLayoutModelWhenNotified();
+			}
+			else {
+				var performBootstrap = ss.mkdel(this, function() {
+					var bootstrapParams = this.$getBootstrapParams();
+					this.$setPortSizeAndRequestInitialLayoutModel(bootstrapParams);
+				});
+				if (window.innerHeight === 0 || window.innerWidth === 0) {
+					window.requestAnimationFrame(function(_) {
+						performBootstrap();
+					});
+				}
+				else {
+					performBootstrap();
+				}
+			}
+			this.$sendInitialSizeToApi();
+		},
+		$setPortSizeAndRequestInitialLayoutModel: function ViewerBootstrap$SetPortSizeAndRequestInitialLayoutModel(bootstrapParams) {
+			this.rid++;
+			var staticImageElement = document.getElementById('staticImage');
+			if (tsConfig.bootstrapOnMouseover) {
+				this.scaleImageToFit(staticImageElement);
+			}
+			var queryParams = bootstrapParams.join('&');
+			var uri = $tabBootstrap_BaseUrlFormatter.formatBootstrapSessionMethod('bootstrapSession', tsConfig.sessionid, null);
+			var responseId = this.rid;
+			var mc = $tabBootstrap_MetricsController.createContext('BTSTRP'.toString(), 2, null);
+			var that = this;
+			var onInitial = ss.mkdel(this, function(jsonResponse) {
+				mc.dispose();
+				jsonResponse.rid = responseId;
+				if (ss.isValue(this._onSuccess)) {
+					this._onSuccess(jsonResponse);
+					this.bootstrapState = 4;
+				}
+				else {
+					this.bootstrapState = 3;
+				}
+				this.markInitialLayoutModelAsFinished(jsonResponse, null);
+			});
+			var onSecondary = function(jsonResponse1) {
+				if ('_onSecondary' in that) {
+					that['_onSecondary'](jsonResponse1);
+				}
+				else {
+					that.appendSecondaryResponse(jsonResponse1);
+				}
+			};
+			var onErr = ss.mkdel(this, function(err) {
+				if (ss.isValue(this._onError)) {
+					this.bootstrapState = 5;
+					this._onError(err);
+				}
+				else {
+					this.bootstrapState = 3;
+				}
+				this.markInitialLayoutModelAsFinished(null, err);
+				mc.dispose();
+			});
+			var bootstrap = ss.mkdel(this, function() {
+				this.bootstrapState = 2;
+				if (ss.isNullOrUndefined(tsConfig.offlineBootstrapResponse)) {
+					$tabBootstrap_Utility.xhrPostJsonChunked(uri, queryParams, onInitial, onSecondary, onErr, true);
+				}
+				else {
+					if (tsConfig.offlineBootstrapResponse.length === 0) {
+						throw new ss.Exception('Offline bootstrap response is empty');
+					}
+					onInitial(JSON.parse(tsConfig.offlineBootstrapResponse[0]));
+					for (var i = 1; i < tsConfig.offlineBootstrapResponse.length; i++) {
+						onSecondary(JSON.parse(tsConfig.offlineBootstrapResponse[i]));
+					}
+				}
+			});
+			if (!tsConfig.bootstrapOnMouseover) {
+				bootstrap();
+				return;
+			}
+			var spinnerGlassElement = document.getElementById('initializing_thin_client');
+			this.hideLoadIndicators(spinnerGlassElement, staticImageElement);
+			var showLoadIndicatorsAndBootstrap = ss.mkdel(this, function() {
+				this.showLoadIndicators(spinnerGlassElement, staticImageElement);
+				bootstrap();
+			});
+			if (ss.isValue(staticImageElement)) {
+				if (!!ss.isValue(staticImageElement.addEventListener)) {
+					staticImageElement.addEventListener('mouseover', $tabBootstrap_ViewerBootstrap.makeOneTimeListener(showLoadIndicatorsAndBootstrap), false);
+				}
+				else if (!!ss.isValue(staticImageElement.attachEvent)) {
+					staticImageElement.attachEvent('onmouseover', $tabBootstrap_ViewerBootstrap.makeOneTimeHandler(showLoadIndicatorsAndBootstrap));
+				}
+			}
+		},
+		showLyteboxIfNeeded: function ViewerBootstrap$ShowLyteboxIfNeeded() {
+			if (tsConfig.showLytebox) {
+				document.getElementById('primaryContent').style.display = 'block';
+				document.getElementById('primaryContentLink').style.display = '';
+				document.getElementById('centeringContainer').className = 'lyteboxed';
+				document.getElementById('lyteboxClose').style.display = 'block';
+				document.body.className += ' lyteboxed';
+			}
+		},
+		getViewport: function ViewerBootstrap$GetViewport() {
+			if (tsConfig.is_mobile_device && !tsConfig.embedded) {
+				return $tabBootstrap_EmbedAndViewportCalculator.$getNonEmbeddedMobileViewport();
+			}
+			return ((tsConfig.features['IframeSizedToWindow'] && !tsConfig.is_mobile) ? $tabBootstrap_EmbedAndViewportCalculator.$getWindowSize() : $tabBootstrap_EmbedAndViewportCalculator.$getViewport());
+		},
+		$sendInitialSizeToApi: function ViewerBootstrap$SendInitialSizeToApi() {
+			var compositeSize = this.get_sizeConstraints();
+			var $t1 = new Object();
+			$t1.maxHeight = compositeSize.maxHeight;
+			$t1.maxWidth = compositeSize.maxWidth;
+			$t1.minHeight = compositeSize.minHeight;
+			$t1.minWidth = compositeSize.minWidth;
+			var sizeConstraints = $t1;
+			var $t2 = new Object();
+			$t2.sizeConstraints = sizeConstraints;
+			$t2.chromeHeight = this.chromeMetricsForViewingOnly().h;
+			var sizeForJsApi = $t2;
+			this.apiResponder.sendEventNotification('api.FirstVizSizeKnownEvent', null, JSON.stringify(sizeForJsApi));
+		},
+		getWebClientDashboardContainerSize: function ViewerBootstrap$GetWebClientDashboardContainerSize(sheetType) {
+			var v = this.getViewport();
+			var chromeMetrics = this.chromeMetrics(sheetType);
+			v.h -= chromeMetrics.h;
+			v.w -= chromeMetrics.w;
+			return this.adjustForMinMaxDashboardSizes(v);
+		},
+		getVizClientContainerSize: function ViewerBootstrap$GetVizClientContainerSize(sheetType) {
+			var vizClientContainerSize = this.getWebClientDashboardContainerSize(sheetType);
+			vizClientContainerSize.h += $tabBootstrap_VizLayoutConstants.get_tabsHeight() + $tabBootstrap_VizLayoutConstants.get_displayToolbarHeight();
+			return vizClientContainerSize;
+		},
+		getWebClientPortSize: function ViewerBootstrap$GetWebClientPortSize(sheetType) {
+			var contentSize = this.getWebClientDashboardContainerSize(sheetType);
+			if (sheetType === 'dashboard' && ss.isValue(tsConfig.features) && tsConfig.is_authoring) {
+				contentSize.h -= $tabBootstrap_VizLayoutConstants.get_authoringGutter().top + $tabBootstrap_VizLayoutConstants.get_authoringGutter().bottom;
+				contentSize.w -= $tabBootstrap_VizLayoutConstants.get_authoringGutter().left + $tabBootstrap_VizLayoutConstants.get_authoringGutter().right;
+			}
+			return this.adjustForMinMaxDashboardSizes(contentSize);
+		},
+		adjustForMinMaxDashboardSizes: function ViewerBootstrap$AdjustForMinMaxDashboardSizes(v) {
+			var compositeSize = this.get_sizeConstraints();
+			var minw = compositeSize.minWidth;
+			var maxw = compositeSize.maxWidth;
+			if (minw !== 0 && v.w < minw) {
+				v.w = minw;
+			}
+			else if (maxw !== 0 && v.w > maxw) {
+				v.w = maxw;
+			}
+			else if (tsConfig.showLytebox) {
+				v.w = tsConfig.lyteboxedVizWidth;
+			}
+			var minh = compositeSize.minHeight;
+			if (minh !== 0 && v.h < minh) {
+				v.h = minh;
+			}
+			else {
+				var maxh = compositeSize.maxHeight;
+				if (maxh !== 0 && v.h > maxh) {
+					v.h = maxh;
+				}
+			}
+			return v;
+		},
+		chromeMetrics: function ViewerBootstrap$ChromeMetrics(sheetType) {
+			var h = 0;
+			var w = 0;
+			if (this.toolbarDisplayed) {
+				h += $tabBootstrap_VizLayoutConstants.get_vizToolbarHeight();
+			}
+			h += $tabBootstrap_VizLayoutConstants.get_authoringToolbarHeight();
+			h += $tabBootstrap_VizLayoutConstants.get_authoringMenuBarHeight();
+			h += $tabBootstrap_VizLayoutConstants.get_authoringTabsHeight();
+			h += $tabBootstrap_VizLayoutConstants.get_tabsHeight();
+			if (!tsConfig.is_mobile) {
+				h += 2 * $tabBootstrap_VizLayoutConstants.get_authoringVizBorderWidth();
+				w += 2 * $tabBootstrap_VizLayoutConstants.get_authoringVizBorderWidth();
+			}
+			if (sheetType === 'worksheet') {
+				h += $tabBootstrap_VizLayoutConstants.get_authoringShelfHeight();
+				w += $tabBootstrap_VizLayoutConstants.get_authoringShelfWidth();
+				w += this.get_authoringLeftAreaWidth();
+				if (!tsConfig.is_mobile) {
+					h += $tabBootstrap_VizLayoutConstants.get_authoringVizMargin();
+					w += $tabBootstrap_VizLayoutConstants.get_authoringVizMargin();
+				}
+			}
+			else if (sheetType === 'dashboard' || sheetType === 'story') {
+				w += this.get_authoringLeftAreaWidth();
+			}
+			w += this.get_rightAreaDrawerWidth();
+			return { w: w, h: h };
+		},
+		getWebClientContentSizeForViewingOnly: function ViewerBootstrap$GetWebClientContentSizeForViewingOnly() {
+			var v = this.getViewport();
+			var chromeMetrics = this.chromeMetricsForViewingOnly();
+			v.h -= chromeMetrics.h;
+			v.w -= chromeMetrics.w;
+			return this.adjustForMinMaxDashboardSizes(v);
+		},
+		chromeMetricsForViewingOnly: function ViewerBootstrap$ChromeMetricsForViewingOnly() {
+			var h = 0;
+			if (this.toolbarDisplayed) {
+				h += $tabBootstrap_VizLayoutConstants.get_vizToolbarHeight();
+			}
+			h += $tabBootstrap_VizLayoutConstants.get_tabsHeight();
+			return { w: 0, h: h };
+		},
+		showLoadIndicators: function ViewerBootstrap$ShowLoadIndicators(spinnerGlassElement, staticImageElement) {
+			if (ss.isValue(spinnerGlassElement)) {
+				spinnerGlassElement.style.display = 'block';
+			}
+			if (ss.isValue(staticImageElement)) {
+				staticImageElement.style.cursor = 'wait';
+			}
+		},
+		hideLoadIndicators: function ViewerBootstrap$HideLoadIndicators(spinnerGlassElement, staticImageElement) {
+			if (!ss.isNullOrUndefined(spinnerGlassElement)) {
+				spinnerGlassElement.style.display = 'none';
+			}
+			if (!ss.isNullOrUndefined(staticImageElement)) {
+				staticImageElement.style.cursor = 'default';
+			}
+		},
+		clearSession: function ViewerBootstrap$ClearSession() {
+			if (!this.clearSessionOnUnload) {
+				return;
+			}
+			var uri = $tabBootstrap_BaseUrlFormatter.formatBootstrapSessionMethod('clear', tsConfig.sessionid, null);
+			var noOp = function() {
+			};
+			$tabBootstrap_Utility.$xhrPostJson(uri, null, noOp, noOp, false);
+		},
+		markInitialLayoutModelAsFinished: function ViewerBootstrap$MarkInitialLayoutModelAsFinished(model, err) {
+			this.initialLayoutError = err;
+			this.initialLayoutModel = model;
+			delete this['_onSuccess'];
+		},
+		appendSecondaryResponse: function ViewerBootstrap$AppendSecondaryResponse(jsonResponse) {
+			if (ss.isValue(this.secondaryResponses)) {
+				this.secondaryResponses.push(jsonResponse);
+			}
+			else {
+				this.secondaryResponses = [jsonResponse];
+			}
+		},
+		scaleImageToFit: function ViewerBootstrap$ScaleImageToFit(staticImageElement) {
+			var staticmageUri = staticImageElement.style.backgroundImage.replace(new RegExp('"', 'g'), '').replace(new RegExp('url\\((.*)\\)', 'gi'), '$1');
+			var $t1 = document.createElement('img');
+			var imageElement = ss.cast($t1, ss.isValue($t1) && (ss.isInstanceOfType($t1, Element) && $t1.tagName === 'IMG'));
+			var fitImage = ss.mkdel(this, function() {
+				var portSize = this.getWebClientContentSizeForViewingOnly();
+				var chromeMetrics = this.chromeMetricsForViewingOnly();
+				var targetSize = { w: portSize.w + chromeMetrics.w - parseInt(staticImageElement.style.left, 10), h: portSize.h + chromeMetrics.h - parseInt(staticImageElement.style.top, 10) };
+				if (ss.Int32.div(targetSize.h, imageElement.height) < ss.Int32.div(targetSize.w, imageElement.width)) {
+					var w = Math.round(targetSize.h * imageElement.width / imageElement.height);
+					staticImageElement.style.backgroundSize = w + 'px ' + targetSize.h + 'px';
+				}
+				else {
+					var h = Math.round(targetSize.w * imageElement.height / imageElement.width);
+					staticImageElement.style.backgroundSize = targetSize.w + 'px ' + h + 'px';
+				}
+			});
+			if (!!ss.isValue(imageElement.addEventListener)) {
+				imageElement.addEventListener('load', fitImage, false);
+			}
+			else if (!!ss.isValue(imageElement.attachEvent)) {
+				imageElement.attachEvent('onload', function() {
+					fitImage(null);
+				});
+			}
+			else {
+				imageElement.onload = fitImage;
+			}
+			var resetBootstrapOnMouseOver = function() {
+				tsConfig.bootstrapOnMouseover = false;
+				if (ss.isNullOrUndefined(staticImageElement)) {
+					return;
+				}
+				if (!!ss.isValue(staticImageElement.dispatchEvent)) {
+					var evt = document.createEvent('MouseEvents');
+					evt.initMouseEvent('mouseover', true, true, window.self, null, 0, 0, 0, 0, false, false, false, false, null, null);
+					staticImageElement.dispatchEvent(evt);
+				}
+				else if (!!ss.isValue(staticImageElement['fireEvent'])) {
+					staticImageElement['fireEvent']('onmouseover');
+				}
+			};
+			if (!!ss.isValue(imageElement['addEventListener'])) {
+				imageElement.addEventListener('error', resetBootstrapOnMouseOver, false);
+			}
+			else if (!!ss.isValue(imageElement['attachEvent'])) {
+				imageElement.attachEvent('onerror', function() {
+					resetBootstrapOnMouseOver(null);
+				});
+			}
+			else {
+				imageElement['onerror'] = resetBootstrapOnMouseOver;
+			}
+			imageElement.src = staticmageUri;
+		}
+	});
+	ss.initClass($tabBootstrap_VizLayoutConstants, $asm, {});
+	ss.initClass($tabBootstrap_VizSizeConstraints, $asm, {});
+	ss.setMetadata($tabBootstrap_MetricsSuites, { enumFlags: true });
+	(function() {
+		$tab__ApiCommand.crossDomainEventNotificationId = 'xdomainSourceId';
+		$tab__ApiCommand.lastRequestMessage = null;
+		$tab__ApiCommand.lastResponseMessage = null;
+		$tab__ApiCommand.lastClientInfoResponseMessage = null;
+		$tab__ApiCommand.$nextCommandId = 0;
+	})();
+	(function() {
+		$tabBootstrap_PerformanceReporting.supportsPerfApi = false;
+		var windowAsDynamic = window.window;
+		$tabBootstrap_PerformanceReporting.supportsPerfApi = !!(ss.isValue(windowAsDynamic['performance']) && ss.isValue(windowAsDynamic['performance']['mark']));
+	})();
+	(function() {
+		$tabBootstrap_$NullMetricsContext.$instance = null;
+	})();
+	(function() {
+		$tabBootstrap_$LocalMetricsContext.$eventCount = 0;
+	})();
+	(function() {
+		$tabBootstrap_$LocalWebClientMetricsLogger.$appStartMarker = 'AppStartEpochMarker';
+	})();
+	(function() {
+		$tabBootstrap_MetricsController.$fullMetricNameLookup = ss.mkdict(['BTSTRP', 'Bootstrap Request', 'PROPRI', 'Process Primary Payload', 'PROSEC', 'Process Secondary Payload', 'MDLINI', 'Initialize Models', 'MDLEVT', 'Handle Model Events', 'EXELOC', 'Execute Local Command', 'EXEREM', 'Execute Remote Command', 'PROLOC', 'Process Local Command Response', 'PROREM', 'Process Remote Command Response', 'RNDRPT', 'Render Panetable', 'RNDRRG', 'Render Region', 'RTCONV', 'Runtime model presmodel conversion', 'CLNTLD', 'Client Loaded', 'APPSTR', 'Application Startup', 'APPINT', 'Application Interactive', 'ALLZNS', 'All Zones Loaded', 'TBRLAY', 'Toolbar Layout', 'TBRHNT', 'Toolbar HandleNewToolbar', 'TBRADD', 'Toolbar AddToolbar', 'TBRHRE', 'Toolbar HandleResize', 'MDLOAD', 'Load js async', 'EMLOAD', 'Emscripten load', 'RTLOAD', 'Runtime load', 'RTLPRC', 'Runtime command local processing']);
+		$tabBootstrap_MetricsController.getTiming = null;
+		$tabBootstrap_MetricsController.recordingStart = 0;
+		$tabBootstrap_MetricsController.$reportLocalMetrics = false;
+		$tabBootstrap_MetricsController.$suiteNameLookup = null;
+		$tabBootstrap_MetricsController.$appStartEpoch = 0;
+		$tabBootstrap_MetricsController.$instance = null;
+		$tabBootstrap_MetricsController.$localEventLogger = new $tabBootstrap_$LocalWebClientMetricsLogger();
+		$tabBootstrap_MetricsController.$reportLocalMetrics = $tabBootstrap_PerformanceReporting.supportsPerfApi;
+		$tabBootstrap_MetricsController.recordingStart = (new Date()).getTime();
+		if (!!(ss.isValue(window) && ss.isValue(window.self.performance) && ss.isValue(window.self.performance['now']))) {
+			var epoch;
+			if (ss.isValue(window.self.performance.timing)) {
+				epoch = window.self.performance.timing.responseStart - window.self.performance.timing.navigationStart;
+			}
+			else {
+				epoch = 0;
+			}
+			$tabBootstrap_MetricsController.getTiming = function() {
+				return window.self.performance.now() - epoch;
+			};
+		}
+		else {
+			var pageNavigationEpoch = (new Date()).getTime();
+			$tabBootstrap_MetricsController.getTiming = function() {
+				return (new Date()).getTime() - pageNavigationEpoch;
+			};
+		}
+		$tabBootstrap_MetricsController.$appStartEpoch = $tabBootstrap_MetricsController.getTiming();
+		if ($tabBootstrap_MetricsController.$reportLocalMetrics) {
+			$tabBootstrap_$LocalWebClientMetricsLogger.$markAppStart();
+		}
+		$tabBootstrap_MetricsController.$suiteNameLookup = {};
+		$tabBootstrap_MetricsController.$suiteNameLookup['none'] = 0;
+		$tabBootstrap_MetricsController.$suiteNameLookup['navigation'] = 1;
+		$tabBootstrap_MetricsController.$suiteNameLookup['bootstrap'] = 2;
+		$tabBootstrap_MetricsController.$suiteNameLookup['rendering'] = 16;
+		$tabBootstrap_MetricsController.$suiteNameLookup['commands'] = 4;
+		$tabBootstrap_MetricsController.$suiteNameLookup['toolbar'] = 64;
+		$tabBootstrap_MetricsController.$suiteNameLookup['hittest'] = 256;
+		$tabBootstrap_MetricsController.$suiteNameLookup['debug'] = 32;
+		$tabBootstrap_MetricsController.$suiteNameLookup['fonts'] = 128;
+		$tabBootstrap_MetricsController.$suiteNameLookup['min'] = 3;
+		$tabBootstrap_MetricsController.$suiteNameLookup['core'] = 15;
+		$tabBootstrap_MetricsController.$suiteNameLookup['all'] = 65535;
+	})();
+	(function() {
+		$tabBootstrap_UrlLocationHashManager.CLIENTNO = 'cn';
+	})();
+	(function() {
+		$tabBootstrap_EmbedAndViewportCalculator.$embedModeVar = null;
+		$tabBootstrap_EmbedAndViewportCalculator.$embedModeVar = $tabBootstrap_EmbedAndViewportCalculator.$calculateEmbedMode();
+	})();
+	(function() {
+		$tabBootstrap_NavigationInfo.$navTypeKey = 'navType';
+		$tabBootstrap_NavigationInfo.$navSrcKey = 'navSrc';
+	})();
+	(function() {
+		$tabBootstrap_RenderingConstantsAndHelpers.transparentLineMarkLimit = 1200;
+	})();
+	(function() {
+		$tabBootstrap_$DojoConfigInitializer.$dojoLocale = 'en-us';
+	})();
+	(function() {
+		window.onerror = ss.delegateCombine(window.onerror, function(message, source, lineno, column, error) {
+			return $tabBootstrap_$ViewerInitializer.$globalErrorHandler(message);
+		});
+		$tabBootstrap_$ViewerInitializer.$parseTsConfig();
+		$tabBootstrap_$DojoConfigInitializer.$configureDojo();
+	})();
+	(function() {
+		$tabBootstrap_DeviceDetector.$deviceTypeLookup = ss.mkdict(['phone', 'phone', 'tablet', 'tablet', 'desktop', 'desktop', 'default', 'default']);
+	})();
+	(function() {
+		$tabBootstrap_ViewerBootstrap._instance = null;
+	})();
+	(function() {
+		$tabBootstrap_VizLayoutConstants.toolbarHeight = 27;
+		$tabBootstrap_VizLayoutConstants.largeToolbarHeight = 60;
+		$tabBootstrap_VizLayoutConstants.tabsHeightPx = 23;
+		$tabBootstrap_VizLayoutConstants.rightAreaDrawerWidth = 320;
+		$tabBootstrap_VizLayoutConstants.$authoringMenuHeight = 60;
+		$tabBootstrap_VizLayoutConstants.$authoringMenuHeightMobileApp = 44;
+	})();
+})();
+'use strict';
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = isSupported;
+} else if (window) {
+    window.mapboxgl = window.mapboxgl || {};
+    window.mapboxgl.supported = isSupported;
+}
+
+/**
+ * Test whether the current browser supports Mapbox GL JS
+ * @param {Object} options
+ * @param {boolean} [options.failIfMajorPerformanceCaveat=false] Return `false`
+ *   if the performance of Mapbox GL JS would be dramatically worse than
+ *   expected (i.e. a software renderer is would be used)
+ * @return {boolean}
+ */
+function isSupported(options) {
+    return !!(
+        isBrowser() &&
+        isArraySupported() &&
+        isFunctionSupported() &&
+        isObjectSupported() &&
+        isJSONSupported() &&
+        isWorkerSupported() &&
+        isUint8ClampedArraySupported() &&
+        isArrayBufferSupported() &&
+        isWebGLSupportedCached(options && options.failIfMajorPerformanceCaveat)
+    );
+}
+
+function isBrowser() {
+    return typeof window !== 'undefined' && typeof document !== 'undefined';
+}
+
+function isArraySupported() {
+    return (
+        Array.prototype &&
+        Array.prototype.every &&
+        Array.prototype.filter &&
+        Array.prototype.forEach &&
+        Array.prototype.indexOf &&
+        Array.prototype.lastIndexOf &&
+        Array.prototype.map &&
+        Array.prototype.some &&
+        Array.prototype.reduce &&
+        Array.prototype.reduceRight &&
+        Array.isArray
+    );
+}
+
+function isFunctionSupported() {
+    return Function.prototype && Function.prototype.bind;
+}
+
+function isObjectSupported() {
+    return (
+        Object.keys &&
+        Object.create &&
+        Object.getPrototypeOf &&
+        Object.getOwnPropertyNames &&
+        Object.isSealed &&
+        Object.isFrozen &&
+        Object.isExtensible &&
+        Object.getOwnPropertyDescriptor &&
+        Object.defineProperty &&
+        Object.defineProperties &&
+        Object.seal &&
+        Object.freeze &&
+        Object.preventExtensions
+    );
+}
+
+function isJSONSupported() {
+    return 'JSON' in window && 'parse' in JSON && 'stringify' in JSON;
+}
+
+function isWorkerSupported() {
+    if (!('Worker' in window && 'Blob' in window && 'URL' in window)) {
+        return false;
+    }
+
+    var blob = new Blob([''], { type: 'text/javascript' });
+    var workerURL = URL.createObjectURL(blob);
+    var supported;
+    var worker;
+
+    try {
+        worker = new Worker(workerURL);
+        supported = true;
+    } catch (e) {
+        supported = false;
+    }
+
+    if (worker) {
+        worker.terminate();
+    }
+    URL.revokeObjectURL(workerURL);
+
+    return supported;
+}
+
+// IE11 only supports `Uint8ClampedArray` as of version
+// [KB2929437](https://support.microsoft.com/en-us/kb/2929437)
+function isUint8ClampedArraySupported() {
+    return 'Uint8ClampedArray' in window;
+}
+
+// https://github.com/mapbox/mapbox-gl-supported/issues/19
+function isArrayBufferSupported() {
+    return ArrayBuffer.isView;
+}
+
+var isWebGLSupportedCache = {};
+function isWebGLSupportedCached(failIfMajorPerformanceCaveat) {
+
+    if (isWebGLSupportedCache[failIfMajorPerformanceCaveat] === undefined) {
+        isWebGLSupportedCache[failIfMajorPerformanceCaveat] = isWebGLSupported(failIfMajorPerformanceCaveat);
+    }
+
+    return isWebGLSupportedCache[failIfMajorPerformanceCaveat];
+}
+
+isSupported.webGLContextAttributes = {
+    antialias: false,
+    alpha: true,
+    stencil: true,
+    depth: true
+};
+
+function isWebGLSupported(failIfMajorPerformanceCaveat) {
+
+    var canvas = document.createElement('canvas');
+
+    var attributes = Object.create(isSupported.webGLContextAttributes);
+    attributes.failIfMajorPerformanceCaveat = failIfMajorPerformanceCaveat;
+
+    if (canvas.probablySupportsContext) {
+        return (
+            canvas.probablySupportsContext('webgl', attributes) ||
+            canvas.probablySupportsContext('experimental-webgl', attributes)
+        );
+
+    } else if (canvas.supportsContext) {
+        return (
+            canvas.supportsContext('webgl', attributes) ||
+            canvas.supportsContext('experimental-webgl', attributes)
+        );
+
+    } else {
+        return (
+            canvas.getContext('webgl', attributes) ||
+            canvas.getContext('experimental-webgl', attributes)
+        );
+    }
+}
+
+var viewerBootstrap = tabBootstrap.ViewerBootstrap.get_instance();
+viewerBootstrap.bootstrap();
+viewerBootstrap.showLyteboxIfNeeded();
+
+})();
+
+// END Bootstrap

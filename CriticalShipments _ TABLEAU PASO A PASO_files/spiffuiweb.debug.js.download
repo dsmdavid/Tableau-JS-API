@@ -1,0 +1,458 @@
+/*! BEGIN SpiffUIWeb */
+
+(function() {
+	'dont use strict';
+	var $asm = {};
+	global.spiff = global.spiff || {};
+	ss.initAssembly($asm, 'spiffuiweb');
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UIWeb.ChangeSpotlightedItemMode
+	var $spiff_ChangeSpotlightedItemMode = function() {
+	};
+	$spiff_ChangeSpotlightedItemMode.__typeName = 'spiff.ChangeSpotlightedItemMode';
+	global.spiff.ChangeSpotlightedItemMode = $spiff_ChangeSpotlightedItemMode;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UIWeb.ComboBoxViewWeb
+	var $spiff_ComboBoxViewWeb = function(viewModel) {
+		spiff.ComboBoxView.call(this, viewModel, new spiff.ComboBoxTemplate());
+	};
+	$spiff_ComboBoxViewWeb.__typeName = 'spiff.ComboBoxViewWeb';
+	global.spiff.ComboBoxViewWeb = $spiff_ComboBoxViewWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UIWeb.CompositeSearchWidgetWeb
+	var $spiff_CompositeSearchWidgetWeb = function() {
+		this.$spotlightedListItemIndex = null;
+		this.$spotlightedListItem = null;
+		this.$3$SpotlightedListItemChangedField = null;
+		this.$3$TabKeyPressedField = null;
+		this.$3$SpotlightedItemLogicField = null;
+		spiff.CompositeSearchWidget.call(this, new spiff.CompositeSearchWidgetTemplate());
+		this.compositeSearchWidgetTemplate.get_textInputView().get_inputElement().keydown(ss.mkdel(this, this.$handleKeyDown));
+		this.set_spotlightedItemLogic(null);
+	};
+	$spiff_CompositeSearchWidgetWeb.__typeName = 'spiff.CompositeSearchWidgetWeb';
+	global.spiff.CompositeSearchWidgetWeb = $spiff_CompositeSearchWidgetWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UIWeb.ICompositeSearchWidgetSpotlightedItemLogic
+	var $spiff_ICompositeSearchWidgetSpotlightedItemLogic = function() {
+	};
+	$spiff_ICompositeSearchWidgetSpotlightedItemLogic.__typeName = 'spiff.ICompositeSearchWidgetSpotlightedItemLogic';
+	global.spiff.ICompositeSearchWidgetSpotlightedItemLogic = $spiff_ICompositeSearchWidgetSpotlightedItemLogic;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UIWeb.MenuViewWeb
+	var $spiff_MenuViewWeb = function(viewModel) {
+		this.$lastEnterX = 0;
+		this.$lastEnterY = 0;
+		spiff.MenuView.call(this, viewModel, new $spiff_MenuViewWebTemplate());
+		this.updateMenu();
+		this.menuViewModel.add_menuItemFocusChanged(ss.mkdel(this, this.$focusChanged));
+		this.disposables.add$1(new tab.CallOnDispose(ss.mkdel(this, function() {
+			this.menuViewModel.remove_menuItemFocusChanged(ss.mkdel(this, this.$focusChanged));
+		})));
+		this.menuDisposables.add$1(spiff.EventUtil.bindWithDispose(this.element, 'keypress', ss.mkdel(this, this.$onMenuKeyPress)));
+		this.menuDisposables.add$1(spiff.EventUtil.bindWithDispose(this.element, 'keydown', ss.mkdel(this, this.$onMenuKeyDown)));
+	};
+	$spiff_MenuViewWeb.__typeName = 'spiff.MenuViewWeb';
+	$spiff_MenuViewWeb.$isContentOverflowingY = function MenuViewWeb$IsContentOverflowingY(obj) {
+		return obj.prop('scrollHeight') > obj.prop('clientHeight') + 1;
+	};
+	global.spiff.MenuViewWeb = $spiff_MenuViewWeb;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UIWeb.MenuViewWebTemplate
+	var $spiff_MenuViewWebTemplate = function() {
+		spiff.MenuTemplate.call(this);
+	};
+	$spiff_MenuViewWebTemplate.__typeName = 'spiff.MenuViewWebTemplate';
+	global.spiff.MenuViewWebTemplate = $spiff_MenuViewWebTemplate;
+	////////////////////////////////////////////////////////////////////////////////
+	// Tableau.JavaScript.Spiff.UIWeb.UberPopupViewWeb
+	var $spiff_UberPopupViewWeb = function(viewModel) {
+		spiff.UberPopupView.call(this, viewModel, new spiff.UberPopupTemplate());
+	};
+	$spiff_UberPopupViewWeb.__typeName = 'spiff.UberPopupViewWeb';
+	global.spiff.UberPopupViewWeb = $spiff_UberPopupViewWeb;
+	ss.initEnum($spiff_ChangeSpotlightedItemMode, $asm, { moveUp: 0, moveDown: 1, moveToFirst: 2, moveToLast: 3, moveToListItem: 4 });
+	ss.initClass($spiff_ComboBoxViewWeb, $asm, {}, spiff.ComboBoxView, [tab.IWidget, tab.IAppendableView, ss.IDisposable, ss.makeGenericType(tab.IView$1, [spiff.ComboBoxViewModel])]);
+	ss.initClass($spiff_CompositeSearchWidgetWeb, $asm, {
+		add_spotlightedListItemChanged: function CompositeSearchWidgetWeb$add_SpotlightedListItemChanged(value) {
+			this.$3$SpotlightedListItemChangedField = ss.delegateCombine(this.$3$SpotlightedListItemChangedField, value);
+		},
+		remove_spotlightedListItemChanged: function CompositeSearchWidgetWeb$remove_SpotlightedListItemChanged(value) {
+			this.$3$SpotlightedListItemChangedField = ss.delegateRemove(this.$3$SpotlightedListItemChangedField, value);
+		},
+		add_tabKeyPressed: function CompositeSearchWidgetWeb$add_TabKeyPressed(value) {
+			this.$3$TabKeyPressedField = ss.delegateCombine(this.$3$TabKeyPressedField, value);
+		},
+		remove_tabKeyPressed: function CompositeSearchWidgetWeb$remove_TabKeyPressed(value) {
+			this.$3$TabKeyPressedField = ss.delegateRemove(this.$3$TabKeyPressedField, value);
+		},
+		get_spotlightedItemLogic: function CompositeSearchWidgetWeb$get_SpotlightedItemLogic() {
+			return this.$3$SpotlightedItemLogicField;
+		},
+		set_spotlightedItemLogic: function CompositeSearchWidgetWeb$set_SpotlightedItemLogic(value) {
+			this.$3$SpotlightedItemLogicField = value;
+		},
+		resetSpotlightedItem: function CompositeSearchWidgetWeb$ResetSpotlightedItem() {
+			var originalIndex = this.$spotlightedListItemIndex;
+			this.$spotlightedListItemIndex = null;
+			this.$checkForChangedSpotlightedListItemIndex(originalIndex);
+		},
+		$checkForChangedSpotlightedListItemIndex: function CompositeSearchWidgetWeb$CheckForChangedSpotlightedListItemIndex(originalIndex) {
+			if (ss.referenceEquals(originalIndex, this.$spotlightedListItemIndex)) {
+				return;
+			}
+			tab.Log.get(this).debug('New spotlighted item index: %d', [this.$spotlightedListItemIndex]);
+			this.$spotlightedListItem = (ss.isValue(this.$spotlightedListItemIndex) ? this.get_listViewModel().get_collection()[ss.unbox(this.$spotlightedListItemIndex)] : null);
+			if (ss.isValue(this.$spotlightedListItemIndex)) {
+				this.get_listViewModel().spotlightItemAtIndex(ss.unbox(this.$spotlightedListItemIndex));
+			}
+			else {
+				this.get_listViewModel().clearSpotlighting();
+			}
+			if (ss.staticEquals(this.$3$SpotlightedListItemChangedField, null)) {
+				return;
+			}
+			this.$3$SpotlightedListItemChangedField(this.$spotlightedListItem);
+		},
+		handleRemoveList: function CompositeSearchWidgetWeb$HandleRemoveList() {
+			this.resetSpotlightedItem();
+			spiff.CompositeSearchWidget.prototype.handleRemoveList.call(this);
+		},
+		changeSpotlightedListItem: function CompositeSearchWidgetWeb$ChangeSpotlightedListItem(mode, listItem) {
+			if (ss.isNullOrUndefined(this.get_listViewModel()) || this.get_listViewModel().get_collection().length === 0 || mode === 4 && ss.isNullOrUndefined(listItem)) {
+				this.resetSpotlightedItem();
+				return;
+			}
+			var moveToListItemIndex = null;
+			var originalIndex = this.$spotlightedListItemIndex;
+			if (mode === 4) {
+				moveToListItemIndex = ss.indexOf(this.get_listViewModel().get_collection(), listItem);
+				this.$spotlightedListItemIndex = moveToListItemIndex;
+			}
+			if (ss.isNullOrUndefined(this.get_spotlightedItemLogic())) {
+				return;
+			}
+			this.$spotlightedListItemIndex = this.get_spotlightedItemLogic().calculateNewSpotlightedItemIndex(originalIndex, mode, moveToListItemIndex);
+			this.$checkForChangedSpotlightedListItemIndex(originalIndex);
+		},
+		$handleKeyDown: function CompositeSearchWidgetWeb$HandleKeyDown(e) {
+			switch (e.which) {
+				case 38: {
+					if (ss.isValue(this.get_listViewModel())) {
+						e.preventDefault();
+						this.changeSpotlightedListItem(0, null);
+					}
+					break;
+				}
+				case 40: {
+					if (ss.isValue(this.get_listViewModel())) {
+						e.preventDefault();
+						this.changeSpotlightedListItem(1, null);
+					}
+					break;
+				}
+				case 36: {
+					if (ss.isValue(this.get_listViewModel()) && ss.isValue(this.$spotlightedListItemIndex)) {
+						e.preventDefault();
+						this.changeSpotlightedListItem(2, null);
+					}
+					break;
+				}
+				case 35: {
+					if (ss.isValue(this.get_listViewModel()) && ss.isValue(this.$spotlightedListItemIndex)) {
+						e.preventDefault();
+						this.changeSpotlightedListItem(3, null);
+					}
+					break;
+				}
+				case 9: {
+					if (!ss.staticEquals(this.$3$TabKeyPressedField, null)) {
+						e.preventDefault();
+						this.$3$TabKeyPressedField();
+					}
+					break;
+				}
+			}
+		}
+	}, spiff.CompositeSearchWidget, [tab.IWidget, tab.IAppendableView, ss.IDisposable]);
+	ss.initInterface($spiff_ICompositeSearchWidgetSpotlightedItemLogic, $asm, { calculateNewSpotlightedItemIndex: null });
+	ss.initClass($spiff_MenuViewWeb, $asm, {
+		onAddedToDom: function MenuViewWeb$OnAddedToDom() {
+			spiff.Widget.prototype.onAddedToDom.call(this);
+			this.dom.domRoot.focus();
+		},
+		showSubmenu: function MenuViewWeb$ShowSubmenu(parent, relativeObj, menuTemplate) {
+			$('body').append(menuTemplate.domRoot);
+			spiff.SpiffBrowserViewport.getViewport(ss.mkdel(this, function(spiffBrowserViewport) {
+				this.$positionSubMenu(spiffBrowserViewport, relativeObj, menuTemplate);
+				menuTemplate.domRoot.show();
+			}));
+		},
+		buildMenu: function MenuViewWeb$BuildMenu(root, m) {
+			spiff.MenuView.prototype.buildMenu.call(this, root, m);
+			root.domRoot.on('mouseenter' + this.get_eventNamespace(), '.tabMenuItem', ss.mkdel(this, this.$handleMenuItemEnter));
+		},
+		$positionSubMenu: function MenuViewWeb$PositionSubMenu(spiffBrowserViewport, relativeObj, submenu) {
+			var submenuWidth = tab.DoubleUtil.roundToInt(submenu.domRoot.outerWidth(false));
+			var submenuHeight = tab.DoubleUtil.roundToInt(submenu.domRoot.outerHeight(false));
+			var relativeObjWidth = tab.DoubleUtil.roundToInt(relativeObj.outerWidth(false));
+			var offset = tab.PointUtil.fromPosition(tab.DomUtil.getPageOffset$1(relativeObj));
+			var left = offset.x + relativeObjWidth;
+			var top = offset.y - parseInt(submenu.domRoot.children('.tabMenuContent').css('padding-top'));
+			var room = spiffBrowserViewport.getVisibleRoom({ x: left, y: top });
+			var maxHeight = null;
+			if (room.roomBelow >= submenuHeight) {
+			}
+			else if (room.roomAbove + room.roomBelow > submenuHeight) {
+				top -= ss.Int32.trunc(submenuHeight - room.roomBelow);
+			}
+			else {
+				var ExtraSpace = 5;
+				top -= ss.Int32.trunc(room.roomAbove);
+				maxHeight = room.roomAbove - 5 + room.roomBelow;
+			}
+			if (room.roomRight < submenuWidth) {
+				left = Math.max(0, left - submenuWidth - relativeObjWidth);
+			}
+			var position = {};
+			position['top'] = top + 'px';
+			position['left'] = left + 'px';
+			position['max-height'] = (ss.isValue(maxHeight) ? (maxHeight + 'px') : '');
+			position['z-index'] = tab.DomUtil.getComputedZIndex(relativeObj[0]);
+			submenu.domRoot.css(position);
+		},
+		shown: function MenuViewWeb$Shown(options) {
+			spiff.MenuView.prototype.shown.call(this, options);
+			var focusedItem = this.menuViewModel.get_focusedItem();
+			var menuItems = this.menuViewModel.get_menu().menuItems;
+			if (ss.isValue(focusedItem)) {
+				this.$initializeFocusedItem(focusedItem);
+			}
+			else if (ss.isValue(menuItems)) {
+				for (var i = 0; i < menuItems.length; i++) {
+					if (menuItems[i].enabled) {
+						this.menuViewModel.set_focusedItem(menuItems[i]);
+						break;
+					}
+				}
+			}
+		},
+		onSized: function MenuViewWeb$OnSized() {
+			var menuRoot = this.dom.domRoot;
+			if ($spiff_MenuViewWeb.$isContentOverflowingY(menuRoot)) {
+				menuRoot.css('overflow-y', 'scroll');
+			}
+			else {
+				menuRoot.css('overflow-y', 'hidden');
+			}
+		},
+		$handleMenuItemEnter: function MenuViewWeb$HandleMenuItemEnter(e) {
+			tab.Log.get(this).debug('Enter: X: ' + e.pageX + ', Y: ' + e.pageY, []);
+			if (e.pageX === this.$lastEnterX && e.pageY === this.$lastEnterY) {
+				return;
+			}
+			this.$lastEnterX = e.pageX + 0;
+			this.$lastEnterY = e.pageY + 0;
+			var menuItemDom = $(e.currentTarget);
+			var mi = spiff.MenuView.getMenuItem(menuItemDom);
+			this.$hideAllSubMenusPastLevel(spiff.MenuView.getMenuItemLevel(menuItemDom));
+			if (ss.isValue(mi)) {
+				this.menuViewModel.set_focusedItem(mi);
+				if (ss.isValue(mi.subMenu)) {
+					this.activateSubmenu(mi, menuItemDom);
+				}
+			}
+		},
+		$hideAllSubMenusPastLevel: function MenuViewWeb$HideAllSubMenusPastLevel(itemLevel) {
+			if (itemLevel < 1) {
+				this.menuViewModel.hide();
+				return;
+			}
+			for (var i = this.menuStack.length - 1; i >= itemLevel; i--) {
+				var subMenu = { $: this.menuStack[i] };
+				subMenu.$.domRoot.fadeOut(spiff.MenuView.menuFadeDurationMs, ss.mkdel({ subMenu: subMenu }, function() {
+					this.subMenu.$.dispose();
+				}));
+				ss.removeAt(this.menuStack, i);
+			}
+		},
+		$onMenuKeyDown: function MenuViewWeb$OnMenuKeyDown(e) {
+			var $state = 0, focusedItem, currentMenu, menuItemDom;
+			$sm1:
+			for (;;) {
+				switch ($state) {
+					case 0: {
+						focusedItem = this.menuViewModel.get_focusedItem();
+						currentMenu = this.menuViewModel.findMenuForMenuItem(focusedItem) || this.menuViewModel.get_menu();
+						if (ss.isNullOrUndefined(currentMenu)) {
+							return;
+						}
+						if (e.which === 32 || e.which === 13) {
+							if (ss.isNullOrUndefined(focusedItem)) {
+								return;
+							}
+							if (ss.isValue(focusedItem.subMenu)) {
+								this.$activateSubmenuAndFocus();
+							}
+							else {
+								this.menuViewModel.clickMenuItem(focusedItem);
+							}
+							$state = 1;
+							continue $sm1;
+						}
+						else if (e.which === 36) {
+							this.menuViewModel.iterateFocus(1, -1);
+							$state = 1;
+							continue $sm1;
+						}
+						else if (e.which === 35) {
+							this.menuViewModel.iterateFocus(-1, currentMenu.menuItems.length);
+							$state = 1;
+							continue $sm1;
+						}
+						else if (e.which === 40) {
+							this.menuViewModel.iterateFocus(1, null);
+							$state = 1;
+							continue $sm1;
+						}
+						else if (e.which === 38) {
+							this.menuViewModel.iterateFocus(-1, null);
+							$state = 1;
+							continue $sm1;
+						}
+						else if (e.which === 39) {
+							this.$activateSubmenuAndFocus();
+							$state = 1;
+							continue $sm1;
+						}
+						else if (e.which === 27) {
+							if (this.menuStack.length <= 1) {
+								this.menuViewModel.hide();
+							}
+							else {
+								$state = 2;
+								continue $sm1;
+							}
+							$state = 1;
+							continue $sm1;
+						}
+						else if (e.which === 37) {
+							$state = 2;
+							continue $sm1;
+						}
+						else {
+							return;
+						}
+						$state = 1;
+						continue $sm1;
+					}
+					case 2: {
+						if (!ss.referenceEquals(currentMenu, this.menuViewModel.get_menu())) {
+							menuItemDom = this.getElementForMenuItem(focusedItem);
+							if (ss.isNullOrUndefined(menuItemDom)) {
+								return;
+							}
+							this.$hideAllSubMenusPastLevel(spiff.MenuView.getMenuItemLevel(menuItemDom) - 1);
+							this.menuViewModel.set_focusedItem(this.menuViewModel.findItemContainingSubMenu(currentMenu));
+						}
+						$state = 1;
+						continue $sm1;
+					}
+					case 1: {
+						e.preventDefault();
+						e.stopPropagation();
+						$state = -1;
+						break $sm1;
+					}
+					default: {
+						break $sm1;
+					}
+				}
+			}
+		},
+		$onMenuKeyPress: function MenuViewWeb$OnMenuKeyPress(e) {
+			if (e.which >= 97 && e.which <= 122 || e.which >= 65 && e.which <= 90 || e.which >= 48 && e.which <= 57 || e.which > 127) {
+				this.menuViewModel.focusByNamePrefix(String.fromCharCode(e.which));
+			}
+		},
+		$activateSubmenuAndFocus: function MenuViewWeb$ActivateSubmenuAndFocus() {
+			if (ss.isValue(this.menuViewModel.get_focusedItem()) && ss.isValue(this.menuViewModel.get_focusedItem().subMenu)) {
+				var itemElem = this.getElementForMenuItem(this.menuViewModel.get_focusedItem());
+				if (ss.isValue(itemElem)) {
+					this.activateSubmenu(this.menuViewModel.get_focusedItem(), itemElem);
+					var newItemToFocus = ((this.menuViewModel.get_focusedItem().subMenu.menuItems.length > 0) ? this.menuViewModel.get_focusedItem().subMenu.menuItems[0] : null);
+					if (ss.isValue(newItemToFocus)) {
+						this.menuViewModel.set_focusedItem(newItemToFocus);
+					}
+				}
+			}
+		},
+		$focusChanged: function MenuViewWeb$FocusChanged(mi, isFocused) {
+			var menuItemElement = this.getElementForMenuItem(mi);
+			if (ss.isNullOrUndefined(menuItemElement)) {
+				return;
+			}
+			menuItemElement.toggleClass('tabMenuFocusedItem', isFocused);
+			if (!isFocused) {
+				return;
+			}
+			this.$focusOnMenuItem(mi);
+			if (menuItemElement.is(':visible')) {
+				var menuRoot = this.getMenuElementForMenuItem(mi);
+				if (ss.isNullOrUndefined(menuRoot)) {
+					return;
+				}
+				var positionTop = tab.DoubleUtil.roundToInt(menuItemElement.position().top);
+				if (positionTop < 0) {
+					menuRoot.scrollTop(tab.DoubleUtil.roundToInt(menuRoot.scrollTop()) + positionTop);
+				}
+				else {
+					var parentHeight = tab.DoubleUtil.roundToInt(menuRoot.height());
+					var itemBottom = positionTop + tab.DoubleUtil.roundToInt(menuItemElement.outerHeight());
+					if (parentHeight < itemBottom) {
+						menuRoot.scrollTop(tab.DoubleUtil.roundToInt(menuRoot.scrollTop()) + (itemBottom - parentHeight));
+					}
+				}
+			}
+		},
+		$initializeFocusedItem: function MenuViewWeb$InitializeFocusedItem(mi) {
+			var menuItemElem = this.getElementForMenuItem(mi);
+			menuItemElem.toggleClass('tabMenuFocusedItem', true);
+			var menuRoot = this.dom.domRoot;
+			menuRoot.scrollTop(tab.DoubleUtil.roundToInt(menuRoot.scrollTop()) + tab.DoubleUtil.roundToInt(menuItemElem.position().top) - ss.Int32.div(tab.DoubleUtil.roundToInt(menuItemElem.height()), 2));
+			this.$focusOnMenuItem(mi);
+		},
+		$focusOnMenuItem: function MenuViewWeb$FocusOnMenuItem(mi) {
+			var menuItemElem = this.getElementForMenuItem(mi);
+			if (mi.isTextInput) {
+				this.element.removeAttr('aria-activedescendant');
+				menuItemElem.find('input').focus();
+			}
+			else {
+				var id = 'tab-' + mi.id;
+				menuItemElem.attr('id', id);
+				this.element.attr('aria-activedescendant', id).focus();
+			}
+		}
+	}, spiff.MenuView, [tab.IWidget, tab.IAppendableView, ss.IDisposable, ss.makeGenericType(tab.IView$1, [spiff.MenuViewModel])]);
+	ss.initClass($spiff_MenuViewWebTemplate, $asm, {}, spiff.MenuTemplate, [ss.IDisposable]);
+	ss.initClass($spiff_UberPopupViewWeb, $asm, {
+		get_uberPopupShadowHeight: function UberPopupViewWeb$get_UberPopupShadowHeight() {
+			return 2;
+		}
+	}, spiff.UberPopupView, [tab.IWidget, tab.IAppendableView, ss.IDisposable, ss.makeGenericType(tab.IView$1, [spiff.UberPopupViewModel])]);
+	(function() {
+		tab.ObjectRegistry.registerType(spiff.ComboBoxView, $spiff_ComboBoxViewWeb).call(null);
+	})();
+	(function() {
+		tab.ObjectRegistry.registerType(spiff.CompositeSearchWidget, $spiff_CompositeSearchWidgetWeb).call(null);
+	})();
+	(function() {
+		tab.ObjectRegistry.registerType(spiff.MenuView, $spiff_MenuViewWeb).call(null);
+	})();
+	(function() {
+		tab.ObjectRegistry.registerType(spiff.UberPopupView, $spiff_UberPopupViewWeb).call(null);
+	})();
+})();
+
+// END SpiffUIWeb

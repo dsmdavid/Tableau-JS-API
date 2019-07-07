@@ -13,24 +13,22 @@
     <h1 style="text-align: center;font-family: Montserrat;font-weight: 100;">CRITICAL MONITOR OF IMPORTANT THINGS</h1>
         <p style="font-family: sans-serif; font-size: 14px; font-variant-caps: all-small-caps; text-align: center; ">We are happy as long as everything remains <span style="color: darkseagreen; font-variant-caps: unicase;">green</span></p>
     <div class="row" id="bckgTitle">
-        <div class="backgroundTitle" >
-            <div class="column1">
-                <div class="circle" id="countdown"></div>
-                <div id="controls" style="padding:20px;">
-                    <h3 style="font-family: Montserrat;">What do you want to do: <select id="Type" onchange="filterType(value);">
-                        <option value="OK">Keep everything fine</option>
-                        <option value="danger">Break havoc</option>         
-                    </select></h3> 
-                    <p style="font-family:Montserrat; font-size: 100;">Alerts will be modified once the viz refreshes. Check the timer!</p>
-                </div>
+        <div class="column1">
+            <div class="circle" id="countdown"></div>
+            <div id="controls" style="padding:20px;">
+                <h3 style="font-family: Montserrat;">What do you want to do: <select id="Type" onchange="filterType(value);">
+                    <option value="OK">Keep everything fine</option>
+                    <option value="danger">Break havoc</option>         
+                </select></h3> 
+                <p style="font-family:Montserrat; font-size: 100;">Alerts will be modified once the viz refreshes. Check the timer!</p>
             </div>
-            <div class="column2">
-                <div class="titleClass" id="titleD"></div>
-                <div class="detailedView" id="detailedView"></div>
-                <div class="vizContainer" id="myViz"></div>
-            </div>
-        </div>    
-    </div>
+        </div>
+        <div class="column2">
+            <div class="titleClass" id="titleD"></div>
+            <div class="detailedView" id="detailedView"></div>
+            <div class="vizContainer" id="myViz"></div>
+        </div>
+    </div>    
 </body>
 <script>
     var viz;
@@ -110,12 +108,10 @@
             // the variable html will be used to update the header of the page
             var html = "";
             myCounter=0; //tracks whether any of the marks meets the criteria
-
             // Loop through all the marks in the view, contained as rows in a table
             for (var markIndex = 0; markIndex < table.getData().length; markIndex++) {
 
                 var row = table.getData()[markIndex];
-                
                 //Evaluate whether any mark meets the criteria defined, in this case
                 // the "status" = 3
                 if (row[2].formattedValue === "3") {
@@ -212,10 +208,6 @@
         vertical-align: middle;
         align-content: center;
         margin: 0 auto;
-    }
-    .backgroundTitle{
-        transition: 0.5s all;
-        transition-timing-function: ease-in-out;
     }
     .titleClass{
         transition: 0.5s all;

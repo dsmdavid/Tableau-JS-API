@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<title>Alerts from the Viz</title>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet">
+
+<!-- Tableau Online API -->
+    <script type="text/javascript" src="https://online.tableau.com/javascripts/api/tableau-2.js"></script>
+
+    
+<body onload="initialize();">
+
+    <h1 style="text-align: center;font-family: Montserrat;font-weight: 100;">CRITICAL MONITOR OF IMPORTANT THINGS</h1>
+        <p style="font-family: sans-serif; font-size: 14px; font-variant-caps: all-small-caps; text-align: center; ">We are happy as long as everything remains <span style="color: darkseagreen; font-variant-caps: unicase;">green</span></p>
+    <div class="row" id="bckgTitle">
+        <div class="column1">
+            <div class="circle" id="countdown"></div>
+            <div id="controls" style="padding:20px;">
+<!--                 <h3 style="font-family: Montserrat;">What do you want to do: <select id="Type" onchange="filterType(value);">
+                    <option value="OK">Keep everything fine</option>
+                    <option value="danger">Break havoc</option>         
+                </select></h3>  -->
+                <p style="font-family:Montserrat; font-size: 100;">Alerts will be modified once the viz refreshes. Check the timer!</p>
+            </div>
+        </div>
+        <div class="column2">
+            <div class="titleClass" id="titleD"></div>
+            <div class="detailedView" id="detailedView"></div>
+            <div class="vizContainer" id="myViz"></div>
+        </div>
+    </div>    
+</body>
+<script>
+    var viz;
+    var workbook;
+    var activeSheet;
+    var ourInterval = 10000;
+    var timeleft = ourInterval/1000;
+    var refreshInterval =  setInterval(refreshView,ourInterval);
+    var downloadTimer = setInterval(countdownDownloadTimer, 1000);
+    
+    const audio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/submarine-diving-alarm-daniel_simon.mp3');
+    const crisisAudio = new Audio('https://dsmdaviz.com/wp-content/uploads/2019/02/crisis-averted-happy-birthday.mp3');
+    
+/* Tableau Related Functions */
+    
+    function refreshView(){
+        viz.refreshDataAsync();
+        getUnderlyingSummary(); //Every time the viz refreshes, checks the underlying data
+    }
+
+    function initialize() {
+
+        var placeholderDiv = document.getElementById("myViz");
+        var url = "https://10ax.online.tableau.com/t/dsmdaviddev799594/views/SalesAtRisk_DavidDev/SalesAtRisk?:embed=yes:showAppBanner=false&:display_count=n&:showVizHome=n&:origin=viz_share_link";
+
+        var options = {
+            "myType": "OK",
+//            width: 800,
+//            height: 600,
+            hideTabs: true,
+            hideToolbar: true,
+            onFirstInteractive: function(){
+                workbook = viz.getWorkbook();
+                activeSheet = workbook.getActiveSheet().getWorksheets().get("salesatrisk_");;
+            }
+        }
+        //Create the Viz
+        viz = new tableau.Viz(placeholderDiv, url, options);
+        
+        //Resize the viz to the size of the div:
+        var width = placeholderDiv.offsetWidth;
+        var height = placeholderDiv.offsetHeight;
+        viz.setFrameSize(parseInt(width, 10), parseInt(height, 10));
+        }
+    
+    function launchIntervalRefresh(){
+        clearInterval(refreshInterval);
+        refreshInterval =  setInterval(refreshView,ourInterval);
+    }
+
+//     function filterType(myType) {
+//             console.log("I'm at filterType. Value passed: ", myType);
+//             activeSheet.applyFilterAsync("myType", myType, tableau.FilterUpdateType.REPLACE);
+//             }
+    
+    function getUnderlyingSummary(){
+         /* 
+        I'm sure this long function that does multiple things is not good practice, but I'm still learning...
+        
+        This function 
+        1. Gets the data from the marks shown in the viz
+        2. Checks, for every mark, if any of the marks should trigger an alert.
+            2.1. If so, it triggers the alert (calls the audio file, changes the background of the object and brings the data of the "culprit" to the screen).
+            2.2. If not, checks whether any of the "alarm features" are on, and deactivates them   
+        */
+        sheet = viz.getWorkbook().getActiveSheet().getWorksheets().get("salesatrisk_");
+        // If the active sheet is not a dashboard, then you can just enter:
+        // viz.getWorkbook().getActiveSheet();
+        options = {
+            maxRows: 0, // Max rows to return. Use 0 to return all rows
+            ignoreAliases: false,
+            ignoreSelection: true,
+        };
+
+        sheet.getSummaryDataAsync(options).then(function(t){
+            table = t;
+            // the variable html will be used to update the header of the page
+            var html = "";
+            myCounter=0; //tracks whether any of the marks meets the criteria
+            // Loop through all the marks in the view, contained as rows in a table
+            for (var markIndex = 0; markIndex < table.getData().length; markIndex++) {
+
+                var row = table.getData()[markIndex];
+                //Evaluate whether any mark meets the criteria defined, in this case
+                // the "status" = 3
+                if (row[2].formattedValue === "3") {
+                    console.log("Critical found!");                    
+                    launchAlarm(row);
+                    html = fillHtml(row, html);
+                    myCounter = myCounter + 1;            
+                } else {}
+
+                var infoDiv = document.getElementById('detailedView');
+                infoDiv.innerHTML = html;
+
+            } //this ends the "for" loop
+
+            if (myCounter===0){
+                    removeAlarm();                    
+            } 
+        });     // end of the sheet.getsummarydataasync...
+    };          // end of the getUnderlyingSummary
+    
+
+//Non-Tableau Functions:
+    
+
+    function launchAlarm(row){        
+        //Launch the alarm! Call SWAT!
+        audio.currentTime = 0;
+        audio.play();
+        
+        //Update the webpage
+        var backgTitle = document.getElementById('bckgTitle');
+        backgTitle.classList.add('playing');
+        var titleDiv = document.getElementById('titleD');
+        titleDiv.innerHTML = "<b>Sales at Risk $" + row[4].formattedValue+"<b>";
+    }
+    function removeAlarm(){
+        var backgTitle = document.getElementById('bckgTitle');
+        if (backgTitle.classList.contains('playing')) //The alert was on, remove it
+            {
+            console.log('ready to remove playing');
+            backgTitle.classList.remove('playing');
+            var titleDiv = document.getElementById('titleD');
+            titleDiv.innerHTML = "";
+            var infoDiv = document.getElementById('detailedView');
+            infoDiv.innerHTML = "";
+            //Stop the previous audio
+            audio.pause();
+            //Phew... thank goodness...
+            crisisAudio.play();
+            console.log("crisis played");
+            }
+        else {}
+    }
+
+    
+    function countdownDownloadTimer() {
+        document.getElementById("countdown").innerHTML = timeleft + " ";
+        timeleft -= 1;
+        if(timeleft <= 0){
+            timeleft = ourInterval/1000;
+            document.getElementById("countdown").innerHTML = timeleft + " ";
+            var div = document.getElementById("countdown");
+            div.style.background = '#6EC1E4';
+            }
+    }
+    
+    function fillHtml(row, html){
+        console.log("inside fillHtml")
+        html += "<br/><b>Segment:</b> " + row[0].formattedValue;
+        html += "<br/><b>Ship Mode:</b> " + row[1].formattedValue;
+        html += "<br/><b>Sales at Risk:</b> $" + row[4].formattedValue;
+        return html
+    }
+    
+</script>
+
+<style>
+    .circle {
+        position: relative;
+        top: 0%;
+        left: 25%;
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        font-size: 20px;
+        color: #fff;
+        line-height: 50px;
+        text-align: center;
+        vertical-align: middle;
+        background: #61CE70;
+    }
+    .vizContainer{
+        width: 95%;
+        vertical-align: middle;
+        align-content: center;
+        margin: 0 auto;
+    }
+    .titleClass{
+        transition: 0.5s all;
+        align-content: center;
+        text-align: center;
+        text-emphasis-color: cornsilk;
+        font-family: 'Montserrat';
+        color: cornsilk;
+        font-weight: 500;
+    }
+    .detailedView{
+        transition: 0.5s all;
+        align-content: center;
+        text-align: center;
+        text-emphasis-color: cornsilk;
+        font-family: 'Montserrat';
+        color: cornsilk;
+        font-weight: 100;
+    }
+    .playing {
+        /*transform: scale(1.1);*/
+        background-color: darkred;
+        animation: pulse 5s infinite;
+        box-shadow: 0 0 2rem #FF00FF;
+    }
+    .column1 {
+      float: left;
+      width: 15%;
+    }
+    .column2 {
+      float: left;
+      width: 70%;
+    }
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+</style>
+</html>

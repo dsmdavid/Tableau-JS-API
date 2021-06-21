@@ -17,7 +17,9 @@ Outcome of Back2School week at [The Dataschool](https://www.thedataschool.co.uk/
         1.	[Drive alarms in the webpage based on the data](https://dsmdaviz.com/criticalshipments/)  You'll need to log in to TIL tableauserver to see the dashboard (and run the workflows here to update the datasource from [not warning](https://github.com/dsmdavid/Tableau-JS-API/blob/master/RefreshDatasource_Warning.yxmd) to [warning](https://github.com/dsmdavid/Tableau-JS-API/blob/master/RefreshDatasource_Warning.yxmd)). [Here if you want to download just the basic page](https://github.com/dsmdavid/Tableau-JS-API/blob/master/Example_08.3%20-%20Current.html). The basic idea is a dashboard, hosted on a company's server, needs to be constantly on monitoring some critical measure. Whenever a critical value comes in, action needs to be immediate, so the webpage will launch an alert to get the attention).
             This is what [it should look video](https://www.youtube.com/watch?v=Sv14MNzBVhc).  
             ![screenshot](https://dsmdaviz.com/wp-content/uploads/2019/02/screenshot.png)
-        1. Alternatively, use the one using a [dashboard on Tableau Public](Example_08.3%20-%20Current_forPublic_v3.html) and simulate the update in the viz using filters. Find the blog detailing the step-by-step [here](https://www.theinformationlab.co.uk/2019/07/08/how-to-tableau-javascript-api-for-dummies-vol-3-triggering-automatic-alerts/)
+        1. Alternatively...  
+            1. use the one using a [dashboard on Tableau Public](Example_08.3%20-%20Current_forPublic_v3.html) and simulate the update in the viz using filters. Find the blog detailing the step-by-step [here](https://www.theinformationlab.co.uk/2019/07/08/how-to-tableau-javascript-api-for-dummies-vol-3-triggering-automatic-alerts/)
+            2. Use the one using my [dev site](https://dsmdavid.github.io/Tableau-JS-API/Example_09_tableauOnline.html) -- datasource in Snowflake IL ("DBT_TABLEAU"."ANALYTICS"."SUPERSTORE_STATUS" points to "analytics.superstore_status_without_warning" by default, simulate malfunction by pointing to "analytics.superstore_status_with_warning" instead).
 
 
 
